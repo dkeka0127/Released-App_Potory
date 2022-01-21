@@ -1,0 +1,36 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+# React Native Maps dependencies // add
+rn_maps_path = '../node_modules/react-native-maps'
+
+platform :ios, '11.0'
+
+target 'lifeRecordProject' do
+  pod 'react-native-maps', path: '../node_modules/react-native-maps' # // add
+  pod 'react-native-google-maps', :path => rn_maps_path # // add
+  pod 'GoogleMaps' # // add
+  pod 'Google-Maps-iOS-Utils' # // add
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # to enable hermes on iOS, change `false` to `true` and then install pods
+    :hermes_enabled => true
+  )
+
+  target 'lifeRecordProjectTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+  # Enables Flipper.
+  #
+  # Note that if you have use_frameworks! enabled, Flipper will not work and
+  # you should disable the next line.
+  use_flipper!()
+
+  post_install do |installer|
+    react_native_post_install(installer)
+    # __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  end
+end
