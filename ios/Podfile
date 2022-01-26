@@ -1,11 +1,11 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-# React Native Maps dependencies // add
-rn_maps_path = '../node_modules/react-native-maps'
 
 platform :ios, '11.0'
 
 target 'lifeRecordProject' do
+  # React Native Maps dependencies // add
+  rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-maps', path: '../node_modules/react-native-maps' # // add
   pod 'react-native-google-maps', :path => rn_maps_path # // add
   pod 'GoogleMaps' # // add

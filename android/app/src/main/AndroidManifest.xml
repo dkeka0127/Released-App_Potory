@@ -15,11 +15,11 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
-    <!-- // add -->
-    <meta-data android:name="com.google.android.geo.API_KEY"
-    android:value="AIzaSyDZwOs3dkZ9xR2aby6jBwZCcvFQCiMPB4w"/>
-    <!-- You will also only need to add this uses-libray tag -->
-    <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+      <!-- // add -->
+      <meta-data android:name="com.google.android.geo.API_KEY"
+      android:value="AIzaSyDRvj60nEHFZupc1UwG1piAK_JP8YR5CZo"/>
+      <!-- You will also only need to add this uses-libray tag -->
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
