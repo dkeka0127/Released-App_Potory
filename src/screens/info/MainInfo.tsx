@@ -6,14 +6,14 @@ import CoinIcon from 'react-native-vector-icons/FontAwesome5';
 import SettingIcon from 'react-native-vector-icons/Ionicons';
 import PictureIcon from 'react-native-vector-icons/AntDesign';
 
+// Page
+import dummyData from '../../../dummyData';
+
 // [height] User Name Section
 const nameContainerHeight = 60;
 
 function MainInfo() {
   const navigation = useNavigation();
-  // variable
-  const name = '공주';
-  const point = 150;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,7 +21,7 @@ function MainInfo() {
       <View style={styles.navContainer}>
         <View style={styles.navPictureCon}>
           <CoinIcon name="coins" size={15} color="black" />
-          <Text style={styles.navPictureText}>{point}</Text>
+          <Text style={styles.navPictureText}>{dummyData.point}</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('SettingScreen')}>
           <SettingIcon name="settings-outline" size={23} color="black" />
@@ -32,10 +32,10 @@ function MainInfo() {
       <View style={styles.infoContainer}>
         <View style={styles.infoContent}></View>
         <View style={styles.nameContainer}>
-          <Text style={styles.nameText}>주인공</Text>
+          {/* <Text style={styles.nameText}>주인공</Text> */}
           <Text> </Text>
-          <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.nameText}>님</Text>
+          <Text style={styles.nameText}>{dummyData.userName}</Text>
+          <Text style={styles.nameText}> 님</Text>
         </View>
       </View>
 
