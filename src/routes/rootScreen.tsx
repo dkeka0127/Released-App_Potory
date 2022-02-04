@@ -8,57 +8,63 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Pages
 import MainHome from '../screens/home/MainHome';
 import MainPhoto from '../screens/photo/MainPhoto';
-import MainShop from '../screens/shop/MainShop';
 import MainInfo from '../screens/info/MainInfo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// BottomTabNavigation Function
+function TabNavigation() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+
+          if (route.name === 'Map') {
+            iconName = focused ? 'map' : 'map-outline';
+          } else if (route.name === 'Memory') {
+            iconName = focused ? 'camera' : 'camera-outline';
+          } else if (route.name === 'MyPage') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'black',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+      <Tab.Screen
+        name="Map"
+        component={MainHome}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Memory"
+        component={MainPhoto}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="MyPage"
+        component={MainInfo}
+        options={{headerShown: false}}
+      />
+    </Tab.Navigator>
+  );
+}
+
+// [Main] StackNavigation Function
 function RootScreen() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-
-            if (route.name === 'Map') {
-              iconName = focused ? 'map' : 'map-outline';
-            } else if (route.name === 'Memory') {
-              iconName = focused ? 'camera' : 'camera-outline';
-            } else if (route.name === 'Shop') {
-              iconName = focused ? 'add-circle' : 'add-circle-outline';
-            } else if (route.name === 'MyPage') {
-              iconName = focused ? 'person' : 'person-outline';
-            }
-
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-        <Tab.Screen
-          name="Map"
-          component={MainHome}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={TabNavigation}
           options={{headerShown: false}}
         />
-        <Tab.Screen
-          name="Memory"
-          component={MainPhoto}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="Shop"
-          component={MainShop}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="MyPage"
-          component={MainInfo}
-          options={{headerShown: false}}
-        />
-      </Tab.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
