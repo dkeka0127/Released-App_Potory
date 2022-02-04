@@ -9,12 +9,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainHome from '../screens/home/MainHome';
 import MainPhoto from '../screens/photo/MainPhoto';
 import MainInfo from '../screens/info/MainInfo';
+import SettingScreen from '../screens/info/SettingScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 // BottomTabNavigation Function
-function TabNavigation() {
+function BottomTabNavigation() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -60,10 +61,11 @@ function RootScreen() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={TabNavigation}
+          name="BottomTab"
+          component={BottomTabNavigation}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="SettingScreen" component={SettingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

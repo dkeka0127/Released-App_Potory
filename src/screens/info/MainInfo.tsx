@@ -1,14 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import CoinIcon from 'react-native-vector-icons/FontAwesome5';
 import SettingIcon from 'react-native-vector-icons/Ionicons';
 import PictureIcon from 'react-native-vector-icons/AntDesign';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // [height] User Name Section
 const nameContainerHeight = 60;
 
 function MainInfo() {
+  const navigation = useNavigation();
   // variable
   const name = '공주';
   const point = 150;
@@ -18,10 +20,10 @@ function MainInfo() {
       {/* Nav */}
       <View style={styles.navContainer}>
         <View style={styles.navPictureCon}>
-          <PictureIcon name="picture" size={23} color="black" />
+          <CoinIcon name="coins" size={15} color="black" />
           <Text style={styles.navPictureText}>{point}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingScreen')}>
           <SettingIcon name="settings-outline" size={23} color="black" />
         </TouchableOpacity>
       </View>
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
   navPictureText: {
     fontSize: 18,
     paddingLeft: 8,
-    fontWeight: '500',
+    fontWeight: '400',
   },
   infoContainer: {
     marginTop: 40,
