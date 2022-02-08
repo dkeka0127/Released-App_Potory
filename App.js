@@ -6,24 +6,40 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 // Page
-import RootScreen from './src/routes/rootScreen';
+import SplashScreen from './src/routes/SplashScreen';
+import SignInScreen from './src/routes/SignInScreen';
+import RootScreen from './src/routes/RootScreen';
 
 function App() {
-  // dummy
-  const [login, setLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(null);
+  const [closeSplashScreen, setCloseSplashScreen] = useState(false);
 
-  if (login === false) {
-    <SignInScreen />;
-  } else if (login === true) {
-    return (
-      <View style={styles.container}>
+  useEffect(() => {
+    setTimeout(() => {
+      AsyncStorage.getItem('user_id').then(value => {
+        setCloseSplashScreen(true);
+        value === null ? setIsLogin(false) : setIsLogin(true);
+      });
+    }, 3000);
+  }, []);
+
+  return (
+    <NavigationContainer>
+      {!closeSplashScreen ? (
+        <SplashScreen />
+      ) : isLogin ? (
+        <SignInScreen />
+      ) : (
         <RootScreen />
-      </View>
-    );
-  }
+      )}
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 // Pages
 import MainHome from '../screens/home/MainHome';
@@ -24,9 +25,9 @@ function BottomTabNavigation() {
           let iconName;
 
           if (route.name === 'Map') {
-            iconName = focused ? 'map' : 'map-outline';
+            iconName = focused ? 'location' : 'location-outline';
           } else if (route.name === 'Memory') {
-            iconName = focused ? 'camera' : 'camera-outline';
+            iconName = focused ? 'images' : 'images-outline';
           } else if (route.name === 'MyPage') {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -58,16 +59,14 @@ function BottomTabNavigation() {
 // [Main] StackNavigation Function
 function RootScreen() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="BottomTab"
-          component={BottomTabNavigation}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="BottomTab"
+        component={BottomTabNavigation}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="SettingScreen" component={SettingScreen} />
+    </Stack.Navigator>
   );
 }
 

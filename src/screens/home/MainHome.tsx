@@ -62,7 +62,7 @@ function MainHome() {
         <>
           <MapView
             style={{flex: 1}}
-            provider={PROVIDER_GOOGLE}
+            // provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
             showsMyLocationButton={true}
             initialRegion={{

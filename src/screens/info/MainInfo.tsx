@@ -29,36 +29,30 @@ function MainInfo() {
       </View>
 
       {/* My Info */}
-      <View style={styles.infoContainer}>
+      {/* <View style={styles.infoContainer}>
         <View style={styles.infoContent}></View>
         <View style={styles.nameContainer}>
-          {/* <Text style={styles.nameText}>주인공</Text> */}
           <Text> </Text>
           <Text style={styles.nameText}>{dummyData.userName}</Text>
           <Text style={styles.nameText}> 님</Text>
         </View>
-      </View>
+      </View> */}
 
       {/* bottom */}
-      <View style={styles.bottomContainer}>
-        {/* <View style={{flexDirection: 'row'}}> */}
+      {/* <View style={styles.bottomContainer}>
         <View style={styles.bottomList}>
-          {/* <Text>👑 Gold</Text> */}
           <Text>master : 기록된 추억</Text>
         </View>
         <View style={styles.bottomList}>
           <Text>Gold : 기여한 기록장</Text>
         </View>
-        {/* </View> */}
-        {/* <View style={{flexDirection: 'row'}}> */}
         <View style={styles.bottomList}>
           <Text>Sliver : 기록된 추억</Text>
         </View>
         <View style={styles.bottomList}>
           <Text> Bronze : 기록된 추억</Text>
         </View>
-        {/* </View> */}
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }
