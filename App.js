@@ -21,19 +21,21 @@ function App() {
   const [closeSplashScreen, setCloseSplashScreen] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      AsyncStorage.getItem('user_id').then(value => {
-        setCloseSplashScreen(true);
-        value === null ? setIsLogin(false) : setIsLogin(true);
-      });
-    }, 3000);
+    // setTimeout(() => {
+    //   AsyncStorage.getItem('user_id').then(value => {
+    //     value === null ? setIsLogin(false) : setIsLogin(true);
+    //     setCloseSplashScreen(true);
+    //   });
+    // }, 3000);
+    setIsLogin(true);
+    setCloseSplashScreen(true);
   }, []);
 
   return (
     <NavigationContainer>
       {!closeSplashScreen ? (
         <SplashScreen />
-      ) : isLogin ? (
+      ) : !isLogin ? (
         <SignInScreen />
       ) : (
         <RootScreen />
@@ -42,11 +44,11 @@ function App() {
   );
 }
 
+export default App;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
   },
 });
-
-export default App;

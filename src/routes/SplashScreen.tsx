@@ -13,6 +13,8 @@ function SplashScreen() {
   return <View style={styles.container}></View>;
 }
 
+export default SplashScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -20,5 +22,3 @@ const styles = StyleSheet.create({
   },
   containerText: {},
 });
-
-export default SplashScreen;
