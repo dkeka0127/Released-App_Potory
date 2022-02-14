@@ -73,7 +73,7 @@
 
 1. cloning
 ```
-git clone https://github.com/Ourdus/OURDUS_FE.git
+git clone https://github.com/dkeka0127/lifeRecordProject.git
 ```
 
 2. install
@@ -88,6 +88,3 @@ cd ios && pod install && cd ..
 ```
 yarn ios
 ```
-
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
