@@ -2,8 +2,7 @@
 > " 뒤죽박죽 섞여있는 사진들을 한곳에 ! "
 > 
 > 추억 보관 어플을 소개합니다 :)
-> 
-> ing ...
+
 
 
 
@@ -20,7 +19,7 @@
 💡 Photo Tab 기능
 
 [Intro Screen]
-└─ Grid 2 / 3 / 4
+└─ Grid 1 / 2 / 3
 └─ 최신 순 / 오래된 순
 └─ **+** Button → Add Image Screen
 └─ Image onPress → Image Info Popup
