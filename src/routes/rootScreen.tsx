@@ -9,7 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MainHome from '../screens/home/MainHome';
 import MainPhoto from '../screens/photo/MainPhoto';
 import MainInfo from '../screens/info/MainInfo';
-import SettingScreen from '../screens/info/SettingScreen';
+import SettingScreen from '../screens/info/container/SettingScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -64,7 +64,7 @@ function RootScreen() {
         component={BottomTabNavigation}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="SettingScreen" component={SettingScreen} />
+      <Stack.Screen name="설정" component={SettingScreen} />
     </Stack.Navigator>
   );
 }

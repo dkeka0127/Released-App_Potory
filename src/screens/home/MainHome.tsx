@@ -12,7 +12,6 @@ import Geolocation from 'react-native-geolocation-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 // getStatusBarHeight() : [iPhoneX = 44 / iOS device = 20 / Other = 0]
 
@@ -53,7 +52,8 @@ function MainHome() {
     {label: 'Banana', value: 'banana'},
   ]);
   const [location, setLocation] = useState<ILocation | undefined>();
-
+  const [dropdownItems, setDropdownItems] = useState(countryArea.area1);
+  const [closeAfterSelecting, setCloseAfterSelecting] = useState(false);
   useEffect(() => {
     requestPermission().then(result => {
       if (result === 'granted') {
@@ -79,6 +79,10 @@ function MainHome() {
       {location ? (
         <>
           <MapView
+            onPress={() => {
+              setOpen(false);
+              console.log('hihi');
+            }}
             style={{flex: 1}}
             // provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
@@ -90,13 +94,13 @@ function MainHome() {
               longitudeDelta: 0.0421,
             }}>
             {/* -------- 유저 위치 -------- */}
-            <Marker
+            {/* <Marker
               coordinate={{
                 latitude: location.latitude,
                 longitude: location.longitude,
               }}>
               <Ionicons name="location" size={30} color="tomato" />
-            </Marker>
+            </Marker> */}
 
             {/* -------- 스토어 위치 -------- */}
             {/* {location.map((location: ILocation, index: number) => (
@@ -109,51 +113,74 @@ function MainHome() {
               <MyLocation name="location" size={30} color="tomato" />
             </Marker>
             ))} */}
-            <View
-              style={{
-                width: 120,
-                height: dropDownHeight,
-                marginLeft: 15,
-                marginTop: getStatusBarHeight() + 15,
-                // flexDirection: 'row',
-                borderRadius: 10,
-                backgroundColor: '#fff',
-                shadowColor: 'rgb(50, 50, 50)',
-                shadowOpacity: 0.3,
-                shadowRadius: 5,
-                shadowOffset: {
-                  height: 0,
-                  width: 0,
-                },
-                elevation: 5,
-              }}></View>
-            <Text
-              style={{
-                width: 120,
-                height: dropDownHeight,
-                paddingTop: (dropDownHeight - dropDownFontSize) / 2,
-                marginLeft: 15,
-                marginTop: -dropDownHeight,
-                fontSize: dropDownFontSize,
-                textAlign: 'center',
-                justifyContent: 'center',
-                // textAlignVertical: 'top',
-                // backgroundColor: 'yellow',
-              }}>
-              {countryArea.area1[0]}
-              {/* <Ionicons
-                style={
-                  {
-                    // marginLeft: 5,
-                    // backgroundColor: 'pink',
-                  }
-                }
-                name="md-chevron-down"
-                size={20}
-                color="#111"
-              /> */}
-            </Text>
           </MapView>
+
+          <DropDownPicker
+            // disabled={true}
+            onChangeValue={value => {
+              if (dropdownItems === countryArea.area1) {
+                console.log('~countryArea.area1~', value);
+                setDropdownItems(countryArea.area2);
+                setCloseAfterSelecting(true);
+              } else if (dropdownItems === countryArea.area2) {
+                console.log('~countryArea.area2~', value);
+                // setCloseAfterSelecting(true);
+                // setDropdownItems(countryArea.area1);
+              }
+            }}
+            onSelectItem={item => {
+              console.log('!!', item);
+              // !! {"label": "서울특별시", "value": "서울특별시"}
+            }}
+            style={{
+              height: 45,
+              borderRadius: 15,
+              borderColor: '#eee',
+            }}
+            textStyle={{
+              fontSize: 14,
+            }}
+            labelStyle={
+              {
+                // fontWeight: 'bold',
+              }
+            }
+            containerStyle={{
+              width: 140,
+              position: 'absolute',
+              top: getStatusBarHeight() + 15,
+              left: 15,
+              shadowColor: 'rgb(50, 50, 50)',
+              shadowOpacity: 0.3,
+              shadowRadius: 3,
+              shadowOffset: {height: 0, width: 0},
+              elevation: 5,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: '#fff',
+              borderRadius: 15,
+              borderWidth: 1,
+              borderColor: '#eee',
+            }}
+            // categorySelectable={false}
+            closeAfterSelecting={closeAfterSelecting} // 선택기 안닫음
+            showTickIcon={false}
+            open={open}
+            value={value}
+            setOpen={setOpen}
+            setValue={setValue}
+            // setItems={setItems}
+            placeholder={countryArea.area1[0].label}
+            items={dropdownItems}
+            // defaultValue={'서울특별시'}
+            // multiple={true}
+            // itemStyle={{
+            //   justifyContent: 'flex-start',
+            //   backgroundColor: 'pink',
+            // }}
+            // dropDownMaxHeight={200}
+            // labelStyle={{fontSize: 14, textAlign: 'left', color: '#000'}}
+          />
         </>
       ) : (
         <Text>로케이션 못받음</Text>
@@ -166,79 +193,36 @@ export default MainHome;
 
 const styles = StyleSheet.create({
   dropDownContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  dropDownContent: {
-    width: '40%',
-    height: 40,
-    paddingTop: 10,
-    paddingBottom: 10,
+    width: 120,
+    height: dropDownHeight,
+    marginLeft: 15,
+    marginTop: getStatusBarHeight() + 15,
+    borderRadius: 10,
     backgroundColor: '#fff',
-    marginTop: getStatusBarHeight() + 10,
-    textAlign: 'center',
-  },
-  locationBox: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    // position: 'absolute',
-    height: 40,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 15,
-    marginTop: getStatusBarHeight() + 15,
-    marginLeft: 15,
-    // backgroundColor: 'yellow',
-    textAlign: 'center',
-  },
-  storeBox: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    // position: 'absolute',
-    height: 40,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    fontSize: 15,
-    marginTop: getStatusBarHeight() + 15,
-    marginLeft: 15,
-    // backgroundColor: 'yellow',
-    textAlign: 'center',
-  },
-  dropDownArrow: {
-    // position: 'relative',
-    height: 40,
-    // paddingTop: 10,
-    // paddingBottom: 10,
-    // paddingLeft: 10,
-    // paddingRight: 10,
-    marginTop: getStatusBarHeight() + 15,
-    backgroundColor: 'green',
-    justifyContent: 'center',
+    shadowColor: 'rgb(50, 50, 50)',
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: {height: 0, width: 0},
+    elevation: 5,
   },
   dropDownText: {
-    // position: 'absolute',
-    position: 'relative',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    width: 100,
-    height: 35,
-    backgroundColor: 'green',
-    // marginTop: getStatusBarHeight() + 15,
-    // height: '100%',
-    // backgroundColor: '#fff',
-    // justifyContent: 'center',
-    // textAlignVertical: 'center',
-    // textAlign: 'center',
-    // alignContent: 'center',
-    // alignItems: 'center',
-    // alignSelf: 'center',
+    width: 120,
+    height: dropDownHeight,
+    paddingTop: (dropDownHeight - dropDownFontSize) / 2,
+    marginLeft: 15,
+    marginTop: -dropDownHeight,
+    fontSize: dropDownFontSize,
+    textAlign: 'center',
+    justifyContent: 'center',
   },
 });
+
+// MapView
+// ├── Nav
+// │   ├── 지역 dropBox
+// │   └── 스토어 dropBox
+// │
+// ├── Marker
+// │   └── 스토어 정보 popup
+// │
+// └── My Location
