@@ -9,13 +9,11 @@ import {
   Dimensions,
 } from 'react-native';
 
-const grid = 3;
+const grid = 2;
 const date = '2022.02.14';
 const image1 = '../../../assets/images/image1.png';
 const image2 = '../../../assets/images/image2.png';
 const image3 = '../../../assets/images/image3.png';
-const imgLong = '../../../assets/images/imgLong.png';
-const imgShort = '../../../assets/images/imgShort.png';
 
 const deviceWidth = Dimensions.get('window').width;
 

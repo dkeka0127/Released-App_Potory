@@ -2,58 +2,24 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-// Pages
-import MainHome from '../screens/home/MainHome';
-import MainPhoto from '../screens/photo/MainPhoto';
-import MainInfo from '../screens/info/MainInfo';
+// Navigation
+import BottomTabNavigation from './BottomTabNavigator';
+
+// Home
+
+// Photo
+import AddPhotoScreen from '../screens/photo/container/AddPhotoScreen';
+import EditPhotoScreen from '../screens/photo/container/EditPhotoScreen';
+// Info
 import SettingScreen from '../screens/info/container/SettingScreen';
+import Notice from '../screens/info/container/Notice';
+import FrequecyQuestion from '../screens/info/container/FrequecyQuestion';
+import ServiceTOS from '../screens/info/container/ServiceTOS';
+import LocationTOS from '../screens/info/container/LocationTOS';
+import PrivacyPolicy from '../screens/info/container/PrivacyPolicy';
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-// BottomTabNavigation Function
-function BottomTabNavigation() {
-  return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
-          let iconName;
-
-          if (route.name === 'Map') {
-            iconName = focused ? 'location' : 'location-outline';
-          } else if (route.name === 'Memory') {
-            iconName = focused ? 'images' : 'images-outline';
-          } else if (route.name === 'MyPage') {
-            iconName = focused ? 'person' : 'person-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'black',
-        tabBarInactiveTintColor: 'gray',
-      })}>
-      <Tab.Screen
-        name="Map"
-        component={MainHome}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name="Memory"
-        component={MainPhoto}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name="MyPage"
-        component={MainInfo}
-        options={{headerShown: false}}
-      />
-    </Tab.Navigator>
-  );
-}
 
 // StackNavigation Function
 function RootScreen() {
@@ -64,7 +30,17 @@ function RootScreen() {
         component={BottomTabNavigation}
         options={{headerShown: false}}
       />
+      {/* Home */}
+      {/* Photo */}
+      <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />
+      <Stack.Screen name="EditPhotoScreen" component={EditPhotoScreen} />
+      {/* Info */}
       <Stack.Screen name="설정" component={SettingScreen} />
+      <Stack.Screen name="공지사항" component={Notice} />
+      <Stack.Screen name="자주 묻는 질문" component={FrequecyQuestion} />
+      <Stack.Screen name="서비스 이용약관" component={ServiceTOS} />
+      <Stack.Screen name="위치정보 이용약관" component={LocationTOS} />
+      <Stack.Screen name="개인정보 처리방침" component={PrivacyPolicy} />
     </Stack.Navigator>
   );
 }

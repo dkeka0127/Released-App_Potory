@@ -9,8 +9,6 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 // Page
 import SplashScreen from './src/routes/SplashScreen';
 import SignInScreen from './src/routes/SignInScreen';

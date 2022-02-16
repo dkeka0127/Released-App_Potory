@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
 
@@ -14,7 +6,7 @@ import {View, Image, StyleSheet} from 'react-native';
 // const image2 = '../../assets/images/image1.png';
 // const image3 = '../../assets/images/image1.png';
 
-function SplashScreen() {
+function Loading() {
   return (
     <View style={styles.container}>
       {/* <Image source={require(image1)} />
@@ -24,7 +16,7 @@ function SplashScreen() {
   );
 }
 
-export default SplashScreen;
+export default Loading;
 
 const styles = StyleSheet.create({
   container: {

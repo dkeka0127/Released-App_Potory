@@ -8,6 +8,8 @@ import PictureIcon from 'react-native-vector-icons/AntDesign';
 
 // Page
 import {userinfo} from '../../../dummyData';
+import Header from './components/Header';
+import Content from './components/Content';
 
 // [height] User Name Section
 const nameContainerHeight = 60;
@@ -17,42 +19,8 @@ function MainInfo() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Nav */}
-      <View style={styles.navContainer}>
-        <View style={styles.navPictureCon}>
-          <CoinIcon name="coins" size={15} color="black" />
-          <Text style={styles.navPictureText}>{userinfo.point}</Text>
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate('SettingScreen')}>
-          <SettingIcon name="settings-outline" size={23} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      {/* My Info */}
-      {/* <View style={styles.infoContainer}>
-        <View style={styles.infoContent}></View>
-        <View style={styles.nameContainer}>
-          <Text> </Text>
-          <Text style={styles.nameText}>{userinfo.userName}</Text>
-          <Text style={styles.nameText}> 님</Text>
-        </View>
-      </View> */}
-
-      {/* bottom */}
-      {/* <View style={styles.bottomContainer}>
-        <View style={styles.bottomList}>
-          <Text>master : 기록된 추억</Text>
-        </View>
-        <View style={styles.bottomList}>
-          <Text>Gold : 기여한 기록장</Text>
-        </View>
-        <View style={styles.bottomList}>
-          <Text>Sliver : 기록된 추억</Text>
-        </View>
-        <View style={styles.bottomList}>
-          <Text> Bronze : 기록된 추억</Text>
-        </View>
-      </View> */}
+      <Header />
+      <Content />
     </SafeAreaView>
   );
 }

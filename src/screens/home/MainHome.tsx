@@ -181,6 +181,73 @@ function MainHome() {
             // dropDownMaxHeight={200}
             // labelStyle={{fontSize: 14, textAlign: 'left', color: '#000'}}
           />
+
+          <DropDownPicker
+            // disabled={true}
+            onChangeValue={value => {
+              if (dropdownItems === countryArea.area1) {
+                console.log('~countryArea.area1~', value);
+                setDropdownItems(countryArea.area2);
+                setCloseAfterSelecting(true);
+              } else if (dropdownItems === countryArea.area2) {
+                console.log('~countryArea.area2~', value);
+                // setCloseAfterSelecting(true);
+                // setDropdownItems(countryArea.area1);
+              }
+            }}
+            onSelectItem={item => {
+              console.log('!!', item);
+              // !! {"label": "서울특별시", "value": "서울특별시"}
+            }}
+            style={{
+              height: 45,
+              borderRadius: 15,
+              borderColor: '#eee',
+            }}
+            textStyle={{
+              fontSize: 14,
+            }}
+            labelStyle={
+              {
+                // fontWeight: 'bold',
+              }
+            }
+            containerStyle={{
+              width: 140,
+              position: 'absolute',
+              top: getStatusBarHeight() + 15,
+              right: 15,
+              elevation: 5,
+              shadowColor: 'rgb(50, 50, 50)',
+              shadowOpacity: 0.3,
+              shadowRadius: 3,
+              shadowOffset: {height: 0, width: 0},
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: '#fff',
+              borderRadius: 15,
+              borderWidth: 1,
+              borderColor: '#eee',
+            }}
+            // categorySelectable={false}
+            closeAfterSelecting={closeAfterSelecting} // 선택기 안닫음
+            showTickIcon={false}
+            open={open}
+            value={value}
+            setOpen={setOpen}
+            setValue={setValue}
+            // setItems={setItems}
+            placeholder={countryArea.area1[0].label}
+            items={dropdownItems}
+            // defaultValue={'서울특별시'}
+            // multiple={true}
+            // itemStyle={{
+            //   justifyContent: 'flex-start',
+            //   backgroundColor: 'pink',
+            // }}
+            // dropDownMaxHeight={200}
+            // labelStyle={{fontSize: 14, textAlign: 'left', color: '#000'}}
+          />
         </>
       ) : (
         <Text>로케이션 못받음</Text>

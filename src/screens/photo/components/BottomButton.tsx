@@ -1,13 +1,17 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 // Icons
 import PlusIcons from 'react-native-vector-icons/Entypo';
 
 function BottomButton() {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('AddPhotoScreen')}
+      style={styles.container}>
       <PlusIcons name="plus" size={25} color="#333" />
-    </View>
+    </TouchableOpacity>
   );
 }
 
