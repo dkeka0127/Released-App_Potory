@@ -1,11 +1,25 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, Text, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+
+// Page
+import CustomHeader from '../../common/CustomHeader';
+import FrequecyQuestionContent from '../components/FrequecyQuestionContent';
+import CustomFooterButton from '../../common/CustomFooterButton';
 
 function FrequecyQuestion() {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <Text>자주 묻는 질문</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <CustomHeader headerTitle={'자주 묻는 질문'} />
+
+      {/* Content */}
+      <FrequecyQuestionContent />
+
+      {/* Footer */}
+      <CustomFooterButton navigation={navigation} />
+    </SafeAreaView>
   );
 }
 

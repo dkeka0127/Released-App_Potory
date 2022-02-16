@@ -30,7 +30,7 @@ const NoticeList = ({noticeNum, mainText, subText}) => {
   return (
     <View style={styles.noticeContainer}>
       <View style={styles.noticeListSide}>
-        <MaterialIcons name="alarm-light-outline" size={26} color="#4182e5" />
+        <MaterialIcons name="alarm-light-outline" size={26} color="#f07056" />
         <Text style={styles.noticeListSideText}>No.{noticeNum}</Text>
       </View>
       <View style={styles.noticeCotent}>
@@ -62,8 +62,9 @@ export default NoticeContent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    backgroundColor: '#eee',
+    paddingTop: 10,
+    paddingLeft: 3,
+    marginBottom: 90,
   },
   noticeContainer: {
     height: 77,
@@ -71,9 +72,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#f2f2f2',
   },
   noticeListSide: {
-    width: 70,
+    width: 80,
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
   noticeListSideText: {
     marginTop: 3,
     fontSize: 11,
-    color: '#333',
+    color: '#cd5942',
   },
   noticeCotent: {
     padding: 10,

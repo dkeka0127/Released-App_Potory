@@ -1,20 +1,24 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet, SafeAreaView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 // Page
 import NoticeContent from '../components/NoticeContent';
+import CustomHeader from '../../common/CustomHeader';
+import CustomFooterButton from '../../common/CustomFooterButton';
 
 function Notice() {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>공지사항</Text>
-      </View>
+      <CustomHeader headerTitle={'공지사항'} />
 
       {/* Content */}
       <NoticeContent />
+
+      {/* Footer */}
+      <CustomFooterButton navigation={navigation} />
     </SafeAreaView>
   );
 }
@@ -24,15 +28,5 @@ export default Notice;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  headerContainer: {
-    width: '100%',
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: '500',
   },
 });

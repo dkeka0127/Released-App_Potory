@@ -41,10 +41,26 @@ function RootScreen() {
         component={Notice}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="자주 묻는 질문" component={FrequecyQuestion} />
-      <Stack.Screen name="서비스 이용약관" component={ServiceTOS} />
-      <Stack.Screen name="위치정보 이용약관" component={LocationTOS} />
-      <Stack.Screen name="개인정보 처리방침" component={PrivacyPolicy} />
+      <Stack.Screen
+        name="자주 묻는 질문"
+        component={FrequecyQuestion}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="서비스 이용약관"
+        component={ServiceTOS}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="위치정보 이용약관"
+        component={LocationTOS}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="개인정보 처리방침"
+        component={PrivacyPolicy}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 }

@@ -1,11 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, Text, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+// Page
+import CustomHeader from '../../common/CustomHeader';
 
 function ServiceTOS() {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <Text>서비스 이용약관</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <CustomHeader
+        headerTitle={'서비스 이용약관'}
+        goBackArrow={true}
+        navigation={navigation}
+      />
+    </SafeAreaView>
   );
 }
 

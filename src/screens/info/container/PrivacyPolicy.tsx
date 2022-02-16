@@ -1,11 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, Text, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+// Page
+import CustomHeader from '../../common/CustomHeader';
 
 function PrivacyPolicy() {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <Text>개인정보 처리방침</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <CustomHeader
+        headerTitle={'개인정보 처리방침'}
+        goBackArrow={true}
+        navigation={navigation}
+      />
+    </SafeAreaView>
   );
 }
 
