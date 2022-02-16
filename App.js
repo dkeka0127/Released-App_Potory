@@ -10,8 +10,8 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 // Page
-import SplashScreen from './src/routes/SplashScreen';
-import SignInScreen from './src/routes/SignInScreen';
+import SplashScreen from './src/screens/intro/SplashScreen';
+import SignInScreen from './src/screens/intro/SignInScreen';
 import RootScreen from './src/routes/RootScreen';
 
 function App() {

@@ -36,7 +36,11 @@ function RootScreen() {
       <Stack.Screen name="EditPhotoScreen" component={EditPhotoScreen} />
       {/* Info */}
       <Stack.Screen name="설정" component={SettingScreen} />
-      <Stack.Screen name="공지사항" component={Notice} />
+      <Stack.Screen
+        name="공지사항"
+        component={Notice}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="자주 묻는 질문" component={FrequecyQuestion} />
       <Stack.Screen name="서비스 이용약관" component={ServiceTOS} />
       <Stack.Screen name="위치정보 이용약관" component={LocationTOS} />

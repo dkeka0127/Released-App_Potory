@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     // paddingBottom: 10 + getBottomSpace(),
-    ...ifIphoneX({paddingBottom: 40}, {paddingBottom: 30}),
+    ...ifIphoneX({paddingBottom: 35}, {paddingBottom: 25}),
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor: '#fff',
