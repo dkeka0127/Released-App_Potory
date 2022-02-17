@@ -14,11 +14,12 @@ function CustomHeader({headerTitle, goBackArrow, navigation}: Props) {
     <View style={styles.headerContainer}>
       {goBackArrow ? (
         <TouchableOpacity
-          style={{position: 'absolute', left: 15}}
+          hitSlop={{top: 10, left: 15, bottom: 10, right: 50}}
+          style={{position: 'absolute', left: 18}}
           onPress={() => {
             navigation.goBack();
           }}>
-          <AntDesign name="left" size={18} color="#111" />
+          <AntDesign name="left" size={19} color="#111" />
         </TouchableOpacity>
       ) : null}
       <Text style={styles.headerText}>{headerTitle}</Text>

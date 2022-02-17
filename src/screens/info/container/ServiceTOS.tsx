@@ -3,6 +3,7 @@ import {SafeAreaView, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 // Page
 import CustomHeader from '../../common/CustomHeader';
+import ServiceTOSContext from '../components/ServiceTOSContent';
 
 function ServiceTOS() {
   const navigation = useNavigation();
@@ -14,6 +15,9 @@ function ServiceTOS() {
         goBackArrow={true}
         navigation={navigation}
       />
+
+      {/* Content */}
+      <ServiceTOSContext />
     </SafeAreaView>
   );
 }

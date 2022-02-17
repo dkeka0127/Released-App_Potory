@@ -15,7 +15,7 @@ const IconSize = 17;
 const IconColor = '#111';
 
 // Alert Message
-const AlertText = ({title}) => {
+const AlertText = title => {
   title === '로그아웃'
     ? Alert.alert('', '로그아웃 하시겠습니까 ?', [
         {
@@ -46,6 +46,24 @@ const AlertText = ({title}) => {
       );
 };
 
+// [컴포넌트] Logout / Withdrawal
+const SettingAccount = ({iconName, title}) => {
+  console.log(title);
+  return (
+    <TouchableOpacity
+      style={styles.accountContent}
+      onPress={() => AlertText(title)}>
+      <AntDesign
+        style={{paddingRight: 8}}
+        name={iconName}
+        size={15}
+        color="gray"
+      />
+      <Text style={{fontSize: 14, color: 'gray'}}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
 // [컴포넌트] Menu List
 const SettingContentList = ({iconName, title}) => {
   const navigation = useNavigation();
@@ -66,23 +84,6 @@ const SettingContentList = ({iconName, title}) => {
         size={IconSize}
         color={IconColor}
       />
-    </TouchableOpacity>
-  );
-};
-
-// [컴포넌트] Logout / Withdrawal
-const SettingAccount = ({iconName, title}) => {
-  return (
-    <TouchableOpacity
-      style={styles.accountContent}
-      onPress={() => AlertText((title = {title}))}>
-      <AntDesign
-        style={{paddingRight: 8}}
-        name={iconName}
-        size={15}
-        color="gray"
-      />
-      <Text style={{fontSize: 14, color: 'gray'}}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -110,7 +111,7 @@ function SettingContent() {
 
       {/* 약관 및 정책 */}
       <SettingContectTitle title={'약관 및 정책'} />
-      <SettingContentList iconName={'infocirlceo'} title={'서비스 이용약관'} />
+      {/* <SettingContentList iconName={'infocirlceo'} title={'서비스 이용약관'} /> */}
       <SettingContentList
         iconName={'infocirlceo'}
         title={'위치정보 이용약관'}
@@ -151,6 +152,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   headerTitleText: {
+    color: '#111',
     fontSize: 15,
     fontWeight: '500',
   },
@@ -176,6 +178,7 @@ const styles = StyleSheet.create({
   },
   font: {
     fontSize: 15,
+    color: '#111',
   },
   devideLine: {
     height: 3,

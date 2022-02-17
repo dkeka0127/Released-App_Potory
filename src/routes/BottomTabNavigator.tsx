@@ -31,7 +31,7 @@ function BottomTabNavigation() {
               style={{paddingTop: 10}}
               name={iconName}
               size={25}
-              // color={color}
+              color={color}
             />
           );
         },

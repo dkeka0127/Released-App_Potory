@@ -7,7 +7,10 @@ function FrequecyQuestionContent() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>2022.05.30 이후 업데이트 예정입니다.</Text>
+      <Text style={styles.text}>
+        여러분의 소중한 의견을 모아 {'\n'} {'\n'}2022.05.30 이후 업데이트
+        예정입니다.
+      </Text>
     </View>
   );
 }
@@ -24,5 +27,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    textAlign: 'center',
   },
 });
