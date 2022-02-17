@@ -11,8 +11,6 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-// add - 애플 맵 대신 구글 맵 불러오는 코드
-#import <GoogleMaps/GoogleMaps.h>
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -29,8 +27,6 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  // add
-  [GMSServices provideAPIKey:@"AIzaSyCKiptcaPQuSRaJUvUy1kNU-Ec-BHVmKQA"];
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
