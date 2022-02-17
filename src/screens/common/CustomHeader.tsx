@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerText: {
+    color: '#111',
     fontSize: 17,
     fontWeight: '500',
   },
