@@ -35,7 +35,11 @@ function RootScreen() {
       <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />
       <Stack.Screen name="EditPhotoScreen" component={EditPhotoScreen} />
       {/* Info */}
-      <Stack.Screen name="설정" component={SettingScreen} />
+      <Stack.Screen
+        name="설정"
+        component={SettingScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="공지사항"
         component={Notice}

@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, ImageBackground, StyleSheet} from 'react-native';
-import {ifIphoneX, getBottomSpace} from 'react-native-iphone-x-helper';
+import {StyleSheet, SafeAreaView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 // Page
 import SettingContent from '../components/SettingContent';
 import SettingBottom from '../components/SettingBottom';
+import CustomHeader from '../../common/CustomHeader';
 // Image
 const backgroundImg = '../../../assets/images/mainPhoto_bg.png';
 
@@ -11,11 +12,20 @@ const IconSize = 17;
 const IconColor = '#111';
 
 function SettingScreen() {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <CustomHeader
+        headerTitle={'설정'}
+        goBackArrow={true}
+        navigation={navigation}
+      />
+      {/* Content */}
       <SettingContent />
+      {/* Footer */}
       <SettingBottom />
-    </View>
+    </SafeAreaView>
   );
 }
 

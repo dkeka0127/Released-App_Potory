@@ -3,6 +3,7 @@ import {SafeAreaView, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 // Page
 import CustomHeader from '../../common/CustomHeader';
+import PrivacyPolicyContent from '../components/PrivacyPolicyContent';
 
 function PrivacyPolicy() {
   const navigation = useNavigation();
@@ -14,6 +15,8 @@ function PrivacyPolicy() {
         goBackArrow={true}
         navigation={navigation}
       />
+      {/* Content */}
+      <PrivacyPolicyContent />
     </SafeAreaView>
   );
 }

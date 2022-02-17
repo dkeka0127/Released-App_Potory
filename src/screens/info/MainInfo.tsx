@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollViewComponent,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CoinIcon from 'react-native-vector-icons/FontAwesome5';
@@ -10,6 +16,7 @@ import PictureIcon from 'react-native-vector-icons/AntDesign';
 import {userinfo} from '../../../dummyData';
 import Header from './components/Header';
 import Content from './components/Content';
+import {ScrollView} from 'react-native-gesture-handler';
 
 // [height] User Name Section
 const nameContainerHeight = 60;

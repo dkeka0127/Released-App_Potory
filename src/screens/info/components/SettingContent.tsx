@@ -17,7 +17,7 @@ const IconColor = '#111';
 // Alert Message
 const AlertText = ({title}) => {
   title === '로그아웃'
-    ? Alert.alert('로그아웃 하시겠습니까 ?', '', [
+    ? Alert.alert('', '로그아웃 하시겠습니까 ?', [
         {
           text: '취소',
           onPress: () => console.log('Cancel Pressed'),
@@ -27,14 +27,21 @@ const AlertText = ({title}) => {
       ])
     : Alert.alert(
         '',
-        '회원탈퇴 시 회원님의 소중한 추억이 \n 삭제되며 복구가 불가합니다. \n 정말로 탈퇴하시겠어요 ?',
+        '회원탈퇴 시 회원님의 소중한 추억이 \n 삭제되며 복구가 불가합니다. \n 정말로 탈퇴하시겠습니까 ?',
         [
           {
             text: '취소',
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
-          {text: '확인', onPress: () => console.log('OK Pressed')},
+          {
+            text: '확인',
+            onPress: () => {
+              Alert.alert('', '회원탈퇴가 완료되었습니다.', [
+                {text: '확인', onPress: () => console.log('OK Pressed')},
+              ]);
+            },
+          },
         ],
       );
 };
@@ -125,8 +132,9 @@ export default SettingContent;
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    padding: 5,
+    paddingBottom: 5,
     paddingLeft: 10,
+    paddingRight: 5,
   },
   listContent: {
     width: '100%',
