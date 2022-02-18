@@ -7,61 +7,61 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  FlatList,
 } from 'react-native';
 
-const grid = 2;
+import {photoList} from '../../../../dummyData';
+
+const grid = 1;
 const date = '2022.02.14';
-const image1 = '../../../assets/images/image1.png';
-const image2 = '../../../assets/images/image2.png';
-const image3 = '../../../assets/images/image3.png';
+const image1 = {
+  uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+};
+const image2 = {
+  uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
+};
+const image3 = {
+  uri: '/Users/sol/lifeRecordProject/src/assets/images/image3.png',
+};
 
 const deviceWidth = Dimensions.get('window').width;
 
-function Content() {
-  const Images = image => {
-    return (
-      <View style={styles.imageContent}>
-        <View style={styles.imageSection}>
-          <TouchableOpacity style={styles.imageBackground}>
-            <Image style={styles.image} source={require(image3)} />
-          </TouchableOpacity>
-          <View
+const ImageContent = ({data}) => {
+  console.log(data);
+  return (
+    <View style={styles.imageContent}>
+      <View style={styles.imageSection}>
+        <TouchableOpacity style={styles.imageBackground}>
+          <Image style={styles.image} source={data.imageuri} />
+        </TouchableOpacity>
+        <View
+          style={{
+            backgroundColor: '#fff',
+            width: '100%',
+            height: '23%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
             style={{
-              backgroundColor: '#fff',
-              width: '100%',
-              height: '23%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              fontSize: grid === 1 ? 16 : grid === 2 ? 13 : 11.5,
+              color: '#333',
             }}>
-            <Text
-              style={{
-                fontSize: grid === 1 ? 16 : grid === 2 ? 13 : 11.5,
-                color: '#333',
-              }}>
-              {date}
-            </Text>
-          </View>
+            {data.date}
+          </Text>
         </View>
       </View>
-    );
-  };
+    </View>
+  );
+};
+
+function Content() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
-        {grid === 1 ? (
-          <Images image={image1} />
-        ) : grid === 2 ? (
-          <>
-            <Images image={image1} />
-            <Images image={image1} />
-          </>
-        ) : (
-          <>
-            <Images image={image1} />
-            <Images image={image2} />
-            <Images image={image3} />
-          </>
-        )}
+        {photoList.map(item => {
+          return <ImageContent key={item.date} data={item} />;
+        })}
       </View>
     </ScrollView>
   );
@@ -74,13 +74,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    flexDirection: 'row',
+    flex: 1,
+    width: deviceWidth,
+    // flexDirection: 'column'
+    flexDirection: grid === 1 ? 'column-reverse' : 'row-reverse',
   },
   imageContent: {
-    width: deviceWidth / grid,
+    width: grid === 1 ? '100%' : grid === 2 ? '50%' : '33%',
     height: (deviceWidth / grid) * 1.15,
-    padding:
-      grid === 1 ? '14%' : grid === 2 ? '6.5%' : grid === 3 ? '3.5%' : '2%',
+    padding: grid === 1 ? '14%' : grid === 2 ? '6.5%' : '3.5%',
   },
   imageSection: {
     width: '100%',
@@ -103,13 +105,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#eee',
   },
-  image: {
-    backgroundColor: '#fff',
-    width: '100%',
-    height: '23%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  // image: {
+  //   backgroundColor: '#fff',
+  //   width: '100%',
+  //   height: '23%',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
   image: {
     resizeMode: 'contain',
     width: (deviceWidth / grid) * 0.6,

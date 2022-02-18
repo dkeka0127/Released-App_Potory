@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import NaverMapView, {
   Circle,
   Marker,
@@ -7,6 +8,8 @@ import NaverMapView, {
   Polyline,
   Polygon,
 } from 'react-native-nmap';
+// Page
+import DropDown from './components/DropDown';
 
 function MainHome() {
   const P0 = {latitude: 37.564362, longitude: 126.977011};
@@ -19,6 +22,7 @@ function MainHome() {
         showsMyLocationButton={true}
         center={{...P0, zoom: 16}}
       />
+      <DropDown />
       {/* <NaverMapView
         onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}

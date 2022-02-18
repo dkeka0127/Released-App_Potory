@@ -5,6 +5,16 @@ export const userinfo = {
   isProfile: true, // 프로필사진여부
 };
 
+export const store = [
+  {label: '전체', value: '전체'},
+  {label: '인생네컷', value: '인생네컷'},
+  {label: '포토부스', value: '포토부스'},
+  {label: '하루필름', value: '하루필름'},
+  {label: '포토이즘', value: '포토이즘'},
+  {label: '셀픽스', value: '셀픽스'},
+  {label: '기타', value: '기타'},
+];
+
 export const countryArea = {
   area1: [
     {label: '서울특별시', value: '서울특별시'},
@@ -70,3 +80,83 @@ export const countryArea = {
     // '강동구',
   ],
 };
+
+export const photoList = [
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+    },
+    date: '2020.02.14',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
+    },
+    date: '2020.02.15',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image3.png',
+    },
+    date: '2020.02.26',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+    },
+    date: '2020.03.01',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
+    },
+    date: '2020.03.30',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image3.png',
+    },
+    date: '2020.03.31',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+    },
+    date: '2020.04.14',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
+    },
+    date: '2020.04.24',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image3.png',
+    },
+    date: '2020.05.05',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+    },
+    date: '2020.05.15',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+  {
+    imageuri: {
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
+    },
+    date: '2020.05.25',
+    memo: '와라랄랄ㄹ라라ㅏ라라라',
+  },
+];
