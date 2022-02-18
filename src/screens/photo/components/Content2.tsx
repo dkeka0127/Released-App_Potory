@@ -13,14 +13,9 @@ import {
 
 import {photoList} from '../../../../dummyData';
 
-const grid = 3;
 const margin = 7; // 전체 Container의 양 옆 여백 값
 
 const deviceWidth = Dimensions.get('window').width;
-
-// DeviceEventEmitter.addListener('gridChanged', () => {
-//   console.log('hihi');
-// });
 
 const Images = ({item}) => {
   return (
@@ -59,16 +54,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   imageContainer: {
-    width: (deviceWidth - margin * 2) / grid,
-    height: ((deviceWidth - margin * 2) / grid) * 1.15,
-    padding: grid === 1 ? '13%' : grid === 2 ? '8%' : '7%', // 폴라로이드 크기를 조절하는 상위 padding
+    width: (deviceWidth - margin * 2) / 2,
+    height: ((deviceWidth - margin * 2) / 2) * 1.15,
+    padding: '8%', // 폴라로이드 크기를 조절하는 상위 padding
     // backgroundColor: '#ccc',
     // borderWidth: 1,
   },
   imageSection: {
     width: '100%',
     height: '100%',
-    padding: grid === 1 ? 12 : grid === 2 ? 8 : 6, // 폴라로이드 padding
+    padding: 8, // 폴라로이드 padding
     paddingBottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
@@ -89,9 +84,8 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: 'contain',
-    width: (deviceWidth / grid) * 0.7,
-    height:
-      grid === 1 ? (deviceWidth / grid) * 0.63 : (deviceWidth / grid) * 0.7,
+    width: (deviceWidth / 2) * 0.7,
+    height: (deviceWidth / 2) * 0.7,
   },
   textBackground: {
     width: '100%',
@@ -101,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   text: {
-    fontSize: grid === 1 ? 16 : grid === 2 ? 13 : 11.5,
+    fontSize: 13,
     color: '#333',
   },
 });

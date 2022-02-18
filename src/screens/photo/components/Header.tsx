@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,8 @@ import {
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function Header() {
+function Header(props) {
+  const [grid, setGrid] = useState(2);
   return (
     <View style={styles.headerContainer}>
       {/* Header - Title */}
@@ -22,7 +23,9 @@ function Header() {
         {/* Header - Grid */}
         <TouchableOpacity
           style={styles.headerGridContent}
-          onPress={() => DeviceEventEmitter.emit('gridChanged')}>
+          onPress={() => {
+            props.gridPressed(true);
+          }}>
           <CommunityIcons
             style={styles.headerGridImg}
             name={'grid-large'}
