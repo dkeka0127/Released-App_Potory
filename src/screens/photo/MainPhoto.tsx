@@ -1,12 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ImageBackground, SafeAreaView, StyleSheet} from 'react-native';
 // Page
 import Header from './components/Header';
 import Content from './components/Content';
 import BottomButton from './components/BottomButton';
 // Image
-const backgroundImg =
-  '/Users/sol/lifeRecordProject/src/assets/images/MainPhoto_bg.png';
+const backgroundImg = '../../assets/images/mainPhoto_bg.png';
 
 function MainPhoto() {
   return (

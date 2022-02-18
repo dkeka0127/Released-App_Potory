@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  DeviceEventEmitter,
+} from 'react-native';
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -14,7 +20,9 @@ function Header() {
 
       <View style={styles.headerImgContainer}>
         {/* Header - Grid */}
-        <TouchableOpacity style={styles.headerGridContent}>
+        <TouchableOpacity
+          style={styles.headerGridContent}
+          onPress={() => DeviceEventEmitter.emit('gridChanged')}>
           <CommunityIcons
             style={styles.headerGridImg}
             name={'grid-large'}

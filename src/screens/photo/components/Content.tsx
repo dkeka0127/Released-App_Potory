@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,47 +8,32 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
+  DeviceEventEmitter,
 } from 'react-native';
 
 import {photoList} from '../../../../dummyData';
 
-const grid = 1;
-const date = '2022.02.14';
-const image1 = {
-  uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
-};
-const image2 = {
-  uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
-};
-const image3 = {
-  uri: '/Users/sol/lifeRecordProject/src/assets/images/image3.png',
-};
+const grid = 2;
+const margin = 7; // 전체 Container의 양 옆 여백 값
 
 const deviceWidth = Dimensions.get('window').width;
 
-const ImageContent = ({data}) => {
-  console.log(data);
+// DeviceEventEmitter.addListener('gridChanged', () => {
+//   console.log('hihi');
+// });
+
+const Images = ({item}) => {
+  DeviceEventEmitter.addListener('gridChanged', () => {
+    console.log('hihi');
+  });
   return (
-    <View style={styles.imageContent}>
+    <View style={styles.imageContainer}>
       <View style={styles.imageSection}>
         <TouchableOpacity style={styles.imageBackground}>
-          <Image style={styles.image} source={data.imageuri} />
+          <Image style={styles.image} source={item.imageuri} />
         </TouchableOpacity>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            width: '100%',
-            height: '23%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: grid === 1 ? 16 : grid === 2 ? 13 : 11.5,
-              color: '#333',
-            }}>
-            {data.date}
-          </Text>
+        <View style={styles.textBackground}>
+          <Text style={styles.text}>{item.date}</Text>
         </View>
       </View>
     </View>
@@ -57,64 +42,69 @@ const ImageContent = ({data}) => {
 
 function Content() {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.imageContainer}>
-        {photoList.map(item => {
-          return <ImageContent key={item.date} data={item} />;
-        })}
-      </View>
-    </ScrollView>
+    <FlatList
+      contentContainerStyle={styles.flatListContainer}
+      data={photoList}
+      initialNumToRender={15}
+      renderItem={data => Images(data)}
+      keyExtractor={item => item.id}
+    />
   );
 }
 
 export default Content;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  flatListContainer: {
+    margin: margin,
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   imageContainer: {
-    flex: 1,
-    width: deviceWidth,
-    // flexDirection: 'column'
-    flexDirection: grid === 1 ? 'column-reverse' : 'row-reverse',
-  },
-  imageContent: {
-    width: grid === 1 ? '100%' : grid === 2 ? '50%' : '33%',
-    height: (deviceWidth / grid) * 1.15,
-    padding: grid === 1 ? '14%' : grid === 2 ? '6.5%' : '3.5%',
+    width: (deviceWidth - margin * 2) / grid,
+    height: ((deviceWidth - margin * 2) / grid) * 1.15,
+    padding: grid === 1 ? '13%' : grid === 2 ? '8%' : '7%', // 폴라로이드 크기를 조절하는 상위 padding
+    // backgroundColor: '#ccc',
+    // borderWidth: 1,
   },
   imageSection: {
     width: '100%',
     height: '100%',
-    padding: grid === 1 ? 12 : grid === 2 ? 8 : 5,
+    padding: grid === 1 ? 12 : grid === 2 ? 8 : 6, // 폴라로이드 padding
     paddingBottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    // 그림자
     elevation: 4,
     shadowRadius: 4,
     shadowOpacity: 0.2,
     shadowColor: 'rgb(50, 50, 50)',
     shadowOffset: {height: 0, width: 0},
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
   },
   imageBackground: {
     width: '100%',
-    height: '77%',
+    height: '77%', // text 높이를 제외한 퍼센트
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#eee',
   },
-  // image: {
-  //   backgroundColor: '#fff',
-  //   width: '100%',
-  //   height: '23%',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
   image: {
     resizeMode: 'contain',
-    width: (deviceWidth / grid) * 0.6,
-    height: (deviceWidth / grid) * 0.65,
+    width: (deviceWidth / grid) * 0.7,
+    height:
+      grid === 1 ? (deviceWidth / grid) * 0.63 : (deviceWidth / grid) * 0.7,
+  },
+  textBackground: {
+    width: '100%',
+    height: '23%', // image 높이를 제외한 퍼센트
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  text: {
+    fontSize: grid === 1 ? 16 : grid === 2 ? 13 : 11.5,
+    color: '#333',
   },
 });
