@@ -4,6 +4,9 @@ import {useNavigation} from '@react-navigation/native';
 // Icons
 import CoinIcon from 'react-native-vector-icons/FontAwesome5';
 import SettingIcon from 'react-native-vector-icons/Ionicons';
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 // Data
 import {userinfo} from '../../../../dummyData';
 
@@ -13,7 +16,14 @@ function Header() {
     <View style={styles.navContainer}>
       {/* Point */}
       <View style={styles.navCoinCon}>
-        <CoinIcon name="coins" size={15} color="black" />
+        {/* <CoinIcon name="coins" size={15} color="black" /> */}
+        {/* <Octicons name="ruby" size={20} color="black" /> */}
+        {/* <SimpleLineIcons name="ghost" size={20} color="black" /> */}
+        <MaterialCommunityIcons
+          name="mushroom-outline"
+          size={22}
+          color="black"
+        />
         <Text style={styles.navCoinText}>{userinfo.point}</Text>
       </View>
       {/* Point */}

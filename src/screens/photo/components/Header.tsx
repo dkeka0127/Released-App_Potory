@@ -10,7 +10,6 @@ import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function Header(props) {
-  const [grid, setGrid] = useState(2);
   return (
     <View style={styles.headerContainer}>
       {/* Header - Title */}
@@ -22,7 +21,7 @@ function Header(props) {
       <View style={styles.headerImgContainer}>
         {/* Header - Grid */}
         <TouchableOpacity
-          style={styles.headerGridContent}
+          style={styles.headerButtonContent}
           onPress={() => {
             props.gridPressed(true);
           }}>
@@ -33,8 +32,12 @@ function Header(props) {
             color={'black'}
           />
         </TouchableOpacity>
-        {/* Header - Date */}
-        <TouchableOpacity style={styles.headerGridContent}>
+        {/* Header - sequence */}
+        <TouchableOpacity
+          style={styles.headerButtonContent}
+          onPress={() => {
+            props.sequencePressed(true);
+          }}>
           <Awesome5Icons
             style={styles.headerArrowImg}
             name={'arrows-alt-v'}
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   headerImgContainer: {
     flexDirection: 'row',
   },
-  headerGridContent: {
+  headerButtonContent: {
     height: '100%',
     marginLeft: 5,
     marginRight: 5,

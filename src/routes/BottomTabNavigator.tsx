@@ -28,9 +28,9 @@ function BottomTabNavigation() {
 
           return (
             <Ionicons
-              style={{paddingTop: 10}}
+              style={{paddingTop: 9}}
               name={iconName}
-              size={25}
+              size={26}
               color={color}
             />
           );
