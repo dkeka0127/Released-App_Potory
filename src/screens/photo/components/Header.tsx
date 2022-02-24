@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   DeviceEventEmitter,
 } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -13,10 +15,15 @@ function Header(props) {
   return (
     <View style={styles.headerContainer}>
       {/* Header - Title */}
-      <View style={styles.headerTitle}>
+      <Image
+        style={{width: 85, marginTop: 4, marginLeft: -8}}
+        resizeMode="contain"
+        source={require('../../../assets/images/logo.png')}
+      />
+      {/* <View style={styles.headerTitle}>
         <Text style={styles.headerTitleTextKo}>포토리</Text>
         <Text style={styles.headerTitleTextEng}>photo in memory</Text>
-      </View>
+      </View> */}
 
       <View style={styles.headerImgContainer}>
         {/* Header - Grid */}
@@ -42,6 +49,19 @@ function Header(props) {
             style={styles.headerArrowImg}
             name={'arrows-alt-v'}
             size={17}
+            color={'black'}
+          />
+        </TouchableOpacity>
+        {/* Header - color */}
+        <TouchableOpacity
+          style={styles.headerButtonContent}
+          onPress={() => {
+            props.poloroidColorPressed(true);
+          }}>
+          <Feather
+            style={styles.headerColorImg}
+            name={'tool'}
+            size={19}
             color={'black'}
           />
         </TouchableOpacity>
@@ -84,7 +104,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#fcfcfc',
     borderRadius: 15,
     borderWidth: 0.5,
     borderColor: '#eee',
@@ -96,15 +116,21 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 0, width: 0},
   },
   headerGridImg: {
-    paddingTop: 7,
-    paddingBottom: 7,
+    // paddingTop: 7,
+    // paddingBottom: 7,
     paddingLeft: 11,
     paddingRight: 11,
   },
   headerArrowImg: {
-    paddingTop: 9,
-    paddingBottom: 9,
+    // paddingTop: 9,
+    // paddingBottom: 9,
     paddingLeft: 15,
     paddingRight: 15,
+  },
+  headerColorImg: {
+    // paddingTop: 9,
+    // paddingBottom: 9,
+    paddingLeft: 11,
+    paddingRight: 11,
   },
 });

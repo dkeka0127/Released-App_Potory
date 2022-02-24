@@ -160,3 +160,42 @@ export const photoList = [
     memo: '와라랄랄ㄹ라라ㅏ라라라',
   },
 ];
+
+export const polaroid = [
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/pink_one_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/purple_one_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/skyblue_one_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/yellow_one_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/green_one_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/pink_two_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/skyblue_two_.png',
+  },
+  {
+    uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/yellow_two_.png',
+  },
+  // {
+  //   uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/blue_one.png',
+  // },
+  // {
+  //   uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/green_two.png',
+  // },
+  // {
+  //   uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/orange_two.png',
+  // },
+  // {
+  //   uri: '/Users/sol/lifeRecordProject/src/assets/images/polaroid/blue_two.png',
+  // },
+];

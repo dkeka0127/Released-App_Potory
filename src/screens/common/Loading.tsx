@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
+// assets url
+// https://loading.io/asset/552379
 
 // Image
 // const image1 = '../../assets/images/image1.png';

@@ -16,21 +16,13 @@ function Header() {
     <View style={styles.navContainer}>
       {/* Point */}
       <View style={styles.navCoinCon}>
-        {/* <CoinIcon name="coins" size={15} color="black" /> */}
-        {/* <Octicons name="ruby" size={20} color="black" /> */}
-        {/* <SimpleLineIcons name="ghost" size={20} color="black" /> */}
-        <MaterialCommunityIcons
-          name="mushroom-outline"
-          size={22}
-          color="black"
-        />
-        <Text style={styles.navCoinText}>{userinfo.point}</Text>
+        <MaterialCommunityIcons name="" size={22} color="#fff" />
       </View>
-      {/* Point */}
+      {/* Title */}
       <View style={styles.navTitleCon}>
         <Text style={styles.navTitleText}>마이페이지</Text>
       </View>
-      {/* Point */}
+      {/* Setting */}
       <TouchableOpacity
         style={styles.navSettingCon}
         onPress={() => navigation.navigate('설정')}>
