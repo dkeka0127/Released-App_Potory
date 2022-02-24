@@ -4,10 +4,7 @@ import {ImageBackground, SafeAreaView, StyleSheet} from 'react-native';
 // Page
 import Header from './components/Header';
 import Content from './components/Content';
-import Content1 from './components/Content1';
 import BottomButton from './components/BottomButton';
-// Data
-// import {photoList} from '../../../dummyData';
 // Image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
 
@@ -15,20 +12,23 @@ function MainPhoto() {
   const [grid, setGrid] = useState(2);
   const [sequence, setSequence] = useState('new');
   const [polaroidColor, setPolaroidColor] = useState('#ddd');
+
+  // [하위 <-> 상위] 값 전달 함수
   const gridPressed = value => {
     grid === 1 ? setGrid(2) : grid === 2 ? setGrid(3) : setGrid(1);
-    return <Content1 grid={grid} />;
+    return <Content grid={grid} />;
   };
   const sequencePressed = value => {
     sequence === 'new' ? setSequence('old') : setSequence('new');
-    return <Content1 sequence={sequence} />;
+    return <Content sequence={sequence} />;
   };
   const poloroidColorPressed = value => {
     polaroidColor === '#ddd'
       ? setPolaroidColor('#111')
       : setPolaroidColor('#ddd');
-    return <Content1 polaroidColor={polaroidColor} />;
+    return <Content polaroidColor={polaroidColor} />;
   };
+
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.container}>
       <SafeAreaView style={styles.safeAreaViewContainer}>
@@ -37,8 +37,7 @@ function MainPhoto() {
           sequencePressed={sequencePressed}
           poloroidColorPressed={poloroidColorPressed}
         />
-        {/* <Content photoList={photoList} grid={grid} sequence={sequence} /> */}
-        <Content1
+        <Content
           grid={grid}
           sequence={sequence}
           polaroidColor={polaroidColor}
