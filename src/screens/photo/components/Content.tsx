@@ -11,12 +11,42 @@ import {
 } from 'react-native';
 
 // Data
-import {polaroid} from '../../../../dummyData';
 import {photoList} from '../../../../dummyData';
 
 // Variale
 const margin = 7; // 전체 Container의 양 옆 여백 값
 const deviceWidth = Dimensions.get('window').width;
+const polaroid = [
+  {
+    uri: require('../../../assets/images/polaroid/pink_one_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/purple_one_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/skyblue_one_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/yellow_one_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/green_one_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/pink_two_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/skyblue_two_.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/yellow_two_.png'),
+  },
+];
+// 마스킹테이프 랜덤 배열
+const polaroidArr = photoList.map(() => {
+  return Math.floor(Math.random() * 8);
+});
+
 interface Props {
   grid?: number;
   sequence?: string;
@@ -29,9 +59,6 @@ function Content(props: Props) {
   const [sequence, setSequence] = useState(props.sequence);
   const [polaroidColor, setPolaroidColor] = useState(props.polaroidColor);
   const polaroidNum = useRef(-1);
-  const polaroidArr = photoListData.current.map(() => {
-    return Math.floor(Math.random() * 8); // 랜덤 마스킹테이프
-  });
 
   useEffect(() => {
     if (grid === props.grid) return;
@@ -49,7 +76,8 @@ function Content(props: Props) {
     setPolaroidColor(props.polaroidColor);
   }, [props.polaroidColor]);
 
-  const Images = ({item}) => {
+  const Images = ({index, item}) => {
+    console.log(polaroidArr);
     polaroidNum.current++;
     return (
       <View
@@ -59,7 +87,7 @@ function Content(props: Props) {
           padding: grid === 1 ? '12%' : grid === 2 ? '6%' : '5%', // 폴라로이드 크기를 조절하는 상위 padding
         }}>
         <ImageBackground
-          source={polaroid[polaroidArr[polaroidNum.current]]} // 마스킹테이프 디자인을 랜덤 세팅
+          source={polaroid[polaroidArr[index]].uri} // 마스킹테이프 디자인을 랜덤 세팅
           style={styles.imageContainer}>
           <TouchableOpacity
             style={[styles.imageSection, {backgroundColor: polaroidColor}]}>
