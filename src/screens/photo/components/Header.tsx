@@ -24,6 +24,9 @@ function Header(props) {
         <Text style={styles.headerTitleTextKo}>포토리</Text>
         <Text style={styles.headerTitleTextEng}>photo in memory</Text>
       </View> */}
+      {/* <View style={styles.headerTitle}>
+        <Text style={styles.headerTitleTextEng}>Photo In Memory</Text>
+      </View> */}
 
       <View style={styles.headerImgContainer}>
         {/* Header - Grid */}
@@ -61,7 +64,7 @@ function Header(props) {
           <Feather
             style={styles.headerColorImg}
             name={'tool'}
-            size={19}
+            size={20}
             color={'black'}
           />
         </TouchableOpacity>
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
   headerColorImg: {
     // paddingTop: 9,
     // paddingBottom: 9,
-    paddingLeft: 11,
-    paddingRight: 11,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });

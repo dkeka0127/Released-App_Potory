@@ -95,7 +95,7 @@ function Content(props: Props) {
               style={[
                 styles.image,
                 {
-                  width: (deviceWidth / grid) * 0.7,
+                  width: (deviceWidth / grid) * 0.5,
                   height:
                     grid === 1
                       ? (deviceWidth / grid) * 0.55
@@ -110,7 +110,7 @@ function Content(props: Props) {
               style={[
                 styles.text,
                 {
-                  fontSize: grid === 1 ? 17 : grid === 2 ? 13.5 : 12,
+                  fontSize: grid === 1 ? 17 : grid === 2 ? 13 : 11.5,
                 },
               ]}>
               {item.date}
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: 'contain',
+    margin: 5,
   },
   textBackground: {
     height: '17%',

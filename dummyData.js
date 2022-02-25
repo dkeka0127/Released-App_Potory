@@ -98,14 +98,14 @@ export const photoList = [
   },
   {
     imageuri: {
-      uri: '/Users/sol/lifeRecordProject/src/assets/images/image3.png',
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image4.png',
     },
     date: '2020.02.26',
     memo: '와라랄랄ㄹ라라ㅏ라라라',
   },
   {
     imageuri: {
-      uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image5.png',
     },
     date: '2020.03.01',
     memo: '와라랄랄ㄹ라라ㅏ라라라',
@@ -147,14 +147,14 @@ export const photoList = [
   },
   {
     imageuri: {
-      uri: '/Users/sol/lifeRecordProject/src/assets/images/image1.png',
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image5.png',
     },
     date: '2020.05.15',
     memo: '와라랄랄ㄹ라라ㅏ라라라',
   },
   {
     imageuri: {
-      uri: '/Users/sol/lifeRecordProject/src/assets/images/image2.png',
+      uri: '/Users/sol/lifeRecordProject/src/assets/images/image4.png',
     },
     date: '2020.05.25',
     memo: '와라랄랄ㄹ라라ㅏ라라라',
