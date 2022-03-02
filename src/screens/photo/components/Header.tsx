@@ -15,18 +15,18 @@ function Header(props) {
   return (
     <View style={styles.headerContainer}>
       {/* Header - Title */}
-      <Image
+      {/* <Image
         style={{width: 85, marginTop: 4, marginLeft: -8}}
         resizeMode="contain"
         source={require('../../../assets/images/logo.png')}
-      />
+      /> */}
       {/* <View style={styles.headerTitle}>
         <Text style={styles.headerTitleTextKo}>포토리</Text>
         <Text style={styles.headerTitleTextEng}>photo in memory</Text>
       </View> */}
-      {/* <View style={styles.headerTitle}>
+      <View style={styles.headerTitle}>
         <Text style={styles.headerTitleTextEng}>Photo In Memory</Text>
-      </View> */}
+      </View>
 
       <View style={styles.headerImgContainer}>
         {/* Header - Grid */}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   headerTitleTextEng: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '300',
   },
   headerImgContainer: {

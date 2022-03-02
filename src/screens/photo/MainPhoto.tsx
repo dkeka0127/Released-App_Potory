@@ -1,10 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {ImageBackground, SafeAreaView, StyleSheet} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  AppState,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Page
 import Header from './components/Header';
 import Content from './components/Content';
 import BottomButton from './components/BottomButton';
+
 // Image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
 
@@ -28,6 +35,74 @@ function MainPhoto() {
       : setPolaroidColor('#ddd');
     return <Content polaroidColor={polaroidColor} />;
   };
+
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  console.log(grid);
+  console.log(sequence);
+  console.log(polaroidColor);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      console.log(grid);
+      console.log(sequence);
+      console.log(polaroidColor);
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      console.log('AppState', appState.current);
+      AsyncStorage.setItem(
+        'PhotoInfo',
+        JSON.stringify({
+          grid: grid,
+          frequency: sequence,
+          polaroidColor: polaroidColor,
+        }),
+      );
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  // 값 변경 시 AsyncStorage에 값 저장 [Grid, Frequency, PolaroidColor]
+  // useEffect(() => {
+  //   AsyncStorage.setItem(
+  //     'PhotoInfo',
+  //     JSON.stringify({
+  //       grid: grid,
+  //       frequency: sequence,
+  //       polaroidColor: polaroidColor,
+  //     }),
+  //   );
+  //   console.log('!!!!!!!!!!');
+  // }, [AppState.currentState]);
+
+  // 화면 첫 시작 시 AsyncStorage의 값 불러오기
+  useEffect(() => {
+    const PhotoInfoSetting = async () => {
+      const PhotoInfoData = await AsyncStorage.getItem('PhotoInfo');
+
+      const PhotoInfo = JSON.parse(PhotoInfoData);
+      console.log('==========', PhotoInfo);
+
+      setGrid(PhotoInfo.grid === null ? 2 : PhotoInfo.grid);
+      setSequence(PhotoInfo.frequency === null ? 'new' : PhotoInfo.frequency);
+      setPolaroidColor(
+        PhotoInfo.polaroidColor === null ? '#ddd' : PhotoInfo.polaroidColor,
+      );
+    };
+
+    PhotoInfoSetting();
+  }, []);
 
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.container}>

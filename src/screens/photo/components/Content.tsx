@@ -13,6 +13,9 @@ import {
 // Data
 import {photoList} from '../../../../dummyData';
 
+// Page
+import PhotoModal from './PhotoModal';
+
 // Variale
 const margin = 7; // 전체 Container의 양 옆 여백 값
 const deviceWidth = Dimensions.get('window').width;
@@ -55,6 +58,8 @@ interface Props {
 
 function Content(props: Props) {
   const photoListData = useRef(photoList); // Image Data
+  const [isModal, setIsModal] = useState(false);
+  const [modalImgUrl, setModalImgUrl] = useState(false);
   const [grid, setGrid] = useState(props.grid);
   const [sequence, setSequence] = useState(props.sequence);
   const [polaroidColor, setPolaroidColor] = useState(props.polaroidColor);
@@ -76,6 +81,10 @@ function Content(props: Props) {
     setPolaroidColor(props.polaroidColor);
   }, [props.polaroidColor]);
 
+  useEffect(() => {
+    if (isModal) setIsModal(false);
+  }, [isModal]);
+
   const Images = ({index, item}) => {
     console.log(polaroidArr);
     polaroidNum.current++;
@@ -90,7 +99,11 @@ function Content(props: Props) {
           source={polaroid[polaroidArr[index]].uri} // 마스킹테이프 디자인을 랜덤 세팅
           style={styles.imageContainer}>
           <TouchableOpacity
-            style={[styles.imageSection, {backgroundColor: polaroidColor}]}>
+            style={[styles.imageSection, {backgroundColor: polaroidColor}]}
+            onPress={() => {
+              setIsModal(true);
+              setModalImgUrl(item.imageuri);
+            }}>
             <Image
               style={[
                 styles.image,
@@ -122,13 +135,16 @@ function Content(props: Props) {
   };
 
   return (
-    <FlatList
-      contentContainerStyle={styles.flatListContainer}
-      data={photoListData.current}
-      initialNumToRender={15}
-      renderItem={data => Images(data)}
-      keyExtractor={item => item.date}
-    />
+    <>
+      <FlatList
+        contentContainerStyle={styles.flatListContainer}
+        data={photoListData.current}
+        initialNumToRender={15}
+        renderItem={data => Images(data)}
+        keyExtractor={item => item.date}
+      />
+      <PhotoModal isModal={isModal} modalImgUrl={modalImgUrl} />
+    </>
   );
 }
 
