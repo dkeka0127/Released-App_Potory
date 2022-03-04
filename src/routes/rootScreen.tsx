@@ -32,8 +32,16 @@ function RootScreen() {
       />
       {/* Home */}
       {/* Photo */}
-      <Stack.Screen name="AddPhotoScreen" component={AddPhotoScreen} />
-      <Stack.Screen name="EditPhotoScreen" component={EditPhotoScreen} />
+      <Stack.Screen
+        name="AddPhotoScreen"
+        component={AddPhotoScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPhotoScreen"
+        component={EditPhotoScreen}
+        options={{headerShown: false}}
+      />
       {/* Info */}
       <Stack.Screen
         name="설정"

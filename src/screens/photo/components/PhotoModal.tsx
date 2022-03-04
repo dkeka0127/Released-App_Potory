@@ -21,7 +21,7 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 // Image
-const bgImg = '../../../assets/images/MainPhoto_bg.png';
+const bgImg = '../../../assets/images/photoPopup_bg.png';
 
 export default function PhotoModal({isModal}) {
   const navigation = useNavigation();
@@ -67,7 +67,7 @@ export default function PhotoModal({isModal}) {
             {/* Image */}
             <View style={styles.imageContainer}>
               <Image
-                source={require('../../../assets/images/image3.png')}
+                source={require('../../../assets/images/image5.png')}
                 style={styles.image}
               />
             </View>
@@ -126,9 +126,11 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     height: '88%',
+    backgroundColor: '#ccc',
   },
   bgImage: {
     flex: 1,
+    margin: 1.5,
     paddingTop: 20,
     paddingBottom: 20,
     alignItems: 'center',
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
+    height: '95%',
     resizeMode: 'contain',
   },
   textContaier: {

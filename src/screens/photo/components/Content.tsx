@@ -108,7 +108,10 @@ function Content(props: Props) {
               style={[
                 styles.image,
                 {
-                  width: (deviceWidth / grid) * 0.5,
+                  width:
+                    grid === 1
+                      ? (deviceWidth / grid) * 0.5
+                      : (deviceWidth / grid) * 0.57,
                   height:
                     grid === 1
                       ? (deviceWidth / grid) * 0.55

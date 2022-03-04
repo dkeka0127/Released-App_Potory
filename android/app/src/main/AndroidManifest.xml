@@ -2,6 +2,7 @@
   package="com.liferecordproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name='android.permission.CAMERA' /> <!-- // add -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- // add -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- // add -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- // add -->
@@ -33,5 +34,4 @@
         </intent-filter>
       </activity>
     </application>
-
 </manifest>

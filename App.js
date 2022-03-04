@@ -12,7 +12,7 @@ import {NavigationContainer} from '@react-navigation/native';
 // Page
 import SplashScreen from './src/screens/intro/SplashScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
-import RootScreen from './src/routes/RootScreen';
+import RootScreen from './src/routes/rootScreen';
 
 function App() {
   const [isLogin, setIsLogin] = useState(null);
