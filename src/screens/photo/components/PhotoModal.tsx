@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
+import ImageModal from 'react-native-image-modal';
 
 // Icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -66,9 +67,16 @@ export default function PhotoModal({isModal}) {
           <ImageBackground source={require(bgImg)} style={styles.bgImage}>
             {/* Image */}
             <View style={styles.imageContainer}>
-              <Image
-                source={require('../../../assets/images/image5.png')}
+              {/* <Image
+                source={require('../../../assets/images/image2.png')}
                 style={styles.image}
+              /> */}
+              <ImageModal
+                resizeMode="contain"
+                hideCloseButton={true}
+                overlayBackgroundColor="#000000"
+                style={styles.image}
+                source={require('../../../assets/images/image3.png')}
               />
             </View>
 
@@ -94,14 +102,14 @@ export default function PhotoModal({isModal}) {
                 setShownModal(false);
                 navigation.navigate('EditPhotoScreen');
               }}>
-              <MaterialIcons name="pencil-outline" size={27} color="black" />
+              <MaterialIcons name="pencil-outline" size={24} color="black" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.deleteIcon}
               onPress={() => {
                 deleteAlert();
               }}>
-              <MaterialIcons name="delete-outline" size={27} color="black" />
+              <MaterialIcons name="delete-outline" size={24} color="black" />
             </TouchableOpacity>
           </View>
         </View>
@@ -136,17 +144,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
-    width: '80%',
-    height: '65%',
+    width: '83%',
+    height: '70%',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
   },
   image: {
-    width: '100%',
-    height: '95%',
-    resizeMode: 'contain',
+    width: deviceWidth * 0.85 * 0.75,
+    height: deviceHeight * 0.63 * 0.47,
   },
   textContaier: {
-    paddingTop: 10,
+    paddingTop: 5,
     paddingLeft: 30,
     paddingRight: 30,
   },
@@ -164,8 +173,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   iconsContaier: {
+    paddingTop: 5,
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    // backgroundColor: 'pink',
   },
   editIcon: {
     width: 30,

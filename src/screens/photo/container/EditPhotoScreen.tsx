@@ -12,9 +12,9 @@ import {
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import DatePicker from 'react-native-date-picker';
 
 // Icon
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -65,7 +65,7 @@ function EditPhotoScreen() {
                   setDatePickerOpen(true);
                 }}>
                 <Text style={styles.dateText}>{userDate}</Text>
-                <MaterialIcons name="pencil-outline" size={21} color="#111" />
+                <MaterialIcons name="pencil-outline" size={20} color="#111" />
               </TouchableOpacity>
               {datePickerOpen ? (
                 <DatePicker
@@ -117,7 +117,7 @@ function EditPhotoScreen() {
                 }}>
                 <MaterialIcons
                   name={editText ? 'check' : 'pencil-outline'}
-                  size={30}
+                  size={27}
                   color="#111"
                 />
               </TouchableOpacity>
@@ -146,13 +146,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: '45%',
+    height: '55%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   imageContent: {
-    width: '65%',
-    height: '65%',
+    width: '70%',
+    height: '67%',
     marginTop: 40,
     marginBottom: 40,
     alignItems: 'center',
@@ -173,15 +173,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   dateText: {
-    fontSize: 15,
+    fontSize: 16,
     fontStyle: 'italic',
     paddingRight: 8,
   },
   editTextCon: {
-    height: '35%',
+    height: '30%',
     paddingLeft: '3%',
     paddingRight: '3%',
-    marginTop: 20,
     paddingTop: 20,
     paddingBottom: 15,
   },
