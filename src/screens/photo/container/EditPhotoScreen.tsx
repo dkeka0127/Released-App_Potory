@@ -10,22 +10,17 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  TouchableNativeFeedbackBase,
-  TouchableNativeFeedback,
   Platform,
-  Button,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import DatePicker from 'react-native-date-picker';
 
 // Icon
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Page
 import CustomHeader from '../../common/CustomHeader';
-import {ScrollView} from 'react-native-gesture-handler';
 
 // Image
 const backgroundImg = '../../../assets/images/photoModify_bg.png';
@@ -53,9 +48,9 @@ function EditPhotoScreen() {
           />
           <ImageBackground
             source={require(backgroundImg)}
-            style={styles.container}>
+            style={styles.imageBackground}>
             <View style={styles.imageContainer}>
-              {/* Image */}
+              {/********************** Image **********************/}
               <View style={styles.imageContent}>
                 <Image
                   source={require('../../../assets/images/image2.png')}
@@ -63,18 +58,14 @@ function EditPhotoScreen() {
                 />
               </View>
 
-              {/* Date */}
+              {/*********************** Date ***********************/}
               <TouchableOpacity
                 style={styles.dateContaier}
                 onPress={() => {
                   setDatePickerOpen(true);
                 }}>
                 <Text style={styles.dateText}>{userDate}</Text>
-                <MaterialCommunityIcons
-                  name="pencil-outline"
-                  size={21}
-                  color="#111"
-                />
+                <MaterialIcons name="pencil-outline" size={21} color="#111" />
               </TouchableOpacity>
               {datePickerOpen ? (
                 <DatePicker
@@ -98,54 +89,39 @@ function EditPhotoScreen() {
               ) : null}
             </View>
 
-            <>
-              {/* Edit Text & Submit Text */}
-              <View style={styles.editTextCon}>
-                <TextInput
-                  multiline={true}
-                  editable={editText}
-                  // returnKeyType="next"
-                  style={[{flex: 1}, styles.textContent]}
-                  value={input}
-                  maxLength={300}
-                  onChangeText={text => {
-                    console.log('hihi'); // fix
-                    setInput(text);
-                  }}
-                  onEndEditing={() => {
-                    console.log('input is Done ~~~~~`');
-                  }}
-                  onSubmitEditing={() => {}}
-                />
-              </View>
+            {/************************* Text *************************/}
+            <View style={styles.editTextCon}>
+              <TextInput
+                value={input}
+                multiline={true}
+                editable={editText}
+                maxLength={300}
+                style={styles.textContent}
+                onChangeText={text => {
+                  console.log('hihi'); // fix
+                  setInput(text);
+                }}
+                onEndEditing={() => {
+                  console.log('input is Done ~~~~~`');
+                }}
+                onSubmitEditing={() => {}}
+              />
+            </View>
 
-              {/* Text Edit Image */}
-              {editText ? (
-                <View style={styles.textEditCon}>
-                  <TouchableOpacity
-                    hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                    onPress={() => {
-                      setEditText(false);
-                    }}>
-                    <Feather name="check" size={30} color="#111" />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={styles.textEditCon}>
-                  <TouchableOpacity
-                    hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                    onPress={() => {
-                      setEditText(true);
-                    }}>
-                    <MaterialCommunityIcons
-                      name="pencil-outline"
-                      size={30}
-                      color="#111"
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-            </>
+            {/********************** Edit Image **********************/}
+            <View style={styles.textEditCon}>
+              <TouchableOpacity
+                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+                onPress={() => {
+                  editText ? setEditText(false) : setEditText(true);
+                }}>
+                <MaterialIcons
+                  name={editText ? 'check' : 'pencil-outline'}
+                  size={30}
+                  color="#111"
+                />
+              </TouchableOpacity>
+            </View>
           </ImageBackground>
         </SafeAreaView>
       </TouchableWithoutFeedback>
@@ -164,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: -40,
   },
-  container: {
+  imageBackground: {
     flex: 1,
     backgroundColor: '#fff',
   },
@@ -173,7 +149,6 @@ const styles = StyleSheet.create({
     height: '45%',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#fee',
   },
   imageContent: {
     width: '65%',
@@ -182,7 +157,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#ffe',
   },
   image: {
     width: '100%',
@@ -203,7 +177,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     paddingRight: 8,
   },
-  textContainer: {
+  editTextCon: {
     height: '35%',
     paddingLeft: '3%',
     paddingRight: '3%',
@@ -211,25 +185,14 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 15,
   },
-  editTextCon: {
-    height: '35%',
-    paddingLeft: '12.5%',
-    paddingRight: '12.5%',
-    marginTop: 20,
-    paddingTop: 20,
-    paddingBottom: 15,
-    // backgroundColor: 'pink',
-  },
-  scrollStyle: {
-    paddingLeft: '10%',
-    paddingRight: '10%',
-  },
   textContent: {
+    flex: 1,
     fontSize: 15,
     fontWeight: '500',
     lineHeight: 28,
     letterSpacing: -0.7,
-    backgroundColor: 'pink',
+    paddingLeft: '10%',
+    paddingRight: '10%',
   },
   textEditCon: {
     width: '100%',
@@ -237,32 +200,3 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
 });
-
-// {editText ? (
-//   <View style={styles.editTextCon}>
-//     <TextInput
-//       multiline={true}
-//       editable={false}
-//       // returnKeyType="next"
-//       style={[{flex: 1}, styles.textContent]}
-//       value={input}
-//       maxLength={300}
-//       onChangeText={text => {
-//         console.log('hihi'); // fix
-//         setInput(text);
-//       }}
-//       onEndEditing={() => {
-//         console.log('input is Done ~~~~~`');
-//       }}
-//       onSubmitEditing={() => {}}
-//     />
-//   </View>
-// ) : (
-//   <View style={styles.textContainer}>
-//     <ScrollView style={styles.scrollStyle}>
-//       <TouchableNativeFeedback>
-//         <Text style={styles.textContent}>{input}</Text>
-//       </TouchableNativeFeedback>
-//     </ScrollView>
-//   </View>
-// )}
