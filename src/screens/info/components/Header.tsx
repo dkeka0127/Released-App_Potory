@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import CoinIcon from 'react-native-vector-icons/FontAwesome5';
 import SettingIcon from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Data
@@ -17,6 +18,8 @@ function Header() {
       {/* Point */}
       <View style={styles.navCoinCon}>
         <MaterialCommunityIcons name="" size={22} color="#fff" />
+        <Ionicons name="ios-aperture-outline" size={22} color="#fff" />
+        <Ionicons name="md-aperture-outlin" size={22} color="#fff" />
       </View>
       {/* Title */}
       <View style={styles.navTitleCon}>

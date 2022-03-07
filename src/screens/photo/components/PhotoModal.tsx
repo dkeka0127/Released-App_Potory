@@ -36,7 +36,7 @@ export default function PhotoModal({isModal}) {
 
   // Delete Image 클릭 시 Alert 출력
   const deleteAlert = () => {
-    Alert.alert('삭제 하시겠습니까 ?', '', [
+    Alert.alert('', '삭제 하시겠습니까 ?', [
       {
         text: '취소',
         onPress: () => console.log('Cancel Pressed'),
