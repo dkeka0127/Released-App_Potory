@@ -16,10 +16,10 @@ function Content() {
   const UserInfoList = () => {
     return (
       <View style={styles.listContainer}>
-        <FontAwesome name="bookmark-o" size={28} color="#111" />
+        <FontAwesome name="bookmark-o" size={22} color="#111" />
         <View style={styles.listContent}>
-          <Text style={{fontSize: 24}}>{photoNum}</Text>
-          <Text style={{fontSize: 15, color: '#666'}}>
+          <Text style={{fontSize: 19, fontWeight: '600'}}>{photoNum}</Text>
+          <Text style={{fontSize: 13, color: '#666'}}>
             {100 - photoNum} 개 더 모으면 다음 단계로 !
           </Text>
         </View>
@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   profileContainer: {
-    height: 160,
-    paddingLeft: 30,
-    paddingRight: 30,
+    height: 140,
+    paddingLeft: 25,
+    paddingRight: 25,
     flexDirection: 'row',
     alignItems: 'center',
     // backgroundColor: '#fff9f9',
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   userInfo: {
     flex: 1,
     height: 80,
-    marginLeft: 30,
+    marginLeft: 25,
     justifyContent: 'center',
   },
   userInfoText: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   listContainer: {
-    height: 90,
+    height: 70,
     paddingTop: 10,
     paddingBottom: 10,
     marginLeft: 25,
@@ -105,8 +105,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     flex: 1,
-    marginLeft: 18,
-    paddingBottom: 2,
+    marginLeft: 16,
     height: '100%',
     flexDirection: 'row',
     alignItems: 'center',
