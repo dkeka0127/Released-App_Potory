@@ -31,10 +31,10 @@ function App() {
 
   return (
     <NavigationContainer>
-      {!closeSplashScreen ? (
-        <SplashScreen />
-      ) : !isLogin ? (
+      {!isLogin ? (
         <SignInScreen />
+      ) : !closeSplashScreen ? (
+        <SplashScreen />
       ) : (
         <RootScreen />
       )}

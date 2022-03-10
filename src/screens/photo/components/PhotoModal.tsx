@@ -67,10 +67,6 @@ export default function PhotoModal({isModal}) {
           <ImageBackground source={require(bgImg)} style={styles.bgImage}>
             {/* Image */}
             <View style={styles.imageContainer}>
-              {/* <Image
-                source={require('../../../assets/images/image2.png')}
-                style={styles.image}
-              /> */}
               <ImageModal
                 resizeMode="contain"
                 hideCloseButton={true}
