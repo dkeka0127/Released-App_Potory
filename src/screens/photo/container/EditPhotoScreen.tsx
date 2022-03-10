@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: '500',
+    // font design
     lineHeight: 28,
     letterSpacing: -0.7,
     paddingLeft: '10%',

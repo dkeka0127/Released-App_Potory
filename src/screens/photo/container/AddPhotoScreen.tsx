@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     paddingLeft: '5%',
     paddingRight: '5%',
     marginTop: 20,
+    paddingTop: 10,
     backgroundColor: '#fff',
     opacity: 0.7,
   },
