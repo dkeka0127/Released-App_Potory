@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import {
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // Icon
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,8 +31,53 @@ function AddPhotoScreen() {
   const [userDate, setUserDate] = useState('2020.03.03');
   const [date, setDate] = useState(new Date());
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [editText, setEditText] = useState(false);
   const [input, setInput] = useState('');
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [response, setResponse] = useState<any>(null); // 갤러리에서 가져온 사진 uri
+
+  const moveToCamera = () => {
+    launchCamera(
+      {
+        saveToPhotos: true,
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+      setResponse,
+    );
+  };
+
+  const moveToGallery = () => {
+    launchImageLibrary(
+      {
+        selectionLimit: 1,
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+      setResponse,
+    );
+  };
+  console.log('=======response========', response);
+
+  // Keyboard Visible Check
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -49,12 +95,17 @@ function AddPhotoScreen() {
             style={styles.imageBackground}>
             <View style={styles.imageContainer}>
               {/********************** Image **********************/}
-              <View style={styles.imageContent}>
+              <TouchableOpacity
+                style={styles.imageContent}
+                onPress={() => {
+                  moveToGallery();
+                  // moveToCamera();
+                }}>
                 <Image
                   source={require('../../../assets/images/image2.png')}
                   style={styles.image}
                 />
-              </View>
+              </TouchableOpacity>
 
               {/*********************** Date ***********************/}
               <TouchableOpacity
@@ -93,7 +144,7 @@ function AddPhotoScreen() {
               <TextInput
                 value={input}
                 multiline={true}
-                editable={editText}
+                editable={true}
                 maxLength={300}
                 style={styles.textContent}
                 onChangeText={text => {
@@ -103,7 +154,9 @@ function AddPhotoScreen() {
                 onEndEditing={() => {
                   console.log('input is Done ~~~~~`');
                 }}
-                onSubmitEditing={() => {}}
+                onSubmitEditing={() => {
+                  console.log('input is ');
+                }}
               />
             </View>
 
@@ -112,10 +165,11 @@ function AddPhotoScreen() {
               <TouchableOpacity
                 hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
                 onPress={() => {
-                  editText ? setEditText(false) : setEditText(true);
+                  console.log('save .. !!!');
                 }}>
                 <MaterialIcons
-                  name={editText ? 'check' : 'pencil-outline'}
+                  // keyboard up ? button unShow : button show
+                  name={isKeyboardVisible ? '' : 'check'}
                   size={27}
                   color="#111"
                 />
@@ -178,22 +232,30 @@ const styles = StyleSheet.create({
   },
   editTextCon: {
     height: '30%',
-    paddingLeft: '3%',
-    paddingRight: '3%',
-    paddingTop: 20,
-    paddingBottom: 15,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    marginTop: 20,
+    backgroundColor: '#fff',
+    opacity: 0.7,
   },
   textContent: {
     flex: 1,
+    color: 'black',
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: '600',
     lineHeight: 28,
     letterSpacing: -0.7,
-    paddingLeft: '10%',
-    paddingRight: '10%',
+    paddingLeft: '8%',
+    paddingRight: '8%',
+    paddingBottom: 10,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    borderStyle: 'solid',
+    borderRadius: 10,
   },
   textEditCon: {
     width: '100%',
+    marginTop: 10,
     paddingRight: 25,
     alignItems: 'flex-end',
   },

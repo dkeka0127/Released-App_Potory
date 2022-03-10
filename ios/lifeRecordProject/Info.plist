@@ -37,6 +37,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+  <string>YOUR TEXT</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+  <string>갤러리 접근 권한을 허용합니다.</string>
+  <!-- <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>YOUR TEXT</string> -->
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>서비스 이용을 위해 위치 정보를 수집합니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
