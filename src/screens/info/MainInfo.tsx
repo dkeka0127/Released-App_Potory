@@ -14,7 +14,7 @@ function MainInfo() {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <Content1 />
+      <Content />
     </SafeAreaView>
   );
 }
