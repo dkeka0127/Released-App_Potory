@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
+import {ifIphoneX} from 'react-native-iphone-x-helper';
 import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
   },
   SafeAreaView: {
     flex: 1,
-    marginBottom: -40,
+    marginBottom: ifIphoneX(-40, -10),
   },
   imageBackground: {
     flex: 1,

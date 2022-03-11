@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,47 +8,56 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import {
+  KakaoOAuthToken,
+  KakaoProfile,
+  getProfile as getKakaoProfile,
+  login,
+  logout,
+  unlink,
+} from '@react-native-seoul/kakao-login';
 // Icons
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // Variable
 const IconSize = 17;
 const IconColor = '#111';
+const [result, setResult] = useState<string>(''); // Kakao Login
+// 로그아웃
+const signOutWithKakao = async (): Promise<void> => {
+  const message = await logout();
+  setResult(message);
+};
+// 회원탈퇴
+const unlinkKakao = async (): Promise<void> => {
+  const message = await unlink();
+  setResult(message);
+};
 
 // Alert Message
 const AlertText = title => {
-  title === '로그아웃'
-    ? Alert.alert('', '로그아웃 하시겠습니까 ?', [
-        {
-          text: '취소',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+  Alert.alert(
+    '',
+    title === '로그아웃'
+      ? '로그아웃 하시겠습니까 ?'
+      : '회원탈퇴 시 회원님의 소중한 추억이 \n 삭제되며 복구가 불가합니다. \n 정말로 탈퇴하시겠습니까 ?',
+    [
+      {
+        text: '취소',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: '확인',
+        onPress: () => {
+          title === '로그아웃' ? signOutWithKakao() : unlinkKakao();
         },
-        {text: '확인', onPress: () => console.log('OK Pressed')},
-      ])
-    : Alert.alert(
-        '',
-        '회원탈퇴 시 회원님의 소중한 추억이 \n 삭제되며 복구가 불가합니다. \n 정말로 탈퇴하시겠습니까 ?',
-        [
-          {
-            text: '취소',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {
-            text: '확인',
-            onPress: () => {
-              Alert.alert('', '회원탈퇴가 완료되었습니다.', [
-                {text: '확인', onPress: () => console.log('OK Pressed')},
-              ]);
-            },
-          },
-        ],
-      );
+      },
+    ],
+  );
 };
 
 // [컴포넌트] Logout / Withdrawal
 const SettingAccount = ({iconName, title}) => {
-  console.log(title);
   return (
     <TouchableOpacity
       style={styles.accountContent}

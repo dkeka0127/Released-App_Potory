@@ -20,8 +20,27 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakaocff9a8e0a7303367f3d6e7e7a417d6c4</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>KAKAO_APP_KEY</key>
+		<string>cff9a8e0a7303367f3d6e7e7a417d6c4</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>storykompassauth</string>
+		<string>kakaolink</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NMFClientId</key>
@@ -38,17 +57,15 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-  <string>YOUR TEXT</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-  <string>갤러리 접근 권한을 허용합니다.</string>
-  <!-- <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>YOUR TEXT</string> -->
+	<string>YOUR TEXT</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>서비스 이용을 위해 위치 정보를 수집합니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>서비스 이용을 위해 위치 정보를 수집합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>서비스 이용을 위해 위치 정보를 수집합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>갤러리 접근 권한을 허용합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

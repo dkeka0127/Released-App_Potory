@@ -25,7 +25,7 @@ function App() {
     //     setCloseSplashScreen(true);
     //   });
     // }, 3000);
-    setIsLogin(true);
+    setIsLogin(false);
     setCloseSplashScreen(true);
   }, []);
 
