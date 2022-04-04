@@ -6,7 +6,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 // Page
 import Header from './components/Header';
 import Content from './components/Content';
-import Content1 from './components/Content1';
 
 function MainInfo() {
   const navigation = useNavigation();

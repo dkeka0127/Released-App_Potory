@@ -103,7 +103,7 @@ function EditPhotoScreen() {
                   setInput(text);
                 }}
                 onEndEditing={() => {
-                  console.log('input is Done ~~~~~`');
+                  console.log('input is Done ~~~~~');
                 }}
                 onSubmitEditing={() => {}}
               />

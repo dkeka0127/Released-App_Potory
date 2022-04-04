@@ -8,14 +8,14 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {
-  KakaoOAuthToken,
-  KakaoProfile,
-  getProfile as getKakaoProfile,
-  login,
-  logout,
-  unlink,
-} from '@react-native-seoul/kakao-login';
+// import {
+//   KakaoOAuthToken,
+//   KakaoProfile,
+//   getProfile as getKakaoProfile,
+//   login,
+//   logout,
+//   unlink,
+// } from '@react-native-seoul/kakao-login';
 // Icons
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // Variable
@@ -27,7 +27,9 @@ const SettingAccount = ({iconName, title}) => {
   return (
     <TouchableOpacity
       style={styles.accountContent}
-      onPress={() => AlertText(title)}>
+      onPress={() => {
+        // AlertText(title)
+      }}>
       <AntDesign
         style={{paddingRight: 8}}
         name={iconName}
@@ -77,13 +79,13 @@ function SettingContent() {
   const [result, setResult] = useState<string>(''); // Kakao Login
   // 로그아웃
   const signOutWithKakao = async (): Promise<void> => {
-    const message = await logout();
-    setResult(message);
+    // const message = await logout();
+    // setResult(message);
   };
   // 회원탈퇴
   const unlinkKakao = async (): Promise<void> => {
-    const message = await unlink();
-    setResult(message);
+    // const message = await unlink();
+    // setResult(message);
   };
 
   // Alert Message

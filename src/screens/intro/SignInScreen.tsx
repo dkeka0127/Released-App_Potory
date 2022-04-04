@@ -15,14 +15,14 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import {
-  KakaoOAuthToken,
-  KakaoProfile,
-  getProfile as getKakaoProfile,
-  login,
-  logout,
-  unlink,
-} from '@react-native-seoul/kakao-login';
+// import {
+//   KakaoOAuthToken,
+//   KakaoProfile,
+//   getProfile as getKakaoProfile,
+//   login,
+//   logout,
+//   unlink,
+// } from '@react-native-seoul/kakao-login';
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // Images
@@ -32,14 +32,14 @@ function SignInScreen() {
   // Kakao Login
   const [result, setResult] = useState<string>('');
   // 회원가입
-  const signInWithKakao = async (): Promise<void> => {
-    const token: KakaoOAuthToken = await login();
-    setResult(JSON.stringify(token));
-  };
-  const getProfile = async (): Promise<void> => {
-    const profile: KakaoProfile = await getKakaoProfile();
-    setResult(JSON.stringify(profile));
-  };
+  // const signInWithKakao = async (): Promise<void> => {
+  // const token: KakaoOAuthToken = await login();
+  // setResult(JSON.stringify(token));
+  // };
+  // const getProfile = async (): Promise<void> => {
+  //   const profile: KakaoProfile = await getKakaoProfile();
+  //   setResult(JSON.stringify(profile));
+  // };
 
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.bgImage}>
@@ -49,7 +49,7 @@ function SignInScreen() {
         <TouchableOpacity
           style={[styles.loginContainer, {backgroundColor: '#f7e600'}]}
           onPress={() => {
-            signInWithKakao();
+            // signInWithKakao();
           }}>
           <Image
             source={require('../../assets/images/kakaoLogin.png')}
@@ -61,7 +61,7 @@ function SignInScreen() {
         <TouchableOpacity
           style={[styles.loginContainer, {backgroundColor: '#222'}]}
           onPress={() => {
-            signInWithKakao();
+            // signInWithKakao();
           }}>
           <Ionicons name="logo-apple" size={20} color="#fff" />
           <Text style={styles.appleLogin}>Sign in with Apple</Text>
