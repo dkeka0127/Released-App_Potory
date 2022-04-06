@@ -1,15 +1,14 @@
 import {
-  FlatList,
   ImageBackground,
   SafeAreaView,
   StyleSheet,
   Text,
-  View,
   Animated,
 } from 'react-native';
-import React, {createContext, useEffect, useState} from 'react';
+import React, {useState} from 'react';
+
+// Screen
 import ScrollHeader from './components/ScrollHeader';
-import ScrollProvider, {useScroll} from '../common/scroll/ScrollProvider';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import FlatListRenderItem from './components/FlatListRenderItem';
 
@@ -39,9 +38,11 @@ const dataSource = [
   {id: 27, title: 'Pricing'},
 ];
 
-const HEADER_HEIGHT = 50;
+// Variable
+const HEADER_HEIGHT = 60;
 
 function Main() {
+  // [Header] Scroll Variable
   const [scrollAnim] = useState(new Animated.Value(0));
   const [offsetAnim] = useState(new Animated.Value(0));
   const [clampedScroll, setClampedScroll] = useState(
@@ -82,32 +83,17 @@ function Main() {
     );
   };
 
-  const ItemView = ({item}) => {
-    return (
-      // Flat List Item
-      <Text>
-        {item.id}
-        {'\n'}
-        {item.title.toUpperCase()}
-        {'\n'}
-        {'\n'}
-      </Text>
-    );
-  };
-
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.container}>
       <SafeAreaView style={styles.safeAreaViewContainer}>
-        {/* <ScrollHeader /> */}
-
-        {/* header */}
+        {/********************* header *********************/}
         <Animated.View
           style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
           onLayout={event => scrollHeaderF(event)}>
           <ScrollHeader />
         </Animated.View>
 
-        {/* content */}
+        {/********************* content *********************/}
         <Animated.FlatList
           style={styles.flatList}
           windowSize={15}
@@ -148,7 +134,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 30,
-    height: 50,
+    height: HEADER_HEIGHT,
     zIndex: 999,
     alignItems: 'center',
     justifyContent: 'center',
@@ -157,23 +143,7 @@ const styles = StyleSheet.create({
   flatList: {
     flexGrow: 1,
     width: '100%',
-    paddingTop: 50,
+    paddingTop: HEADER_HEIGHT,
     backgroundColor: '#ffe',
-  },
-});
-
-const header = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 30,
-    zIndex: 999,
-    width: '100%',
-    height: 50,
-    backgroundColor: '#fee',
-  },
-  content: {
-    fontSize: 30,
   },
 });

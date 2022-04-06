@@ -1,12 +1,5 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  DeviceEventEmitter,
-} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
