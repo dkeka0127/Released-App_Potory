@@ -1,129 +1,146 @@
-import React, {useEffect, useRef, useState} from 'react';
 import {
-  AppState,
+  FlatList,
   ImageBackground,
   SafeAreaView,
   StyleSheet,
+  Text,
+  View,
+  Animated,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-
-// Page
-import Header from './components/Header';
-import Content from './components/Content';
-import BottomButton from './components/BottomButton';
+import React, {createContext, useEffect, useState} from 'react';
+import ScrollHeader from './components/ScrollHeader';
+import ScrollProvider, {useScroll} from '../common/scroll/ScrollProvider';
 
 // Image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
+const dataSource = [
+  {id: 1, title: 'Button'},
+  {id: 2, title: 'Card'},
+  {id: 3, title: 'Input'},
+  {id: 4, title: 'Avatar'},
+  {id: 5, title: 'CheckBox'},
+  {id: 6, title: 'Header'},
+  {id: 7, title: 'Icon'},
+  {id: 8, title: 'Lists'},
+  {id: 9, title: 'Rating'},
+  {id: 10, title: 'Pricing'},
+  {id: 11, title: 'Avatar'},
+  {id: 12, title: 'CheckBox'},
+  {id: 13, title: 'Header'},
+  {id: 14, title: 'Icon'},
+  {id: 15, title: 'Lists'},
+  {id: 16, title: 'Rating'},
+  {id: 17, title: 'Pricing'},
+  {id: 18, title: 'Icon'},
+  {id: 19, title: 'Lists'},
+  {id: 26, title: 'Rating'},
+  {id: 27, title: 'Pricing'},
+];
 
-function MainPhoto() {
-  const [grid, setGrid] = useState(2);
-  const [sequence, setSequence] = useState('new');
-  const [polaroidColor, setPolaroidColor] = useState('#ddd');
+const HEADER_HEIGHT = 50;
 
-  // [하위 <-> 상위] 값 전달 함수
-  const gridPressed = value => {
-    grid === 1 ? setGrid(2) : grid === 2 ? setGrid(3) : setGrid(1);
-    return <Content grid={grid} />;
-  };
-  const sequencePressed = value => {
-    sequence === 'new' ? setSequence('old') : setSequence('new');
-    return <Content sequence={sequence} />;
-  };
-  const poloroidColorPressed = value => {
-    polaroidColor === '#ddd'
-      ? setPolaroidColor('#111')
-      : setPolaroidColor('#ddd');
-    return <Content polaroidColor={polaroidColor} />;
-  };
-
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-
-  console.log(grid);
-  console.log(sequence);
-  console.log(polaroidColor);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      console.log(grid);
-      console.log(sequence);
-      console.log(polaroidColor);
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        console.log('App has come to the foreground!');
-      }
-
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-      console.log('AppState', appState.current);
-      AsyncStorage.setItem(
-        'PhotoInfo',
-        JSON.stringify({
-          grid: grid,
-          frequency: sequence,
-          polaroidColor: polaroidColor,
+function Main() {
+  const [scrollAnim] = useState(new Animated.Value(0));
+  const [offsetAnim] = useState(new Animated.Value(0));
+  const [clampedScroll, setClampedScroll] = useState(
+    Animated.diffClamp(
+      Animated.add(
+        scrollAnim.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolateLeft: 'clamp',
         }),
-      );
-    });
+        offsetAnim,
+      ),
+      0,
+      1,
+    ),
+  );
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  const navbarTranslate = clampedScroll.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT * 2],
+    extrapolate: 'clamp',
+  });
 
-  // 값 변경 시 AsyncStorage에 값 저장 [Grid, Frequency, PolaroidColor]
-  // useEffect(() => {
-  //   AsyncStorage.setItem(
-  //     'PhotoInfo',
-  //     JSON.stringify({
-  //       grid: grid,
-  //       frequency: sequence,
-  //       polaroidColor: polaroidColor,
-  //     }),
-  //   );
-  //   console.log('!!!!!!!!!!');
-  // }, [AppState.currentState]);
+  // const {isScrollUp, isScrollStartReached} = useScroll();
 
-  // 화면 첫 시작 시 AsyncStorage의 값 불러오기
-  useEffect(() => {
-    const PhotoInfoSetting = async () => {
-      const PhotoInfoData = await AsyncStorage.getItem('PhotoInfo');
-
-      const PhotoInfo = JSON.parse(PhotoInfoData);
-      console.log('==========', PhotoInfo);
-
-      setGrid(PhotoInfo.grid === null ? 2 : PhotoInfo.grid);
-      setSequence(PhotoInfo.frequency === null ? 'new' : PhotoInfo.frequency);
-      setPolaroidColor(
-        PhotoInfo.polaroidColor === null ? '#ddd' : PhotoInfo.polaroidColor,
-      );
-    };
-
-    PhotoInfoSetting();
-  }, []);
-
+  const ItemView = ({item}) => {
+    return (
+      // Flat List Item
+      <Text>
+        {item.id}
+        {'\n'}
+        {item.title.toUpperCase()}
+        {'\n'}
+        {'\n'}
+        {'\n'}
+      </Text>
+    );
+  };
   return (
-    <ImageBackground source={require(backgroundImg)} style={styles.container}>
-      <SafeAreaView style={styles.safeAreaViewContainer}>
-        <Header
-          gridPressed={gridPressed}
-          sequencePressed={sequencePressed}
-          poloroidColorPressed={poloroidColorPressed}
-        />
-        <Content
-          grid={grid}
-          sequence={sequence}
-          polaroidColor={polaroidColor}
-        />
-        <BottomButton />
-      </SafeAreaView>
-    </ImageBackground>
+    <ScrollProvider>
+      <ImageBackground source={require(backgroundImg)} style={styles.container}>
+        <SafeAreaView style={styles.safeAreaViewContainer}>
+          {/* <ScrollHeader /> */}
+
+          {/* header */}
+          <Animated.View
+            style={[
+              styles.header,
+              {
+                transform: [{translateY: navbarTranslate}],
+              },
+            ]}
+            onLayout={event => {
+              let {height} = event.nativeEvent.layout;
+              setClampedScroll(
+                Animated.diffClamp(
+                  Animated.add(
+                    scrollAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                      extrapolateLeft: 'clamp',
+                    }),
+                    offsetAnim,
+                  ),
+                  0,
+                  height,
+                ),
+              );
+            }}>
+            <Text style={styles.headerText}>HEADER</Text>
+          </Animated.View>
+
+          {/* content */}
+          <Animated.FlatList
+            style={{flexGrow: 1, width: '100%', backgroundColor: '#ffe'}}
+            // contentInset={{top: HEADER_HEIGHT}}
+            // contentOffset={{y: -HEADER_HEIGHT}}
+            bounces={false}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {y: scrollAnim},
+                  },
+                },
+              ],
+              {useNativeDriver: true},
+            )}
+            windowSize={15} // 초기 렌더링 개수
+            data={dataSource}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={ItemView}
+            // ListEmptyComponent={EmptyListMessage}
+          />
+        </SafeAreaView>
+      </ImageBackground>
+    </ScrollProvider>
   );
 }
 
-export default MainPhoto;
+export default React.memo(Main);
 
 const styles = StyleSheet.create({
   container: {
@@ -132,5 +149,36 @@ const styles = StyleSheet.create({
   },
   safeAreaViewContainer: {
     flex: 1,
+  },
+  header: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 30,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10000,
+    backgroundColor: '#fee',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+});
+
+const header = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 30,
+    zIndex: 999,
+    width: '100%',
+    height: 50,
+    backgroundColor: '#fee',
+  },
+  content: {
+    fontSize: 30,
   },
 });
