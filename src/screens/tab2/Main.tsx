@@ -10,6 +10,8 @@ import {
 import React, {createContext, useEffect, useState} from 'react';
 import ScrollHeader from './components/ScrollHeader';
 import ScrollProvider, {useScroll} from '../common/scroll/ScrollProvider';
+import EmptyDataScreen from './container/EmptyDataScreen';
+import FlatListRenderItem from './components/FlatListRenderItem';
 
 // Image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
@@ -56,14 +58,29 @@ function Main() {
       1,
     ),
   );
-
   const navbarTranslate = clampedScroll.interpolate({
     inputRange: [0, HEADER_HEIGHT],
     outputRange: [0, -HEADER_HEIGHT * 2],
     extrapolate: 'clamp',
   });
-
-  // const {isScrollUp, isScrollStartReached} = useScroll();
+  // [Header] Scroll Event Function
+  const scrollHeaderF = event => {
+    let {height} = event.nativeEvent.layout;
+    setClampedScroll(
+      Animated.diffClamp(
+        Animated.add(
+          scrollAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolateLeft: 'clamp',
+          }),
+          offsetAnim,
+        ),
+        0,
+        height,
+      ),
+    );
+  };
 
   const ItemView = ({item}) => {
     return (
@@ -74,73 +91,49 @@ function Main() {
         {item.title.toUpperCase()}
         {'\n'}
         {'\n'}
-        {'\n'}
       </Text>
     );
   };
+
   return (
-    <ScrollProvider>
-      <ImageBackground source={require(backgroundImg)} style={styles.container}>
-        <SafeAreaView style={styles.safeAreaViewContainer}>
-          {/* <ScrollHeader /> */}
+    <ImageBackground source={require(backgroundImg)} style={styles.container}>
+      <SafeAreaView style={styles.safeAreaViewContainer}>
+        {/* <ScrollHeader /> */}
 
-          {/* header */}
-          <Animated.View
-            style={[
-              styles.header,
+        {/* header */}
+        <Animated.View
+          style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
+          onLayout={event => scrollHeaderF(event)}>
+          <ScrollHeader />
+        </Animated.View>
+
+        {/* content */}
+        <Animated.FlatList
+          style={styles.flatList}
+          windowSize={15}
+          bounces={false}
+          data={dataSource}
+          renderItem={FlatListRenderItem}
+          keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={EmptyDataScreen}
+          onScroll={Animated.event(
+            [
               {
-                transform: [{translateY: navbarTranslate}],
-              },
-            ]}
-            onLayout={event => {
-              let {height} = event.nativeEvent.layout;
-              setClampedScroll(
-                Animated.diffClamp(
-                  Animated.add(
-                    scrollAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 1],
-                      extrapolateLeft: 'clamp',
-                    }),
-                    offsetAnim,
-                  ),
-                  0,
-                  height,
-                ),
-              );
-            }}>
-            <Text style={styles.headerText}>HEADER</Text>
-          </Animated.View>
-
-          {/* content */}
-          <Animated.FlatList
-            style={{flexGrow: 1, width: '100%', backgroundColor: '#ffe'}}
-            // contentInset={{top: HEADER_HEIGHT}}
-            // contentOffset={{y: -HEADER_HEIGHT}}
-            bounces={false}
-            onScroll={Animated.event(
-              [
-                {
-                  nativeEvent: {
-                    contentOffset: {y: scrollAnim},
-                  },
+                nativeEvent: {
+                  contentOffset: {y: scrollAnim},
                 },
-              ],
-              {useNativeDriver: true},
-            )}
-            windowSize={15} // 초기 렌더링 개수
-            data={dataSource}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={ItemView}
-            // ListEmptyComponent={EmptyListMessage}
-          />
-        </SafeAreaView>
-      </ImageBackground>
-    </ScrollProvider>
+              },
+            ],
+            {useNativeDriver: true},
+          )}
+        />
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
-export default React.memo(Main);
+// export default React.memo(Main);
+export default Main;
 
 const styles = StyleSheet.create({
   container: {
@@ -156,14 +149,16 @@ const styles = StyleSheet.create({
     right: 0,
     top: 30,
     height: 50,
+    zIndex: 999,
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 10000,
     backgroundColor: '#fee',
   },
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: 20,
+  flatList: {
+    flexGrow: 1,
+    width: '100%',
+    paddingTop: 50,
+    backgroundColor: '#ffe',
   },
 });
 
