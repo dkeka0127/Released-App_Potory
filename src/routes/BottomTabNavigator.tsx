@@ -1,28 +1,29 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Screens
-import MainHome from '../screens/home/MainHome';
-import MainPhoto from '../screens/photo/MainPhoto';
-import MainInfo from '../screens/info/MainInfo';
+import Tab1 from '../screens/tab1/Main';
+import Tab2 from '../screens/tab2/Main';
+import Tab3 from '../screens/tab3/Main';
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigation() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Tab1"
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === 'Map') {
+          if (route.name === 'Tab1') {
             iconName = focused ? 'location' : 'location-outline';
-          } else if (route.name === 'Memory') {
+          } else if (route.name === 'Tab2') {
             iconName = focused ? 'images' : 'images-outline';
-          } else if (route.name === 'MyPage') {
+          } else if (route.name === 'Tab3') {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -38,19 +39,20 @@ function BottomTabNavigation() {
         tabBarActiveTintColor: '#111',
         tabBarInactiveTintColor: '#111',
       })}>
+      {/* Tabs */}
       <Tab.Screen
-        name="Map"
-        component={MainHome}
+        name="Tab1"
+        component={Tab1}
         options={{headerShown: false, tabBarLabel: ''}}
       />
       <Tab.Screen
-        name="Memory"
-        component={MainPhoto}
+        name="Tab2"
+        component={Tab2}
         options={{headerShown: false, tabBarLabel: ''}}
       />
       <Tab.Screen
-        name="MyPage"
-        component={MainInfo}
+        name="Tab3"
+        component={Tab3}
         options={{headerShown: false, tabBarLabel: ''}}
       />
     </Tab.Navigator>

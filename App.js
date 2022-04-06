@@ -7,33 +7,31 @@
  */
 
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+
 // Page
+import RootScreen from './src/routes/rootScreen';
 import SplashScreen from './src/screens/intro/SplashScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
-import RootScreen from './src/routes/rootScreen';
 
 function App() {
   const [isLogin, setIsLogin] = useState(null);
-  const [closeSplashScreen, setCloseSplashScreen] = useState(false);
+  const [isSplashScreen, setIsSplashScreen] = useState(true);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   AsyncStorage.getItem('user_id').then(value => {
-    //     value === null ? setIsLogin(false) : setIsLogin(true);
-    //     setCloseSplashScreen(true);
-    //   });
-    // }, 3000);
-    setIsLogin(true);
-    setCloseSplashScreen(true);
+    setTimeout(() => {
+      setIsLogin(true);
+    }, 1000);
+    setTimeout(() => {
+      setIsSplashScreen(false);
+    }, 2000);
   }, []);
 
   return (
     <NavigationContainer>
       {!isLogin ? (
         <SignInScreen />
-      ) : !closeSplashScreen ? (
+      ) : isSplashScreen ? (
         <SplashScreen />
       ) : (
         <RootScreen />
@@ -43,10 +41,3 @@ function App() {
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-});

@@ -1,6 +1,5 @@
-import React from 'react';
 import 'react-native-gesture-handler';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // Navigation
@@ -9,19 +8,19 @@ import BottomTabNavigation from './BottomTabNavigator';
 // Home
 
 // Photo
-import AddPhotoScreen from '../screens/photo/container/AddPhotoScreen';
-import EditPhotoScreen from '../screens/photo/container/EditPhotoScreen';
+import AddPhotoScreen from '../screens/tab2/container/AddPhotoScreen';
+import EditPhotoScreen from '../screens/tab2/container/EditPhotoScreen';
+
 // Info
-import SettingScreen from '../screens/info/container/SettingScreen';
-import Notice from '../screens/info/container/Notice';
-import FrequecyQuestion from '../screens/info/container/FrequecyQuestion';
-import ServiceTOS from '../screens/info/container/ServiceTOS';
-import LocationTOS from '../screens/info/container/LocationTOS';
-import PrivacyPolicy from '../screens/info/container/PrivacyPolicy';
+import SettingScreen from '../screens/tab3/container/SettingScreen';
+import Notice from '../screens/tab3/container/Notice';
+import FrequecyQuestion from '../screens/tab3/container/FrequecyQuestion';
+import ServiceTOS from '../screens/tab3/container/ServiceTOS';
+import LocationTOS from '../screens/tab3/container/LocationTOS';
+import PrivacyPolicy from '../screens/tab3/container/PrivacyPolicy';
 
 const Stack = createNativeStackNavigator();
 
-// StackNavigation Function
 function RootScreen() {
   return (
     <Stack.Navigator>
@@ -31,6 +30,7 @@ function RootScreen() {
         options={{headerShown: false}}
       />
       {/* Home */}
+
       {/* Photo */}
       <Stack.Screen
         name="AddPhotoScreen"
@@ -42,6 +42,7 @@ function RootScreen() {
         component={EditPhotoScreen}
         options={{headerShown: false}}
       />
+
       {/* Info */}
       <Stack.Screen
         name="설정"
