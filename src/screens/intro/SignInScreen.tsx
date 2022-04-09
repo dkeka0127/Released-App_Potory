@@ -12,7 +12,7 @@ import {
   Text,
   Image,
   StyleSheet,
-  ImageBackground,
+  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
 // import {
@@ -23,10 +23,12 @@ import {
 //   logout,
 //   unlink,
 // } from '@react-native-seoul/kakao-login';
+
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // Images
-const backgroundImg = '../../assets/images/MainPhoto_bg.png';
+const potoryImg = require('../../assets/images/potory/login.png');
+const kakaoImg = require('../../assets/images/kakaoLogin.png');
 
 function SignInScreen() {
   // Kakao Login
@@ -42,71 +44,86 @@ function SignInScreen() {
   // };
 
   return (
-    <ImageBackground source={require(backgroundImg)} style={styles.bgImage}>
-      <View style={styles.flex6} />
-      <View style={styles.flex4}>
-        {/* Kakao Login */}
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content} />
+
+      {/***************************** Image *****************************/}
+      <View style={styles.logoContent}>
+        <Image source={potoryImg} style={styles.logoImg} />
+      </View>
+
+      {/***************************** Login *****************************/}
+      <View style={styles.loginContent}>
+        {/* Kakao */}
         <TouchableOpacity
-          style={[styles.loginContainer, {backgroundColor: '#f7e600'}]}
+          style={styles.loginContainer}
           onPress={() => {
             // signInWithKakao();
           }}>
-          <Image
-            source={require('../../assets/images/kakaoLogin.png')}
-            style={{width: 16, height: 16}}
-          />
-          <Text style={styles.kakaoLogin}>카카오 계정으로 로그인</Text>
+          <Image source={kakaoImg} style={styles.kakaoImg} />
+          <Text style={styles.loginText}>카카오 계정으로 로그인</Text>
         </TouchableOpacity>
-        {/* Apple Login */}
-        <TouchableOpacity
-          style={[styles.loginContainer, {backgroundColor: '#222'}]}
-          onPress={() => {
-            // signInWithKakao();
-          }}>
-          <Ionicons name="logo-apple" size={20} color="#fff" />
-          <Text style={styles.appleLogin}>Sign in with Apple</Text>
+
+        {/* Apple */}
+        <TouchableOpacity style={styles.loginContainer} onPress={() => {}}>
+          <Ionicons name="logo-apple" size={20} color="#111" />
+          <Text style={styles.loginText}>Sign in with Apple</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+      <View style={styles.content} />
+    </SafeAreaView>
   );
 }
 
 export default SignInScreen;
 
 const styles = StyleSheet.create({
-  bgImage: {
+  container: {
     flex: 1,
   },
-  flex6: {
-    flex: 6,
+  content: {
+    flex: 1,
   },
-  flex4: {
-    flex: 4,
+  logoContent: {
+    flex: 1,
+    marginTop: 50,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  loginContent: {
+    flex: 1,
+    marginTop: 50,
     alignItems: 'center',
   },
+  logoImg: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
   loginContainer: {
-    width: '75%',
-    height: 50,
-    marginBottom: 20,
+    width: '77%',
+    height: 46,
+    marginBottom: 25,
     borderRadius: 30,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    // shadow
     elevation: 4,
-    shadowRadius: 1,
-    shadowOpacity: 0.2,
+    shadowRadius: 1.2,
+    shadowOpacity: 0.6,
     shadowColor: 'rgb(50, 50, 50)',
     shadowOffset: {height: 0, width: 0},
+    backgroundColor: '#fff',
   },
-  appleLogin: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: '600',
-    marginLeft: 10,
-  },
-  kakaoLogin: {
+  loginText: {
+    color: '#111',
     fontSize: 15,
     fontWeight: '500',
-    marginLeft: 10,
+    marginLeft: 12,
+  },
+  kakaoImg: {
+    width: 16,
+    height: 16,
   },
 });

@@ -131,14 +131,11 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'absolute',
+    top: 30,
     left: 0,
     right: 0,
-    top: 30,
     height: HEADER_HEIGHT,
     zIndex: 999,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fee',
   },
   flatList: {
     flexGrow: 1,

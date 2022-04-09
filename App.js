@@ -19,12 +19,13 @@ function App() {
   const [isSplashScreen, setIsSplashScreen] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLogin(true);
-    }, 1000);
-    setTimeout(() => {
-      setIsSplashScreen(false);
-    }, 2000);
+    setIsLogin(false);
+    // setTimeout(() => {
+    //   setIsLogin(true);
+    // }, 1000);
+    // setTimeout(() => {
+    //   setIsSplashScreen(false);
+    // }, 2000);
   }, []);
 
   return (
