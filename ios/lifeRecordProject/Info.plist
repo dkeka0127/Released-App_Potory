@@ -34,11 +34,10 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KAKAO_APP_KEY</key>
-		<string>cff9a8e0a7303367f3d6e7e7a417d6c4</string>
+	<string>cff9a8e0a7303367f3d6e7e7a417d6c4</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>
-		<string>storykompassauth</string>
 		<string>kakaolink</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
