@@ -6,12 +6,13 @@ import {
   Animated,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 // Screen
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import FlatListRenderItem from './components/FlatListRenderItem';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
@@ -43,7 +44,7 @@ const dataSource = [
 const HEADER_HEIGHT = 60;
 
 function Main() {
-  // [Header] Scroll Variable
+  // header - scroll variable
   const [scrollAnim] = useState(new Animated.Value(0));
   const [offsetAnim] = useState(new Animated.Value(0));
   const [clampedScroll, setClampedScroll] = useState(
@@ -65,6 +66,23 @@ function Main() {
     outputRange: [0, -HEADER_HEIGHT * 2],
     extrapolate: 'clamp',
   });
+
+  // tools
+  const [grid, setGrid] = useState<number>();
+  const [sequence, setSequence] = useState<string>();
+  const [bgColor, setBgColor] = useState<string>();
+
+  // [tool 값] 상/하위 전달 F
+  const gridPress = value => setGrid(value);
+  const sequencePress = value => setSequence(value);
+  const bgColorPress = value => setBgColor(value);
+
+  // 초기 Async 값 받아옴
+  const initToolValue = value => {
+    setGrid(value.grid);
+    setSequence(value.sequence);
+    setBgColor(value.bgColor);
+  };
 
   // [Header] Scroll Event Function
   const scrollHeaderF = event => {
@@ -100,8 +118,19 @@ function Main() {
         <Animated.View
           style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
           onLayout={event => scrollHeaderF(event)}>
-          <ScrollHeader />
+          <ScrollHeader
+            initToolValue={initToolValue}
+            gridPress={gridPress}
+            sequencePress={sequencePress}
+            bgColorPress={bgColorPress}
+          />
         </Animated.View>
+
+        <View style={{marginTop: 100}}>
+          <Text>Grid : {grid}</Text>
+          <Text>Sequence : {sequence}</Text>
+          <Text>BG Color : {bgColor}</Text>
+        </View>
 
         {/********************* content *********************/}
         <Animated.FlatList
