@@ -12,8 +12,8 @@ const FlatListRenderItem = ({item}: Props) => {
       style={{
         width: '100%',
         height: 100,
+        marginTop: 30,
         marginBottom: 10,
-        backgroundColor: '#fff',
       }}>
       <Text>FlatListRenderItem</Text>
       <Text>{item.title}</Text>

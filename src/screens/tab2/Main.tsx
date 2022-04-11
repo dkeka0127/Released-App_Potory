@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   Animated,
+  View,
 } from 'react-native';
 import React, {useState} from 'react';
 
@@ -64,6 +65,7 @@ function Main() {
     outputRange: [0, -HEADER_HEIGHT * 2],
     extrapolate: 'clamp',
   });
+
   // [Header] Scroll Event Function
   const scrollHeaderF = event => {
     let {height} = event.nativeEvent.layout;
@@ -80,6 +82,14 @@ function Main() {
         0,
         height,
       ),
+    );
+  };
+
+  const _FlatListRenderItem = () => {
+    return (
+      <View>
+        <View></View>
+      </View>
     );
   };
 
@@ -141,6 +151,5 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: '100%',
     paddingTop: HEADER_HEIGHT,
-    backgroundColor: '#ffe',
   },
 });

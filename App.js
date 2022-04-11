@@ -18,24 +18,22 @@ function App() {
   const [isLogin, setIsLogin] = useState(null);
   const [isSplashScreen, setIsSplashScreen] = useState(true);
 
-  // const login = value => {
-  //   setIsLogin(true);
-  // };
+  const isLoginF = value => {
+    setIsLogin(true);
+  };
 
   useEffect(() => {
-    // setIsLogin(false);
-    // setTimeout(() => {
-    //   setIsLogin(true);
-    // }, 1000);
-    // setTimeout(() => {
-    //   setIsSplashScreen(false);
-    // }, 2000);
-  }, []);
+    if (isLogin) {
+      setTimeout(() => {
+        setIsSplashScreen(false);
+      }, 2000);
+    }
+  }, [isLogin]);
 
   return (
     <NavigationContainer>
       {!isLogin ? (
-        <SignInScreen />
+        <SignInScreen isLoginF={isLoginF} />
       ) : isSplashScreen ? (
         <SplashScreen />
       ) : (

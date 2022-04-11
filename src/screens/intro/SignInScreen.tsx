@@ -19,8 +19,6 @@ import {
   KakaoOAuthToken,
   getProfile as getKakaoProfile,
   login,
-  logout,
-  unlink,
 } from '@react-native-seoul/kakao-login';
 
 // Images
@@ -28,15 +26,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const potoryImg = require('../../assets/images/potory/login.png');
 const kakaoImg = require('../../assets/images/kakaoLogin.png');
 
-function SignInScreen() {
+function SignInScreen({isLoginF}) {
   // device_id
   const [deviceId, setDeviceId] = useState<string>();
 
   // [Kakao] Login
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-    console.log('token ========== ', token);
     getProfile();
+    console.log('token ========== ', token);
   };
 
   // [Kakao] Get Device ID
@@ -46,29 +44,12 @@ function SignInScreen() {
     console.log('profile =============== ', profile);
   };
 
-  // 로그아웃
-  const signOutWithKakao = async (): Promise<void> => {
-    const message = await logout();
-    console.log('==============', message);
-    // setResult(message);
-  };
-
-  // 회원탈퇴
-  const unlinkKakao = async (): Promise<void> => {
-    const message = await unlink();
-    // setResult(message);
-  };
-
   useEffect(() => {
     if (deviceId) {
-      // login();
-      console.log('device id 있음 ............');
-    } else {
-      console.log('device id 없음 ............');
+      // 서버에 device_id 넘겨줌
+      isLoginF(true);
     }
   }, [deviceId]);
-
-  console.log('========== deviceId ==========', deviceId);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -81,7 +62,7 @@ function SignInScreen() {
 
       {/***************************** Login *****************************/}
       <View style={styles.loginContent}>
-        {/* Kakao */}
+        {/*---------------- Kakao ----------------*/}
         <TouchableOpacity
           style={styles.loginContainer}
           onPress={signInWithKakao}>
@@ -89,7 +70,7 @@ function SignInScreen() {
           <Text style={styles.loginText}>카카오 계정으로 로그인</Text>
         </TouchableOpacity>
 
-        {/* Apple */}
+        {/*---------------- Apple ----------------*/}
         <TouchableOpacity style={styles.loginContainer} onPress={() => {}}>
           <Ionicons name="logo-apple" size={20} color="#111" />
           <Text style={styles.loginText}>Sign in with Apple</Text>
