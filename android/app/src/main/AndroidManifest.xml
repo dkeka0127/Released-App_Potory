@@ -2,11 +2,10 @@
   package="com.liferecordproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name='android.permission.CAMERA' /> <!-- // add -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- // add -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- // add -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- // add -->
-
-
 
     <application
       android:name=".MainApplication"
@@ -16,8 +15,9 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <!-- // add -->
-      <meta-data android:name="com.google.android.geo.API_KEY"
-      android:value="AIzaSyDRvj60nEHFZupc1UwG1piAK_JP8YR5CZo"/>
+      <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="ms8z7c5lyd" />
       <!-- You will also only need to add this uses-libray tag -->
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
       <activity
@@ -32,5 +32,4 @@
         </intent-filter>
       </activity>
     </application>
-
 </manifest>

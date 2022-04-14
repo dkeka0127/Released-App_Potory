@@ -1,65 +1,80 @@
-import React from 'react';
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// Pages
-import MainHome from '../screens/home/MainHome';
-import MainPhoto from '../screens/photo/MainPhoto';
-import MainShop from '../screens/shop/MainShop';
-import MainInfo from '../screens/info/MainInfo';
+// Navigation
+import BottomTabNavigation from './BottomTabNavigator';
 
-const Tab = createBottomTabNavigator();
+// Home
+
+// Photo
+import AddPhotoScreen from '../screens/tab2/container/AddPhotoScreen';
+import EditPhotoScreen from '../screens/tab2/container/EditPhotoScreen';
+
+// Info
+import SettingScreen from '../screens/tab3/container/SettingScreen';
+import Notice from '../screens/tab3/container/Notice';
+import FrequecyQuestion from '../screens/tab3/container/FrequecyQuestion';
+import ServiceTOS from '../screens/tab3/container/ServiceTOS';
+import LocationTOS from '../screens/tab3/container/LocationTOS';
+import PrivacyPolicy from '../screens/tab3/container/PrivacyPolicy';
+
 const Stack = createNativeStackNavigator();
 
 function RootScreen() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
+    <Stack.Navigator>
+      <Stack.Screen
+        name="BottomTab"
+        component={BottomTabNavigation}
+        options={{headerShown: false}}
+      />
+      {/* Home */}
 
-            if (route.name === 'Map') {
-              iconName = focused ? 'map' : 'map-outline';
-            } else if (route.name === 'Memory') {
-              iconName = focused ? 'camera' : 'camera-outline';
-            } else if (route.name === 'Shop') {
-              iconName = focused ? 'add-circle' : 'add-circle-outline';
-            } else if (route.name === 'MyPage') {
-              iconName = focused ? 'person' : 'person-outline';
-            }
+      {/* Photo */}
+      <Stack.Screen
+        name="AddPhotoScreen"
+        component={AddPhotoScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditPhotoScreen"
+        component={EditPhotoScreen}
+        options={{headerShown: false}}
+      />
 
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'black',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-        <Tab.Screen
-          name="Map"
-          component={MainHome}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="Memory"
-          component={MainPhoto}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="Shop"
-          component={MainShop}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="MyPage"
-          component={MainInfo}
-          options={{headerShown: false}}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+      {/* Info */}
+      <Stack.Screen
+        name="설정"
+        component={SettingScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="공지사항"
+        component={Notice}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="자주 묻는 질문"
+        component={FrequecyQuestion}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="서비스 이용약관"
+        component={ServiceTOS}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="위치정보 이용약관"
+        component={LocationTOS}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="개인정보 처리방침"
+        component={PrivacyPolicy}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
   );
 }
 

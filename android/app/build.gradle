@@ -191,7 +191,9 @@ android {
 }
 
 dependencies {
-    // implementation 'com.google.android.gms:play-services-maps:18.0.1' // add
+    // add
+    implementation 'com.naver.maps:map-sdk:3.14.0'
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

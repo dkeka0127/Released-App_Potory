@@ -6,31 +6,41 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+
 // Page
 import RootScreen from './src/routes/rootScreen';
+import SplashScreen from './src/screens/intro/SplashScreen';
+import SignInScreen from './src/screens/intro/SignInScreen';
 
 function App() {
-  // dummy
-  const [login, setLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(null);
+  const [isSplashScreen, setIsSplashScreen] = useState(true);
 
-  if (login === false) {
-    <SignInScreen />;
-  } else if (login === true) {
-    return (
-      <View style={styles.container}>
+  const isLoginF = value => {
+    setIsLogin(true);
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      setTimeout(() => {
+        setIsSplashScreen(false);
+      }, 2000);
+    }
+  }, [isLogin]);
+
+  return (
+    <NavigationContainer>
+      {!isLogin ? (
+        <SignInScreen isLoginF={isLoginF} />
+      ) : isSplashScreen ? (
+        <SplashScreen />
+      ) : (
         <RootScreen />
-      </View>
-    );
-  }
+      )}
+    </NavigationContainer>
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-});
 
 export default App;
