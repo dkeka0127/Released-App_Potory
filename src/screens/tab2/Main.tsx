@@ -13,10 +13,11 @@ import {
 // custom component
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
+import AddContentButton from './components/AddContentButton';
 import FlatListRenderItem from './components/FlatListRenderItem';
 
 // image
-const backgroundImg = '../../assets/images/MainPhoto_bg.png';
+const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 
 // variable
 const HEADER_HEIGHT = 60;
@@ -45,7 +46,7 @@ const dataSource = [
 ];
 
 function Main() {
-  // header - scroll variable
+  // header scroll
   const [scrollAnim] = useState(new Animated.Value(0));
   const [offsetAnim] = useState(new Animated.Value(0));
   const [clampedScroll, setClampedScroll] = useState(
@@ -68,12 +69,12 @@ function Main() {
     extrapolate: 'clamp',
   });
 
-  // tools
+  // async tools
   const [grid, setGrid] = useState<number>();
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
-  // [tool 값] 상/하위 전달 F
+  // [tool] 상/하위 전달 F
   const gridPress = value => setGrid(value);
   const sequencePress = value => setSequence(value);
   const bgColorPress = value => setBgColor(value);
@@ -111,20 +112,20 @@ function Main() {
           <Text>{item.index}</Text>
           <ImageBackground
             resizeMode="contain"
-            source={require('../../assets/images/polaroid_hand/1.png')}
+            source={require('../../assets/images/polaroid/black_1_1.png')}
             style={{
               paddingLeft: 20,
               width: 150,
               height: 150,
             }}>
-            {/* <Image
-              source={require('../../assets/images/image5.png')}
+            <Image
+              source={require('../../assets/images/user/image5.png')}
               style={{
                 width: 60,
                 height: 150,
                 marginTop: -5,
                 resizeMode: 'contain',
-              }}></Image> */}
+              }}></Image>
           </ImageBackground>
         </View>
       </View>
@@ -166,6 +167,9 @@ function Main() {
             {useNativeDriver: true},
           )}
         />
+
+        {/*======================= Footer =======================*/}
+        <AddContentButton />
       </SafeAreaView>
     </ImageBackground>
   );

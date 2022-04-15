@@ -25,7 +25,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomHeader from '../../common/CustomHeader';
 
 // Image
-const backgroundImg = '../../../assets/images/photoModify_bg.png';
+const backgroundImg = '../../../assets/images/background/photoModify_bg.png';
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
@@ -103,7 +103,7 @@ function AddPhotoScreen() {
                   // moveToCamera();
                 }}>
                 <Image
-                  source={require('../../../assets/images/image2.png')}
+                  source={require('../../../assets/images/user/image2.png')}
                   style={styles.image}
                 />
               </TouchableOpacity>

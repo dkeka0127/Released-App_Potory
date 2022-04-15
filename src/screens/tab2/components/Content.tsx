@@ -22,28 +22,40 @@ const deviceWidth = Dimensions.get('window').width;
 import {photoList} from '../../../../dummyData';
 const polaroid = [
   {
-    uri: require('../../../assets/images/polaroid/pink_one_.png'),
+    uri: require('../../../assets/images/polaroid/black_1_1.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/purple_one_.png'),
+    uri: require('../../../assets/images/polaroid/black_1_2.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/skyblue_one_.png'),
+    uri: require('../../../assets/images/polaroid/black_1_3.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/yellow_one_.png'),
+    uri: require('../../../assets/images/polaroid/black_1_4.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/green_one_.png'),
+    uri: require('../../../assets/images/polaroid/black_2_1.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/pink_two_.png'),
+    uri: require('../../../assets/images/polaroid/black_2_2.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/skyblue_two_.png'),
+    uri: require('../../../assets/images/polaroid/black_2_3.png'),
   },
   {
-    uri: require('../../../assets/images/polaroid/yellow_two_.png'),
+    uri: require('../../../assets/images/polaroid/black_2_4.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/black_3_1.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/black_3_1.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/black_3_1.png'),
+  },
+  {
+    uri: require('../../../assets/images/polaroid/black_3_1.png'),
   },
 ];
 

@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 // Image
-const profile = '../../../assets/images/image3.png';
+const profile = '../../../assets/images/user/image3.png';
 // Variable
 const point = 150;
 const userLevel = '소꿉친구';

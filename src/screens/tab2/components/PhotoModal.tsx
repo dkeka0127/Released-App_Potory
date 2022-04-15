@@ -16,14 +16,14 @@ import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
 // icons & images
-const bgImg = '../../../assets/images/photoPopup_bg.png';
+const bgImg = '../../../assets/images/background/photoPopup_bg.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const userImg = require('../../../assets/images/image3.png');
+const userImg = require('../../../assets/images/user/image3.png');
 const userText =
   '오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';
 const date = '22.03.02';

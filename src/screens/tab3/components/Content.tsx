@@ -10,7 +10,7 @@ import {
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // Image
-const profile = '../../../assets/images/userProfile.png';
+const profile = '../../../assets/images/icons/userProfile.png';
 // Variable
 const point = 150;
 const name = '리리';

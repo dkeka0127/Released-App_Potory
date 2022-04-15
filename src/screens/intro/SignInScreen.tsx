@@ -25,7 +25,7 @@ import {
 // icons & images
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const potoryImg = require('../../assets/images/potory/login.png');
-const kakaoImg = require('../../assets/images/kakaoLogin.png');
+const kakaoImg = require('../../assets/images/icons/kakaoLogin.png');
 
 function SignInScreen({isLoginF}) {
   const [deviceId, setDeviceId] = useState<string>();

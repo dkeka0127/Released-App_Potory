@@ -13,7 +13,7 @@ import Content from './components/Content';
 import AddContentButton from './components/AddContentButton';
 
 // Image
-const backgroundImg = '../../assets/images/MainPhoto_bg.png';
+const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 
 function MainPhoto() {
   const [grid, setGrid] = useState(2);

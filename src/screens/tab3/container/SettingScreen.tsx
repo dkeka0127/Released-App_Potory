@@ -9,7 +9,7 @@ import SettingContent from '../components/SettingContent';
 import SettingBottom from '../components/SettingBottom';
 
 // image
-const backgroundImg = '../../../assets/images/mainPhoto_bg.png';
+const backgroundImg = '../../../assets/images/background/mainPhoto_bg.png';
 
 // variable
 const IconSize = 17;
