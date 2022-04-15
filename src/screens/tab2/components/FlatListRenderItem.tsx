@@ -1,5 +1,6 @@
-import {StyleSheet, Text, View} from 'react-native';
+// React & Package
 import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 
 type Props = {
   item: any;
@@ -8,13 +9,7 @@ type Props = {
 const FlatListRenderItem = ({item}: Props) => {
   console.log(item.title);
   return (
-    <View
-      style={{
-        width: '100%',
-        height: 100,
-        marginTop: 30,
-        marginBottom: 10,
-      }}>
+    <View style={styles.container}>
       <Text>FlatListRenderItem</Text>
       <Text>{item.title}</Text>
     </View>
@@ -23,4 +18,11 @@ const FlatListRenderItem = ({item}: Props) => {
 
 export default FlatListRenderItem;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: 100,
+    marginTop: 30,
+    marginBottom: 10,
+  },
+});

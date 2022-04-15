@@ -1,23 +1,24 @@
+// React & Package
 import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-// Page
-import NoticeContent from '../components/NoticeContent';
+// custom components
 import CustomHeader from '../../common/CustomHeader';
+import NoticeContent from '../components/NoticeContent';
 import CustomFooterButton from '../../common/CustomFooterButton';
 
 function Notice() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+      {/*--------- Header ---------*/}
       <CustomHeader headerTitle={'공지사항'} />
 
-      {/* Content */}
+      {/*--------- Content ---------*/}
       <NoticeContent />
 
-      {/* Footer */}
+      {/*--------- Footer ---------*/}
       <CustomFooterButton navigation={navigation} />
     </SafeAreaView>
   );

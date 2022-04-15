@@ -1,3 +1,6 @@
+// Asycn Example File
+
+// React & Package
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';

@@ -1,24 +1,25 @@
+// React & Package
 import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
   Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
   FlatList,
+  Dimensions,
+  StyleSheet,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 
-// Data
-import {photoList} from '../../../../dummyData';
-
-// Page
+// custom component
 import PhotoModal from './PhotoModal';
 
-// Variale
-const margin = 7; // 전체 Container의 양 옆 여백 값
+// variale
+const margin = 7; // 전체 화면의 양 옆 여백 값
 const deviceWidth = Dimensions.get('window').width;
+
+// data
+import {photoList} from '../../../../dummyData';
 const polaroid = [
   {
     uri: require('../../../assets/images/polaroid/pink_one_.png'),
@@ -45,10 +46,6 @@ const polaroid = [
     uri: require('../../../assets/images/polaroid/yellow_two_.png'),
   },
 ];
-// 마스킹테이프 랜덤 배열
-const polaroidArr = photoList.map(() => {
-  return Math.floor(Math.random() * 8);
-});
 
 interface Props {
   grid?: number;
@@ -56,26 +53,36 @@ interface Props {
   polaroidColor?: string;
 }
 
+// 마스킹테이프 랜덤 배열
+const polaroidArr = photoList.map(() => {
+  return Math.floor(Math.random() * 8);
+});
+
 function Content(props: Props) {
-  const photoListData = useRef(photoList); // Image Data
-  const [isModal, setIsModal] = useState(false);
-  const [modalImgUrl, setModalImgUrl] = useState(false);
   const [grid, setGrid] = useState(props.grid);
   const [sequence, setSequence] = useState(props.sequence);
   const [polaroidColor, setPolaroidColor] = useState(props.polaroidColor);
-  const polaroidNum = useRef(-1);
 
+  const polaroidNum = useRef(-1);
+  const photoListData = useRef(photoList);
+
+  const [isModal, setIsModal] = useState(false);
+  const [modalImgUrl, setModalImgUrl] = useState(false);
+
+  // set Grid
   useEffect(() => {
     if (grid === props.grid) return;
     setGrid(props.grid);
   }, [props.grid]);
 
+  // set Sequence
   useEffect(() => {
     if (sequence === props.sequence) return;
     setSequence(props.sequence);
     photoListData.current = photoList.reverse();
   }, [props.sequence]);
 
+  // set Polaroid_BgColor
   useEffect(() => {
     if (polaroidColor === props.polaroidColor) return;
     setPolaroidColor(props.polaroidColor);
@@ -85,6 +92,7 @@ function Content(props: Props) {
     if (isModal) setIsModal(false);
   }, [isModal]);
 
+  // 각각의 이미지
   const Images = ({index, item}) => {
     console.log(polaroidArr);
     polaroidNum.current++;

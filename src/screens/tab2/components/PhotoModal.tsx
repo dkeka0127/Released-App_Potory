@@ -1,28 +1,35 @@
+// React & Package
 import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
+  Alert,
   Image,
   StyleSheet,
   Dimensions,
-  ImageBackground,
   ScrollView,
+  ImageBackground,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import ImageModal from 'react-native-image-modal';
-
-// Icons
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 
-// Variable
+// icons & images
+const bgImg = '../../../assets/images/photoPopup_bg.png';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+// variable
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-// Image
-const bgImg = '../../../assets/images/photoPopup_bg.png';
+const userImg = require('../../../assets/images/image3.png');
+const userText =
+  '오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';
+const date = '22.03.02';
+
+//
+//
 
 export default function PhotoModal({isModal}) {
   const navigation = useNavigation();
@@ -35,8 +42,8 @@ export default function PhotoModal({isModal}) {
     }
   }, [isModal]);
 
-  // Delete Image 클릭 시 Alert 출력
-  const deleteAlert = () => {
+  // 사진 삭제 시 동작하는 Alert
+  const Delete = () => {
     Alert.alert('', '삭제 하시겠습니까 ?', [
       {
         text: '취소',
@@ -52,6 +59,12 @@ export default function PhotoModal({isModal}) {
     ]);
   };
 
+  // 사진 수정 시 동작
+  const Edit = () => {
+    setShownModal(false);
+    navigation.navigate('EditPhotoScreen');
+  };
+
   return (
     <Modal
       style={styles.container}
@@ -64,47 +77,36 @@ export default function PhotoModal({isModal}) {
       }}>
       <View style={styles.content}>
         <View style={styles.modalContent}>
+          {/*===================== Content =====================*/}
           <ImageBackground source={require(bgImg)} style={styles.bgImage}>
-            {/* Image */}
+            {/*----------------- Image -----------------*/}
             <View style={styles.imageContainer}>
               <ImageModal
+                style={styles.image}
                 resizeMode="contain"
                 hideCloseButton={true}
                 overlayBackgroundColor="#000000"
-                style={styles.image}
-                source={require('../../../assets/images/image3.png')}
+                source={userImg}
               />
             </View>
 
-            {/* Text */}
+            {/*----------------- Text -----------------*/}
             <ScrollView>
-              <Text style={styles.textContaier}>
-                오늘은 인스타스토리를 봤다. {'\n'}열받을 뻔 했다.{'\n'}하지만
-                내가 이겼군 후후 기분이 나쁘지만 나쁘지 않다.{'\n'}있었는데요
-                없었습니다 뭐 약간 그런느낌 ?{'\n'}
-                {'\n'}있었는데요 없었습니다 뭐 약간 그런느낌 ?{'\n'}
-              </Text>
+              <Text style={styles.textContaier}>{userText}</Text>
             </ScrollView>
           </ImageBackground>
         </View>
 
-        {/* Footer */}
+        {/*===================== Footer =====================*/}
         <View style={styles.modalFooter}>
-          <Text style={styles.date}>22.03.02</Text>
+          <Text style={styles.date}>{date}</Text>
           <View style={styles.iconsContaier}>
-            <TouchableOpacity
-              style={styles.editIcon}
-              onPress={() => {
-                setShownModal(false);
-                navigation.navigate('EditPhotoScreen');
-              }}>
+            {/*----------------- Edit Photo -----------------*/}
+            <TouchableOpacity style={styles.editIcon} onPress={Edit}>
               <MaterialIcons name="pencil-outline" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteIcon}
-              onPress={() => {
-                deleteAlert();
-              }}>
+            {/*----------------- Delete Photo -----------------*/}
+            <TouchableOpacity style={styles.deleteIcon} onPress={Delete}>
               <MaterialIcons name="delete-outline" size={24} color="black" />
             </TouchableOpacity>
           </View>

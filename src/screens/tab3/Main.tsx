@@ -1,9 +1,9 @@
+// React & Package
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
-// Page
+// custom component
 import Header from './components/Header';
 import Content from './components/Content';
 

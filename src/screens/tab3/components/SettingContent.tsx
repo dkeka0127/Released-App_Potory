@@ -1,13 +1,16 @@
+// React & Package
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  Alert,
   StyleSheet,
   ScrollView,
-  Alert,
+  TouchableOpacity,
 } from 'react-native';
+
+// kakao_login
 // import {
 //   KakaoOAuthToken,
 //   KakaoProfile,
@@ -16,13 +19,15 @@ import {
 //   logout,
 //   unlink,
 // } from '@react-native-seoul/kakao-login';
-// Icons
+
+// icons
 import AntDesign from 'react-native-vector-icons/AntDesign';
-// Variable
+
+// variable
 const IconSize = 17;
 const IconColor = '#111';
 
-// [컴포넌트] Logout / Withdrawal
+// 로그아웃 / 회원가입
 const SettingAccount = ({iconName, title}) => {
   return (
     <TouchableOpacity
@@ -41,7 +46,7 @@ const SettingAccount = ({iconName, title}) => {
   );
 };
 
-// [컴포넌트] Menu List
+// List Components
 const SettingContentList = ({iconName, title}) => {
   const navigation = useNavigation();
   return (
@@ -65,7 +70,7 @@ const SettingContentList = ({iconName, title}) => {
   );
 };
 
-// [컴포넌트] Category Title
+// Category Title
 const SettingContectTitle = ({title}) => {
   return (
     <View style={styles.headerTitleCon}>
@@ -73,6 +78,10 @@ const SettingContectTitle = ({title}) => {
     </View>
   );
 };
+
+//
+//
+//
 
 function SettingContent() {
   // Kakao Login
@@ -113,7 +122,7 @@ function SettingContent() {
 
   return (
     <ScrollView style={styles.content}>
-      {/* 게시판 */}
+      {/*------------------------ 게시판 ------------------------*/}
       <SettingContectTitle title={'게시판'} />
       <SettingContentList iconName={'notification'} title={'공지사항'} />
       <SettingContentList
@@ -122,7 +131,7 @@ function SettingContent() {
       />
       <View style={styles.devideLine} />
 
-      {/* 약관 및 정책 */}
+      {/*---------------------- 약관 및 정책 ----------------------*/}
       <SettingContectTitle title={'약관 및 정책'} />
       {/* <SettingContentList iconName={'infocirlceo'} title={'서비스 이용약관'} /> */}
       <SettingContentList
@@ -132,7 +141,7 @@ function SettingContent() {
       <SettingContentList iconName={'exception1'} title={'개인정보 처리방침'} />
       <View style={styles.devideLine} />
 
-      {/* 로그아웃/회원탈퇴 */}
+      {/*--------------------- 로그아웃/회원탈퇴 ---------------------*/}
       <View style={styles.accountContainer}>
         <SettingAccount iconName={'logout'} title={'로그아웃'} />
         <SettingAccount iconName={'warning'} title={'회원탈퇴'} />

@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 // Page
 import Header from './components/Header';
 import Content from './components/Content';
-import BottomButton from './components/BottomButton';
+import AddContentButton from './components/AddContentButton';
 
 // Image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
@@ -117,7 +117,7 @@ function MainPhoto() {
           sequence={sequence}
           polaroidColor={polaroidColor}
         />
-        <BottomButton />
+        <AddContentButton />
       </SafeAreaView>
     </ImageBackground>
   );

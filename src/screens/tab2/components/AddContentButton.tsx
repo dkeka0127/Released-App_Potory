@@ -1,7 +1,9 @@
+// React & Package
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-// Icons
+
+// icons
 import PlusIcons from 'react-native-vector-icons/Entypo';
 
 function BottomButton() {

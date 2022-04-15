@@ -1,6 +1,6 @@
+// React & Package
 import React from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
-// import {ScrollView} from 'react-native-gesture-handler';
 
 function PrivacyPolicy() {
   return (

@@ -1,12 +1,13 @@
+// React & Package
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-// Icons
+// icons
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const optionColor = '#333';
@@ -26,7 +27,6 @@ function Header({
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
-  // tools
   const [grid, setGrid] = useState<number>();
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
@@ -51,7 +51,7 @@ function Header({
     AsyncStorage.setItem('bgColor', bgColor);
   };
 
-  // 클릭 시 변경되는 값 저장
+  // Tools 클릭 시 변경값 저장
   const setGridF = () => {
     grid === 1 ? setGrid(2) : grid === 2 ? setGrid(3) : setGrid(1);
     gridPress(grid === 1 ? 2 : grid === 2 ? 3 : 1);
@@ -65,12 +65,18 @@ function Header({
     bgColorPress(bgColor === '#111' ? '#ddd' : '#111');
   };
 
+  // 편집 || 저장 동작 함수
+  const EditOrSaveF = () => {
+    setIsEdit(!isEdit);
+    isEdit && setColorAsync();
+  };
+
+  // 초기 Async 값 받아오는 useEffect
   useEffect(() => {
-    // 초기 Async 값 불러옴
     getAsyncStorage();
   }, []);
 
-  // 초기 Async 값 Main으로 전달
+  // 초기 Async 값 Main으로 전달하는 useEffect
   useEffect(() => {
     if (grid !== undefined && sequence !== undefined && bgColor !== undefined) {
       initToolValue({grid, sequence, bgColor});
@@ -79,7 +85,7 @@ function Header({
 
   return (
     <View style={styles.container}>
-      {/************************* Logo *************************/}
+      {/*========================== Logo ==========================*/}
       <View style={styles.appName}>
         <Text style={styles.appNameFont}>
           {isEdit ? 'Potory' : 'Photo in memory'}
@@ -87,10 +93,10 @@ function Header({
       </View>
 
       <View style={styles.toolCon}>
-        {/************************* Tools *************************/}
+        {/*======================== Tools ========================*/}
         {isEdit && (
           <View style={styles.optionCon}>
-            {/******** Grid ********/}
+            {/*----------- Grid -----------*/}
             <TouchableOpacity style={styles.options} onPress={setGridF}>
               <CommunityIcons
                 name={'grid-large'}
@@ -98,7 +104,7 @@ function Header({
                 color={optionColor}
               />
             </TouchableOpacity>
-            {/******** Sequence ********/}
+            {/*--------- Sequence ---------*/}
             <TouchableOpacity
               style={styles.options}
               hitSlop={styles.hitslop}
@@ -109,7 +115,7 @@ function Header({
                 color={optionColor}
               />
             </TouchableOpacity>
-            {/******** BG_Color ********/}
+            {/*--------- BG_Color ---------*/}
             <TouchableOpacity style={styles.options} onPress={setBgColorF}>
               <Ionicons
                 name={'color-palette-outline'}
@@ -120,14 +126,11 @@ function Header({
           </View>
         )}
 
-        {/*********************** Edit & Save ***********************/}
+        {/*======================= Edit & Save =======================*/}
         <TouchableOpacity
           style={styles.tool}
           hitSlop={styles.hitslop}
-          onPress={() => {
-            setIsEdit(!isEdit);
-            isEdit && setColorAsync();
-          }}>
+          onPress={EditOrSaveF}>
           {isEdit ? (
             <MaterialIcons name={'save-alt'} size={20} color={'black'} />
           ) : (

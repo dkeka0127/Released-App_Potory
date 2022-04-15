@@ -1,22 +1,25 @@
+// React & Package
 import React from 'react';
-import {SafeAreaView, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-// Page
+
+// custom components
 import CustomHeader from '../../common/CustomHeader';
 import LocationTOSContent from '../components/LocationTOSContent';
 
 function ServiceTOS() {
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+      {/*---------- Header ----------*/}
       <CustomHeader
         headerTitle={'위치정보 이용약관'}
         goBackArrow={true}
         navigation={navigation}
       />
 
-      {/* Content */}
+      {/*---------- Content ----------*/}
       <LocationTOSContent />
     </SafeAreaView>
   );

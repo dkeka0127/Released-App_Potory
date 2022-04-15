@@ -1,6 +1,8 @@
+// React & Package
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-// Icons
+
+// icons
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 interface Props {
@@ -10,15 +12,17 @@ interface Props {
 }
 
 function CustomHeader({headerTitle, goBackArrow, navigation}: Props) {
+  const goBack = () => {
+    navigation.goBack();
+  };
+
   return (
-    <View style={styles.headerContainer}>
+    <View style={styles.container}>
       {goBackArrow ? (
         <TouchableOpacity
-          hitSlop={{top: 10, left: 15, bottom: 10, right: 50}}
-          style={{position: 'absolute', left: 18}}
-          onPress={() => {
-            navigation.goBack();
-          }}>
+          hitSlop={styles.hitslop}
+          style={styles.content}
+          onPress={goBack}>
           <AntDesign name="left" size={19} color="#111" />
         </TouchableOpacity>
       ) : null}
@@ -30,12 +34,22 @@ function CustomHeader({headerTitle, goBackArrow, navigation}: Props) {
 export default CustomHeader;
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  hitslop: {
+    top: 10,
+    left: 15,
+    bottom: 10,
+    right: 50,
+  },
+  container: {
     width: '100%',
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+  },
+  content: {
+    position: 'absolute',
+    left: 18,
   },
   headerText: {
     color: '#111',

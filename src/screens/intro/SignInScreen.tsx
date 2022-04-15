@@ -6,6 +6,7 @@
  * @flow strict-local
  */
 
+// React & Package
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -21,13 +22,12 @@ import {
   login,
 } from '@react-native-seoul/kakao-login';
 
-// Images
+// icons & images
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const potoryImg = require('../../assets/images/potory/login.png');
 const kakaoImg = require('../../assets/images/kakaoLogin.png');
 
 function SignInScreen({isLoginF}) {
-  // device_id
   const [deviceId, setDeviceId] = useState<string>();
 
   // [Kakao] Login
@@ -37,13 +37,14 @@ function SignInScreen({isLoginF}) {
     console.log('token ========== ', token);
   };
 
-  // [Kakao] Get Device ID
+  // [Kakao] Get device_Id
   const getProfile = async (): Promise<void> => {
     const profile = await getKakaoProfile();
     await setDeviceId(profile.id);
     console.log('profile =============== ', profile);
   };
 
+  // 로그인 성공 시 서버로 device_Id 전송
   useEffect(() => {
     if (deviceId) {
       // 서버에 device_id 넘겨줌
@@ -55,12 +56,12 @@ function SignInScreen({isLoginF}) {
     <SafeAreaView style={styles.container}>
       <View style={styles.content} />
 
-      {/***************************** Image *****************************/}
+      {/*============================= Image =============================*/}
       <View style={styles.logoContent}>
         <Image source={potoryImg} style={styles.logoImg} />
       </View>
 
-      {/***************************** Login *****************************/}
+      {/*============================= Login =============================*/}
       <View style={styles.loginContent}>
         {/*---------------- Kakao ----------------*/}
         <TouchableOpacity

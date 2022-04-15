@@ -6,22 +6,12 @@
  * @flow strict-local
  */
 
+// React & Package
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
 
-// Image
-// const image1 = '../../assets/images/image1.png';
-// const image2 = '../../assets/images/image1.png';
-// const image3 = '../../assets/images/image1.png';
-
 function SplashScreen() {
-  return (
-    <View style={styles.container}>
-      {/* <Image source={require(image1)} />
-      <Image source={require(image2)} />
-      <Image source={require(image3)} /> */}
-    </View>
-  );
+  return <View style={styles.container}></View>;
 }
 
 export default SplashScreen;

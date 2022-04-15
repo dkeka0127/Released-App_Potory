@@ -1,6 +1,8 @@
+// React & Package
 import React from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-// Icons
+
+// icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const data = [
@@ -26,21 +28,23 @@ const data = [
   },
 ];
 
-const NoticeList = ({noticeNum, mainText, subText}) => {
-  return (
-    <View style={styles.noticeContainer}>
-      <View style={styles.noticeListSide}>
-        <MaterialIcons name="alarm-light-outline" size={26} color="#f07056" />
-        <Text style={styles.noticeListSideText}>No.{noticeNum}</Text>
-      </View>
-      <View style={styles.noticeCotent}>
-        <Text style={styles.cotentMainText}>{mainText}</Text>
-        <Text style={styles.cotentSubText}>{subText}</Text>
-      </View>
-    </View>
-  );
-};
 function NoticeContent() {
+  // 공지사항 컴포넌트
+  const NoticeList = ({noticeNum, mainText, subText}) => {
+    return (
+      <View style={styles.noticeContainer}>
+        <View style={styles.noticeListSide}>
+          <MaterialIcons name="alarm-light-outline" size={26} color="#f07056" />
+          <Text style={styles.noticeListSideText}>No.{noticeNum}</Text>
+        </View>
+        <View style={styles.noticeCotent}>
+          <Text style={styles.cotentMainText}>{mainText}</Text>
+          <Text style={styles.cotentSubText}>{subText}</Text>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <ScrollView style={styles.container}>
       {data.reverse().map(index => {

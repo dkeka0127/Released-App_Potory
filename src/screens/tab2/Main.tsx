@@ -1,21 +1,25 @@
-import {
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  Animated,
-  View,
-} from 'react-native';
+// React & Package
 import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  Animated,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+} from 'react-native';
 
-// Screen
+// custom component
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import FlatListRenderItem from './components/FlatListRenderItem';
-import AsyncStorage from '@react-native-community/async-storage';
 
-// Image
+// image
 const backgroundImg = '../../assets/images/MainPhoto_bg.png';
+
+// variable
+const HEADER_HEIGHT = 60;
 const dataSource = [
   {id: 1, title: 'Button'},
   {id: 2, title: 'Card'},
@@ -39,9 +43,6 @@ const dataSource = [
   {id: 26, title: 'Rating'},
   {id: 27, title: 'Pricing'},
 ];
-
-// Variable
-const HEADER_HEIGHT = 60;
 
 function Main() {
   // header - scroll variable
@@ -103,10 +104,29 @@ function Main() {
     );
   };
 
-  const _FlatListRenderItem = () => {
+  const _FlatListRenderItem = item => {
     return (
-      <View>
-        <View></View>
+      <View style={{flex: 1, padding: 30, backgroundColor: '#fee'}}>
+        <View>
+          <Text>{item.index}</Text>
+          <ImageBackground
+            resizeMode="contain"
+            source={require('../../assets/images/polaroid_hand/1.png')}
+            style={{
+              paddingLeft: 20,
+              width: 150,
+              height: 150,
+            }}>
+            {/* <Image
+              source={require('../../assets/images/image5.png')}
+              style={{
+                width: 60,
+                height: 150,
+                marginTop: -5,
+                resizeMode: 'contain',
+              }}></Image> */}
+          </ImageBackground>
+        </View>
       </View>
     );
   };
@@ -114,7 +134,7 @@ function Main() {
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.container}>
       <SafeAreaView style={styles.safeAreaViewContainer}>
-        {/********************* header *********************/}
+        {/*======================= header =======================*/}
         <Animated.View
           style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
           onLayout={event => scrollHeaderF(event)}>
@@ -126,19 +146,13 @@ function Main() {
           />
         </Animated.View>
 
-        <View style={{marginTop: 100}}>
-          <Text>Grid : {grid}</Text>
-          <Text>Sequence : {sequence}</Text>
-          <Text>BG Color : {bgColor}</Text>
-        </View>
-
-        {/********************* content *********************/}
+        {/*======================= content =======================*/}
         <Animated.FlatList
           style={styles.flatList}
           windowSize={15}
           bounces={false}
           data={dataSource}
-          renderItem={FlatListRenderItem}
+          renderItem={_FlatListRenderItem}
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={EmptyDataScreen}
           onScroll={Animated.event(

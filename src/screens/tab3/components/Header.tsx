@@ -1,27 +1,26 @@
+// React & Package
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-// Icons
+
+// icons
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-// Data
-import {userinfo} from '../../../../dummyData';
 
 function Header() {
   const navigation = useNavigation();
   return (
     <View style={styles.navContainer}>
-      {/* Point */}
+      {/*------------ Point ------------*/}
       <View style={styles.pointCon}>
         <Feather name="camera" size={23} color="black" />
         <Text style={styles.pointText}>25</Text>
       </View>
-      {/* Title */}
+      {/*------------ Subject ------------*/}
       <View style={styles.navTitleCon}>
         <Text style={styles.navTitleText}>마이페이지</Text>
       </View>
-      {/* Setting */}
+      {/*------------ Setting ------------*/}
       <TouchableOpacity
         style={styles.navSettingCon}
         onPress={() => navigation.navigate('설정')}>
