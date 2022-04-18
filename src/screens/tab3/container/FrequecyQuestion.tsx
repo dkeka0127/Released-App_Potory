@@ -4,9 +4,9 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 // custom components
-import CustomHeader from '../../common/CustomHeader';
+import CustomHeader from '../../../components/header/CustomHeader';
 import FrequecyQuestionContent from '../components/FrequecyQuestionContent';
-import CustomFooterButton from '../../common/CustomFooterButton';
+import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 function FrequecyQuestion() {
   const navigation = useNavigation();

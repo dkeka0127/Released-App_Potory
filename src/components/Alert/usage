@@ -1,0 +1,31 @@
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+
+// add
+import useAlert from './useAlert';
+
+const usage = props => {
+  // add
+  const {addAlert, removeAlert} = useAlert();
+
+  // use
+  const _addAlert = () => {
+    addAlert({
+      title: 'Popup Title',
+      message: '팝업 출력\n확인하시겠습니까 ?',
+      onConfirm: () => {
+        removeAlert();
+        navigation.goBack();
+      },
+      onCancel: () => {
+        removeAlert();
+      },
+    });
+  };
+
+  return <></>;
+};
+
+export default usage;
+
+const styles = StyleSheet.create({});

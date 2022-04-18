@@ -22,7 +22,7 @@ function MainHome() {
         showsMyLocationButton={true}
         center={{...P0, zoom: 16}}
       />
-      <DropDown />
+      {/* <DropDown /> */}
       {/* <NaverMapView
         onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
         onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}

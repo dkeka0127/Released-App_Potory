@@ -29,7 +29,7 @@ function MainHome() {
         setOpen={setOpen}
         setValue={setValue}
         // setItems={setItems}
-        placeholder={store[0].label}
+        // placeholder={store[0].label}
         items={dropdownItems}
         // dropDownMaxHeight={50}
       />

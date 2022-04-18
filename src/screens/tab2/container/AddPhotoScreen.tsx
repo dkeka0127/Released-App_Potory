@@ -22,7 +22,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Page
-import CustomHeader from '../../common/CustomHeader';
+import CustomHeader from '../../../components/header/CustomHeader';
 
 // Image
 const backgroundImg = '../../../assets/images/background/photoModify_bg.png';

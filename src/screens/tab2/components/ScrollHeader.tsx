@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 // icons
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/Entypo';
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -106,13 +107,15 @@ function Header({
             </TouchableOpacity>
             {/*--------- Sequence ---------*/}
             <TouchableOpacity
-              style={styles.options}
+              style={styles.rowOptions}
               hitSlop={styles.hitslop}
               onPress={setSequenceF}>
+              <AntDesign name={'calendar'} size={21} color={optionColor} />
               <Awesome5Icons
                 name={'arrows-alt-v'}
-                size={18}
+                size={19}
                 color={optionColor}
+                style={styles.arrowsAltV}
               />
             </TouchableOpacity>
             {/*--------- BG_Color ---------*/}
@@ -145,7 +148,9 @@ function Header({
 export default Header;
 
 const containerPadding = 20;
+const toolPadding = 6;
 const toolsmarginTop = 4;
+const toolMarginRight = 13;
 
 const styles = StyleSheet.create({
   container: {
@@ -192,12 +197,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   options: {
-    padding: 6,
+    padding: toolPadding,
     paddingRight: 10,
     marginTop: toolsmarginTop,
-    marginRight: 13,
-    borderRadius: 15,
+    marginRight: toolMarginRight,
     justifyContent: 'center',
+  },
+  rowOptions: {
+    padding: toolPadding,
+    paddingTop: 8.5,
+    marginTop: toolsmarginTop,
+    marginRight: toolMarginRight,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  arrowsAltV: {
+    paddingTop: 2,
+    paddingLeft: 2,
   },
   hitslop: {
     top: 20,

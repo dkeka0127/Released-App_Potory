@@ -74,12 +74,12 @@ function Main() {
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
-  // [tool] 상/하위 전달 F
+  // [tool] 상/하위 값 전달 F
   const gridPress = value => setGrid(value);
   const sequencePress = value => setSequence(value);
   const bgColorPress = value => setBgColor(value);
 
-  // 초기 Async 값 받아옴
+  // 초기 async 값 받아옴
   const initToolValue = value => {
     setGrid(value.grid);
     setSequence(value.sequence);
@@ -131,6 +131,10 @@ function Main() {
       </View>
     );
   };
+
+  //
+  //
+  //
 
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.container}>

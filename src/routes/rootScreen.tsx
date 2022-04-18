@@ -29,9 +29,9 @@ function RootScreen() {
         component={BottomTabNavigation}
         options={{headerShown: false}}
       />
-      {/* Home */}
+      {/*--------------------- Home ---------------------*/}
 
-      {/* Photo */}
+      {/*--------------------- Photo ---------------------*/}
       <Stack.Screen
         name="AddPhotoScreen"
         component={AddPhotoScreen}
@@ -43,7 +43,7 @@ function RootScreen() {
         options={{headerShown: false}}
       />
 
-      {/* Info */}
+      {/*--------------------- MyPage ---------------------*/}
       <Stack.Screen
         name="설정"
         component={SettingScreen}
