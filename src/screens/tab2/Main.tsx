@@ -8,6 +8,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
 
 // custom component
@@ -19,8 +20,11 @@ import FlatListRenderItem from './components/FlatListRenderItem';
 // image
 const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 
+const polaroid1 = require('../../assets/images/polaroid/black_1_1.png');
+
 // variable
 const HEADER_HEIGHT = 60;
+const deviceWidth = Dimensions.get('window').width;
 const dataSource = [
   {id: 1, title: 'Button'},
   {id: 2, title: 'Card'},
@@ -70,7 +74,7 @@ function Main() {
   });
 
   // async tools
-  const [grid, setGrid] = useState<number>();
+  const [grid, setGrid] = useState<number>(2);
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
@@ -105,30 +109,20 @@ function Main() {
     );
   };
 
-  const _FlatListRenderItem = item => {
+  const RenderItem = item => {
     return (
-      <View style={{flex: 1, padding: 30, backgroundColor: '#fee'}}>
-        <View>
-          <Text>{item.index}</Text>
-          <ImageBackground
-            resizeMode="contain"
-            source={require('../../assets/images/polaroid/black_1_1.png')}
-            style={{
-              paddingLeft: 20,
-              width: 150,
-              height: 150,
-            }}>
-            <Image
-              source={require('../../assets/images/user/image5.png')}
-              style={{
-                width: 60,
-                height: 150,
-                marginTop: -5,
-                resizeMode: 'contain',
-              }}></Image>
-          </ImageBackground>
-        </View>
-      </View>
+      <>
+        <ImageBackground
+          resizeMode="contain"
+          source={polaroid1}
+          style={{
+            justifyContent: 'center',
+            width: (deviceWidth - flatListMargin * 2) / grid,
+            height: ((deviceWidth - flatListMargin * 2) / grid) * 1.2,
+            marginBottom: item.index === dataSource.length - 1 && 60,
+          }}
+        />
+      </>
     );
   };
 
@@ -153,11 +147,14 @@ function Main() {
 
         {/*======================= content =======================*/}
         <Animated.FlatList
+          key={grid}
+          numColumns={grid} // grid 개수
           style={styles.flatList}
           windowSize={15}
           bounces={false}
           data={dataSource}
-          renderItem={_FlatListRenderItem}
+          initialNumToRender={15}
+          renderItem={RenderItem}
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={EmptyDataScreen}
           onScroll={Animated.event(
@@ -171,6 +168,7 @@ function Main() {
             {useNativeDriver: true},
           )}
         />
+        {/* <View style={{width: '100%', height: 200, backgroundColor: 'green'}} /> */}
 
         {/*======================= Footer =======================*/}
         <AddContentButton />
@@ -182,13 +180,15 @@ function Main() {
 // export default React.memo(Main);
 export default Main;
 
+const flatListMargin = 15;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 7,
   },
   safeAreaViewContainer: {
-    flex: 1,
+    // flex: 1,
   },
   header: {
     position: 'absolute',
@@ -199,8 +199,10 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   flatList: {
-    flexGrow: 1,
-    width: '100%',
+    // flexGrow: 1,
+    // width: '100%',
     paddingTop: HEADER_HEIGHT,
+    marginLeft: flatListMargin,
+    marginRight: flatListMargin,
   },
 });

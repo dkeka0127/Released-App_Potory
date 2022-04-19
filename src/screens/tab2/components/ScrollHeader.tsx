@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+    paddingTop: 5,
     paddingLeft: containerPadding,
     paddingRight: containerPadding,
     flexDirection: 'row',
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   },
   rowOptions: {
     padding: toolPadding,
-    paddingTop: 8.5,
+    paddingTop: 6,
     marginTop: toolsmarginTop,
     marginRight: toolMarginRight,
     flexDirection: 'row',
