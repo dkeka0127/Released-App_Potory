@@ -9,45 +9,55 @@ import {
   SafeAreaView,
   ImageBackground,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 // custom component
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import AddContentButton from './components/AddContentButton';
 import FlatListRenderItem from './components/FlatListRenderItem';
+import PhotoModal from './components/PhotoModal';
 
 // image
 const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 
-const polaroid1 = require('../../assets/images/polaroid/black_1_1.png');
-
 // variable
 const HEADER_HEIGHT = 60;
 const deviceWidth = Dimensions.get('window').width;
-const dataSource = [
-  {id: 1, title: 'Button'},
-  {id: 2, title: 'Card'},
-  {id: 3, title: 'Input'},
-  {id: 4, title: 'Avatar'},
-  {id: 5, title: 'CheckBox'},
-  {id: 6, title: 'Header'},
-  {id: 7, title: 'Icon'},
-  {id: 8, title: 'Lists'},
-  {id: 9, title: 'Rating'},
-  {id: 10, title: 'Pricing'},
-  {id: 11, title: 'Avatar'},
-  {id: 12, title: 'CheckBox'},
-  {id: 13, title: 'Header'},
-  {id: 14, title: 'Icon'},
-  {id: 15, title: 'Lists'},
-  {id: 16, title: 'Rating'},
-  {id: 17, title: 'Pricing'},
-  {id: 18, title: 'Icon'},
-  {id: 19, title: 'Lists'},
-  {id: 26, title: 'Rating'},
-  {id: 27, title: 'Pricing'},
+import {polaroid_gray, polaroid_black} from '../../constants/Constant';
+const photoData = [
+  {uri: require('../../assets/images/user/image1.png')},
+  {uri: require('../../assets/images/user/image2.png')},
+  {uri: require('../../assets/images/user/image3.png')},
+  {uri: require('../../assets/images/user/image4.png')},
+  {uri: require('../../assets/images/user/image5.png')},
+  {uri: require('../../assets/images/user/image1.png')},
+  {uri: require('../../assets/images/user/image2.png')},
+  {uri: require('../../assets/images/user/image3.png')},
+  {uri: require('../../assets/images/user/image4.png')},
+  {uri: require('../../assets/images/user/image5.png')},
+  {uri: require('../../assets/images/user/image1.png')},
+  {uri: require('../../assets/images/user/image2.png')},
+  {uri: require('../../assets/images/user/image3.png')},
+  {uri: require('../../assets/images/user/image4.png')},
+  {uri: require('../../assets/images/user/image3.png')},
+  {uri: require('../../assets/images/user/image4.png')},
+  {uri: require('../../assets/images/user/image5.png')},
+  {uri: require('../../assets/images/user/image1.png')},
+  {uri: require('../../assets/images/user/image2.png')},
+  {uri: require('../../assets/images/user/image3.png')},
+  {uri: require('../../assets/images/user/image4.png')},
+  {uri: require('../../assets/images/user/image3.png')},
+  {uri: require('../../assets/images/user/image4.png')},
+  {uri: require('../../assets/images/user/image5.png')},
 ];
+
+// 폴라로이드 랜덤 정렬
+const polaroidArr = photoData.map(() => {
+  return Math.floor(Math.random() * 12);
+});
 
 function Main() {
   // header scroll
@@ -78,12 +88,16 @@ function Main() {
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
+  const [isModal, setIsModal] = useState(false);
+  const [modalImgUrl, setModalImgUrl] = useState(false);
+  const polaroidWidth = (deviceWidth - flatListPadding * 2) / grid;
+
   // [tool] 상/하위 값 전달 F
   const gridPress = value => setGrid(value);
   const sequencePress = value => setSequence(value);
   const bgColorPress = value => setBgColor(value);
 
-  // 초기 async 값 받아옴
+  // 초기 async 값
   const initToolValue = value => {
     setGrid(value.grid);
     setSequence(value.sequence);
@@ -109,22 +123,51 @@ function Main() {
     );
   };
 
-  const RenderItem = item => {
+  const RenderItem = ({item, index}) => {
     return (
       <>
-        <ImageBackground
+        <FastImage
           resizeMode="contain"
-          source={polaroid1}
-          style={{
-            justifyContent: 'center',
-            width: (deviceWidth - flatListMargin * 2) / grid,
-            height: ((deviceWidth - flatListMargin * 2) / grid) * 1.2,
-            marginBottom: item.index === dataSource.length - 1 && 60,
-          }}
-        />
+          source={
+            bgColor === '#111'
+              ? polaroid_black[polaroidArr[index]].uri
+              : polaroid_gray[polaroidArr[index]].uri
+          }
+          style={[
+            renderItem.container,
+            {
+              width: polaroidWidth,
+              height: polaroidWidth * 1.18,
+              marginBottom: index === photoData.length - 1 && 100,
+            },
+          ]}>
+          <TouchableOpacity
+            style={{
+              marginTop: -(polaroidWidth * 0.14),
+              marginLeft: -3,
+              width: polaroidWidth * 0.55,
+              height: polaroidWidth * 0.5,
+            }}
+            onPress={() => {
+              setIsModal(true);
+              setModalImgUrl(item.imageuri);
+              console.log(photoData);
+              console.log(index);
+            }}>
+            <FastImage
+              resizeMode="contain"
+              source={photoData[index].uri}
+              style={renderItem.photo}
+            />
+          </TouchableOpacity>
+        </FastImage>
       </>
     );
   };
+
+  useEffect(() => {
+    if (isModal) setIsModal(false);
+  }, [isModal]);
 
   //
   //
@@ -152,7 +195,7 @@ function Main() {
           style={styles.flatList}
           windowSize={15}
           bounces={false}
-          data={dataSource}
+          data={photoData}
           initialNumToRender={15}
           renderItem={RenderItem}
           keyExtractor={(item, index) => index.toString()}
@@ -168,6 +211,8 @@ function Main() {
             {useNativeDriver: true},
           )}
         />
+        <PhotoModal isModal={isModal} modalImgUrl={modalImgUrl} />
+
         {/* <View style={{width: '100%', height: 200, backgroundColor: 'green'}} /> */}
 
         {/*======================= Footer =======================*/}
@@ -180,15 +225,16 @@ function Main() {
 // export default React.memo(Main);
 export default Main;
 
-const flatListMargin = 15;
+const flatListPadding = 15;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
     paddingTop: 7,
   },
   safeAreaViewContainer: {
-    // flex: 1,
+    flex: 1,
   },
   header: {
     position: 'absolute',
@@ -199,10 +245,18 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   flatList: {
-    // flexGrow: 1,
-    // width: '100%',
     paddingTop: HEADER_HEIGHT,
-    marginLeft: flatListMargin,
-    marginRight: flatListMargin,
+    paddingLeft: flatListPadding,
+    paddingRight: flatListPadding,
+  },
+});
+
+const renderItem = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photo: {
+    flex: 1,
   },
 });

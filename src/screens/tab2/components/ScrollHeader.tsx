@@ -147,7 +147,7 @@ function Header({
 
 export default Header;
 
-const containerPadding = 20;
+const containerPadding = 25;
 const toolPadding = 6;
 const toolsmarginTop = 4;
 const toolMarginRight = 13;
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    paddingTop: 5,
+    paddingTop: 0,
     paddingLeft: containerPadding,
     paddingRight: containerPadding,
     flexDirection: 'row',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   rowOptions: {
     padding: toolPadding,
-    paddingTop: 6,
+    paddingTop: 8,
     marginTop: toolsmarginTop,
     marginRight: toolMarginRight,
     flexDirection: 'row',

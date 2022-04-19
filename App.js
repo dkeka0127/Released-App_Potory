@@ -33,7 +33,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      {/* {!isLogin ? <SignInScreen isLoginF={isLoginF} /> : <RootScreen />} */}
+      {!isLogin ? <SignInScreen isLoginF={isLoginF} /> : <RootScreen />}
       {/* {!isLogin ? (
         <SignInScreen isLoginF={isLoginF} />
       ) : isSplashScreen ? (
@@ -41,7 +41,7 @@ function App() {
       ) : (
         <RootScreen />
       )} */}
-      <RootScreen />
+      {/* <RootScreen /> */}
     </NavigationContainer>
   );
 }

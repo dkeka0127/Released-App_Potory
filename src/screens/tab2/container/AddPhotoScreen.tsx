@@ -212,6 +212,6 @@ const area = StyleSheet.create({
     borderRadius: 10,
   },
   bottomSection: {
-    flex: 1.2,
+    flex: 1.5,
   },
 });
