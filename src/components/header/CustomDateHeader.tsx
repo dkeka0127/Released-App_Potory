@@ -1,3 +1,4 @@
+// React & packages
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -7,24 +8,27 @@ import DatePicker from 'react-native-date-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-type Props = {};
-
-const _date = '';
-// const _date = '2022.04.01';
+type Props = {
+  date: string;
+};
 
 const CustomDateHeader = (props: Props) => {
   const navigation = useNavigation();
+
   const today = new Date();
-  // const [date, setDate] = useState(new Date());
-  const [newDate, setNewDate] = useState(_date);
+  const [date, setDate] = useState(
+    props.date === ''
+      ? String(today.toISOString()).slice(0, 10).replace(/-/gi, '.')
+      : props.date,
+  );
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
-  console.log('newDate == ', today);
-  console.log('userDate == ', newDate);
-  console.log('datePickerOpen == ', datePickerOpen);
-
-  const setDatePicker = () => {
+  const setDatePickerTrue = () => {
     setDatePickerOpen(true);
+  };
+
+  const setDatePickerFalse = () => {
+    setDatePickerOpen(false);
   };
 
   const goBack = () => {
@@ -34,35 +38,28 @@ const CustomDateHeader = (props: Props) => {
   return (
     <View style={styles.container}>
       {/*------------- date -------------*/}
-      <TouchableOpacity style={styles.dateContent} onPress={setDatePicker}>
-        <Text style={styles.dateText}>
-          {/* {userDate === '' ? newDate : userDate} */}
-          {newDate === ''
-            ? String(today.toISOString()).slice(0, 10).replace(/-/gi, '.')
-            : newDate}
-        </Text>
+      <TouchableOpacity style={styles.dateContent} onPress={setDatePickerTrue}>
+        <Text style={styles.dateText}>{date}</Text>
         <Entypo style={styles.downIcon} name="chevron-down" size={22} />
       </TouchableOpacity>
 
-      {datePickerOpen ? (
+      {datePickerOpen === true && (
         <DatePicker
           modal
           mode="date"
+          locale="ko"
+          title="o_<"
           open={datePickerOpen}
           date={new Date()}
           onConfirm={date => {
             setDatePickerOpen(false);
-            // setDate(date);
-            setNewDate(
-              // date.toLocaleDateString()
+            setDate(
               String(date.toISOString()).slice(0, 10).replace(/-/gi, '.'),
             );
           }}
-          onCancel={() => {
-            setDatePickerOpen(false);
-          }}
+          onCancel={setDatePickerFalse}
         />
-      ) : null}
+      )}
 
       {/*------------- close -------------*/}
       <TouchableOpacity

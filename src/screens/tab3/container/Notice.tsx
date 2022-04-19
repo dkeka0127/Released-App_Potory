@@ -10,6 +10,11 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 function Notice() {
   const navigation = useNavigation();
+
+  const goBackF = () => {
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/*--------- Header ---------*/}
@@ -19,7 +24,7 @@ function Notice() {
       <NoticeContent />
 
       {/*--------- Footer ---------*/}
-      <CustomFooterButton navigation={navigation} />
+      <CustomFooterButton title="확인" action={goBackF} />
     </SafeAreaView>
   );
 }

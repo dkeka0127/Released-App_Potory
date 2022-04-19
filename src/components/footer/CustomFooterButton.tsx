@@ -3,15 +3,11 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {ifIphoneX, getBottomSpace} from 'react-native-iphone-x-helper';
 
-function CustomFooterButton({navigation}) {
+function CustomFooterButton({title, action}) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.content}
-        onPress={() => {
-          navigation.goBack();
-        }}>
-        <Text style={styles.buttonText}>확인</Text>
+      <TouchableOpacity style={styles.content} onPress={action}>
+        <Text style={styles.buttonText}>{title}</Text>
       </TouchableOpacity>
     </View>
   );

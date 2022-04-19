@@ -1,3 +1,4 @@
+// React & packages
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -7,34 +8,28 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
 import FastImage from 'react-native-fast-image';
-import DatePicker from 'react-native-date-picker';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-// Icon
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-// Page
+// custom components
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
-// Image
+// icons
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+// image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
-  const [userDate, setUserDate] = useState('2020.03.03');
-  const [date, setDate] = useState(new Date());
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
   const [input, setInput] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [response, setResponse] = useState<any>(null); // 갤러리에서 가져온 사진 uri
@@ -61,20 +56,25 @@ function AddPhotoScreen() {
     );
   };
 
-  console.log('=======response========', response);
+  console.log('Memo ~~~~~~~~~~~', input);
 
-  // Keyboard Visible Check
+  console.log('Photo URI ========', response);
+
+  // 작성 완료 Btn
+  const confirm = () => {};
+
+  // 키보드 이벤트
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        setKeyboardVisible(true); // or some other action
+        setKeyboardVisible(true);
       },
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        setKeyboardVisible(false); // or some other action
+        setKeyboardVisible(false);
       },
     );
 
@@ -93,7 +93,7 @@ function AddPhotoScreen() {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.SafeAreaView}>
               {/*================== header ==================*/}
-              <CustomDateHeader />
+              <CustomDateHeader date={''} />
 
               {/*================== photo ==================*/}
               <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
@@ -133,28 +133,13 @@ function AddPhotoScreen() {
                     }}
                   />
                 </View>
-
-                {/* <View style={styles.textEditCon}>
-                  <TouchableOpacity
-                    hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                    onPress={() => {}}>
-                    <MaterialIcons
-                      // keyboard up ? button unShow : button show
-                      name={isKeyboardVisible ? 'check' : ''}
-                      size={27}
-                      color="#111"
-                    />
-                  </TouchableOpacity>
-                </View> */}
               </View>
 
               {/*================ bottom btn ================*/}
-              {isKeyboardVisible ? (
-                <></>
-              ) : (
+              {isKeyboardVisible === false && (
                 <>
                   <View style={area.bottomSection} />
-                  <CustomFooterButton navigation={undefined} />
+                  <CustomFooterButton title="작성 완료" action={confirm} />
                 </>
               )}
             </SafeAreaView>

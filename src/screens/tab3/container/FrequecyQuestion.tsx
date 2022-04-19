@@ -1,4 +1,4 @@
-// React & Package
+// React & package
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -10,6 +10,11 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 function FrequecyQuestion() {
   const navigation = useNavigation();
+
+  const goBackF = () => {
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/*-------- Header --------*/}
@@ -19,7 +24,7 @@ function FrequecyQuestion() {
       <FrequecyQuestionContent />
 
       {/*-------- Footer --------*/}
-      <CustomFooterButton navigation={navigation} />
+      <CustomFooterButton title="확인" action={goBackF} />
     </SafeAreaView>
   );
 }
