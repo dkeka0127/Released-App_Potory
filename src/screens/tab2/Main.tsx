@@ -27,6 +27,7 @@ const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 const HEADER_HEIGHT = 60;
 const deviceWidth = Dimensions.get('window').width;
 import {polaroid_gray, polaroid_black} from '../../constants/Constant';
+import Loading from '../../components/Loading';
 const photoData = [
   {uri: require('../../assets/images/user/image1.png')},
   {uri: require('../../assets/images/user/image2.png')},

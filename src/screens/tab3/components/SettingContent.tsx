@@ -1,4 +1,5 @@
 // React & Package
+import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
@@ -26,25 +27,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 // variable
 const IconSize = 17;
 const IconColor = '#111';
-
-// 로그아웃 / 회원가입
-const SettingAccount = ({iconName, title}) => {
-  return (
-    <TouchableOpacity
-      style={styles.accountContent}
-      onPress={() => {
-        // AlertText(title)
-      }}>
-      <AntDesign
-        style={{paddingRight: 8}}
-        name={iconName}
-        size={15}
-        color="gray"
-      />
-      <Text style={{fontSize: 14, color: 'gray'}}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
 
 // List Components
 const SettingContentList = ({iconName, title}) => {
@@ -84,8 +66,10 @@ const SettingContectTitle = ({title}) => {
 //
 
 function SettingContent() {
+  const navigation = useNavigation();
+
   // Kakao Login
-  const [result, setResult] = useState<string>(''); // Kakao Login
+  const [result, setResult] = useState<string>('');
   // 로그아웃
   const signOutWithKakao = async (): Promise<void> => {
     // const message = await logout();
@@ -99,6 +83,16 @@ function SettingContent() {
 
   // Alert Message
   const AlertText = title => {
+    const logOut = () => {
+      signOutWithKakao();
+      AsyncStorage.setItem('login', 'false');
+      Alert.alert('', '로그아웃 되었습니다.', []);
+    };
+
+    const signOut = () => {
+      unlinkKakao();
+    };
+
     Alert.alert(
       '',
       title === '로그아웃'
@@ -113,10 +107,29 @@ function SettingContent() {
         {
           text: '확인',
           onPress: () => {
-            title === '로그아웃' ? signOutWithKakao() : unlinkKakao();
+            title === '로그아웃' ? logOut() : signOut();
           },
         },
       ],
+    );
+  };
+
+  // 로그아웃 / 회원가입
+  const SettingAccount = ({iconName, title}) => {
+    return (
+      <TouchableOpacity
+        style={styles.accountContent}
+        onPress={() => {
+          AlertText(title);
+        }}>
+        <AntDesign
+          style={{paddingRight: 8}}
+          name={iconName}
+          size={15}
+          color="gray"
+        />
+        <Text style={{fontSize: 14, color: 'gray'}}>{title}</Text>
+      </TouchableOpacity>
     );
   };
 

@@ -19,6 +19,9 @@ import ServiceTOS from '../screens/tab3/container/ServiceTOS';
 import LocationTOS from '../screens/tab3/container/LocationTOS';
 import PrivacyPolicy from '../screens/tab3/container/PrivacyPolicy';
 
+// Ect
+import Login from '../screens/intro/SignInScreen';
+
 const Stack = createNativeStackNavigator();
 
 function RootScreen() {
@@ -72,6 +75,14 @@ function RootScreen() {
       <Stack.Screen
         name="개인정보 처리방침"
         component={PrivacyPolicy}
+        options={{headerShown: false}}
+      />
+
+      {/*--------------------- Ect ---------------------*/}
+
+      <Stack.Screen
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

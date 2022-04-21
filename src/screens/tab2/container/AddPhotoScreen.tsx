@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
+  ScrollView,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
@@ -134,7 +135,6 @@ function AddPhotoScreen() {
                   />
                 </View>
               </View>
-
               {/*================ bottom btn ================*/}
               {isKeyboardVisible === false && (
                 <>
@@ -212,6 +212,6 @@ const area = StyleSheet.create({
     borderRadius: 10,
   },
   bottomSection: {
-    flex: 1.5,
+    flex: 1.8,
   },
 });
