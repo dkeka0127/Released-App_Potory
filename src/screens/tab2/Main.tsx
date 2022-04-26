@@ -24,9 +24,9 @@ import PhotoModal from './components/PhotoModal';
 const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 
 // variable
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 80;
 const deviceWidth = Dimensions.get('window').width;
-import {polaroid_gray, polaroid_black} from '../../constants/Constant';
+import {polaroid_gray, polaroid_black} from '../../core/Polaroid';
 import Loading from '../../components/Loading';
 const photoData = [
   {uri: require('../../assets/images/user/image1.png')},
@@ -176,49 +176,47 @@ function Main() {
 
   return (
     <ImageBackground source={require(backgroundImg)} style={styles.container}>
-      <SafeAreaView style={styles.safeAreaViewContainer}>
-        {/*======================= header =======================*/}
-        <Animated.View
-          style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
-          onLayout={event => scrollHeaderF(event)}>
-          <ScrollHeader
-            initToolValue={initToolValue}
-            gridPress={gridPress}
-            sequencePress={sequencePress}
-            bgColorPress={bgColorPress}
-          />
-        </Animated.View>
-
-        {/*======================= content =======================*/}
-        <Animated.FlatList
-          key={grid}
-          numColumns={grid} // grid 개수
-          style={styles.flatList}
-          windowSize={15}
-          bounces={false}
-          data={photoData}
-          initialNumToRender={15}
-          renderItem={RenderItem}
-          keyExtractor={(item, index) => index.toString()}
-          ListEmptyComponent={EmptyDataScreen}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {y: scrollAnim},
-                },
-              },
-            ],
-            {useNativeDriver: true},
-          )}
+      {/*======================= header =======================*/}
+      <Animated.View
+        style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
+        onLayout={event => scrollHeaderF(event)}>
+        <ScrollHeader
+          initToolValue={initToolValue}
+          gridPress={gridPress}
+          sequencePress={sequencePress}
+          bgColorPress={bgColorPress}
         />
-        <PhotoModal isModal={isModal} modalImgUrl={modalImgUrl} />
+      </Animated.View>
 
-        {/* <View style={{width: '100%', height: 200, backgroundColor: 'green'}} /> */}
+      {/*======================= content =======================*/}
+      <Animated.FlatList
+        key={grid}
+        numColumns={grid} // grid 개수
+        style={styles.flatList}
+        windowSize={15}
+        bounces={false}
+        data={photoData}
+        initialNumToRender={15}
+        renderItem={RenderItem}
+        keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={EmptyDataScreen}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {y: scrollAnim},
+              },
+            },
+          ],
+          {useNativeDriver: true},
+        )}
+      />
+      <PhotoModal isModal={isModal} modalImgUrl={modalImgUrl} />
 
-        {/*======================= Footer =======================*/}
-        <AddContentButton />
-      </SafeAreaView>
+      {/* <View style={{width: '100%', height: 200, backgroundColor: 'green'}} /> */}
+
+      {/*======================= Footer =======================*/}
+      <AddContentButton />
     </ImageBackground>
   );
 }
@@ -242,6 +240,7 @@ const styles = StyleSheet.create({
     top: 30,
     left: 0,
     right: 0,
+    paddingTop: 10,
     height: HEADER_HEIGHT,
     zIndex: 999,
   },

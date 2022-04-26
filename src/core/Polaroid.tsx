@@ -1,7 +1,3 @@
-import React from 'react';
-
-export const main_color = '#';
-
 export const polaroid_gray = [
   {
     uri: require('../assets/images/polaroid/gray_1_1.png'),

@@ -147,7 +147,7 @@ function Header({
 
 export default Header;
 
-const containerPadding = 25;
+const containerPadding = 30;
 const toolPadding = 6;
 const toolsmarginTop = 4;
 const toolMarginRight = 13;
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   appNameFont: {
-    paddingLeft: 0,
+    paddingLeft: 5,
     paddingRight: 10,
     fontStyle: 'italic',
     fontSize: 17,

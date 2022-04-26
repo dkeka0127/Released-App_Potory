@@ -23,7 +23,7 @@ function CustomHeader({headerTitle, goBackArrow, navigation}: Props) {
           hitSlop={styles.hitslop}
           style={styles.content}
           onPress={goBack}>
-          <AntDesign name="left" size={19} color="#111" />
+          <AntDesign name="left" size={20} color="#111" />
         </TouchableOpacity>
       ) : null}
       <Text style={styles.headerText}>{headerTitle}</Text>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   content: {
     position: 'absolute',
-    left: 18,
+    left: 20,
   },
   headerText: {
     color: '#111',

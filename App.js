@@ -8,6 +8,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
+import axios from 'axios';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -19,8 +20,41 @@ import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
 
 function App() {
+  const axiosConfig = {
+    // baseURL: '',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
+      // memberIdx: 0,
+      // deviceId: '',
+    },
+    // timeout: 3000,
+  };
+
+  function connectAPI() {
+    const response = axios
+      .get('http://bdg407.synology.me:12162/user/8', axiosConfig)
+      .then(response => {
+        console.log('API response == ', response);
+      })
+      .catch(err => {
+        console.log('API err == ', err);
+      });
+
+    return response;
+  }
+
+  const [isLogin, setIsLogin] = useState(null);
+  // const [isSplashScreen, setIsSplashScreen] = useState(true);
+
   const api = () => {
-    fetch('http://bdg407.synology.me:12162/user/7')
+    fetch('http://bdg407.synology.me:12162/user/8', {
+      method: 'GET',
+      headers: {
+        // 'x-access-token':
+        //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoicGhvdG9seSJ9.zcAbn0TXYrHMu4DSTrd7MIuuulrcCBN22_N1jGidLbY',
+      },
+    })
       .then(response => {
         console.log('API response == ', response);
       })
@@ -29,33 +63,29 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    api();
-  }, []);
-  const [isLogin, setIsLogin] = useState(null);
-  // const [isSplashScreen, setIsSplashScreen] = useState(true);
-
   const isLoginF = value => {
     setIsLogin(true);
   };
 
+  // 로그인 이력 확인 Async
   const getLoginAsync = () => {
     AsyncStorage.getItem('login', (_err, value) => {
-      console.log('getLoginAsync _err == ', _err);
-      console.log(' getLoginAsync value == ', value);
-      console.log(' getLoginAsync value == ', typeof value);
+      // console.log('getLoginAsync _err == ', _err);
+      // console.log(' getLoginAsync value == ', value);
+      // console.log(' getLoginAsync value == ', typeof value);
       if (value === 'true') {
-        console.log('true !');
+        // console.log('true !');
         setIsLogin(true);
       } else {
-        console.log('false !');
+        // console.log('false !');
         setIsLogin(false);
       }
     });
   };
 
   useEffect(() => {
-    getLoginAsync(); // 로그인 이력 확인
+    connectAPI();
+    getLoginAsync();
   }, []);
 
   // useEffect(() => {
@@ -72,7 +102,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      {/* {isLogin ? <RootScreen /> : <SignInScreen isLoginF={isLoginF} />} */}
+      {isLogin ? <RootScreen /> : <SignInScreen isLoginF={isLoginF} />}
       {/* {!isLogin ? (
         <SignInScreen isLoginF={isLoginF} />
       ) : isSplashScreen ? (
@@ -81,7 +111,7 @@ function App() {
         <RootScreen />
       )} */}
       {/* <RootScreen /> */}
-      <SignInScreen isLoginF={isLoginF} />
+      {/* <SignInScreen isLoginF={isLoginF} /> */}
     </NavigationContainer>
   );
 }
