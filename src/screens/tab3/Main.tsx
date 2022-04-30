@@ -26,6 +26,7 @@ export default MainInfo;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f0e8',
+    // backgroundColor: '#f7f0e8',
+    backgroundColor: '#efe8e1',
   },
 });

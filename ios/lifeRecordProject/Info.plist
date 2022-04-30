@@ -49,8 +49,6 @@
 	</dict>
 	<key>NMFClientId</key>
 	<string>ms8z7c5lyd</string>
-	<key>NSCameraUsageDescription</key>
-	<string>YOUR TEXT</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>서비스 이용을 위해 위치 정보를 수집합니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -59,6 +57,8 @@
 	<string>서비스 이용을 위해 위치 정보를 수집합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>갤러리 접근 권한을 허용합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>카메라 접근 권한을 허용합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

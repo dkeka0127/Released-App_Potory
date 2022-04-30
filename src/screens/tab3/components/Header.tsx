@@ -14,7 +14,7 @@ function Header() {
       <TouchableOpacity
         style={styles.navSettingCon}
         onPress={() => navigation.navigate('설정')}>
-        <Entypo name="dots-three-vertical" size={20} color="black" />
+        <Entypo name="dots-three-vertical" size={19} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   navSettingCon: {
-    padding: 15,
+    padding: 10,
     alignItems: 'flex-end',
   },
 });

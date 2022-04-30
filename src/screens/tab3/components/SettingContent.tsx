@@ -1,6 +1,4 @@
 // React & Package
-import AsyncStorage from '@react-native-community/async-storage';
-import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   View,
@@ -9,7 +7,10 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  NativeModules,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // kakao_login
 // import {
@@ -87,17 +88,21 @@ function SettingContent() {
       signOutWithKakao();
       AsyncStorage.setItem('login', 'false');
       Alert.alert('', '로그아웃 되었습니다.', []);
+      NativeModules.DevSettings.reload();
     };
 
     const signOut = () => {
       unlinkKakao();
+      AsyncStorage.setItem('login', 'false');
+      Alert.alert('', '탈퇴 완료 되었습니다.', []);
+      NativeModules.DevSettings.reload();
     };
 
     Alert.alert(
       '',
       title === '로그아웃'
         ? '로그아웃 하시겠습니까 ?'
-        : '회원탈퇴 시 회원님의 소중한 추억이 \n 삭제되며 복구가 불가합니다. \n 정말로 탈퇴하시겠습니까 ?',
+        : '회원탈퇴 시 회원님의 소중한 추억이\n삭제되며 복구가 불가합니다.\n정말로 탈퇴하시겠습니까 ?',
       [
         {
           text: '취소',
@@ -174,7 +179,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     width: '100%',
-    height: 50,
+    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -192,6 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   accountContainer: {
+    marginTop: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -220,6 +226,5 @@ const styles = StyleSheet.create({
     margin: 7,
     opacity: 0.5,
     backgroundColor: '#eee',
-    // backgroundColor: '#fff',
   },
 });
