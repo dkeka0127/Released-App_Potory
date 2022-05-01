@@ -1,5 +1,5 @@
 // React & packages
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = {
   date: string;
+  getDate: Function;
 };
 
 const CustomDateHeader = (props: Props) => {
@@ -23,22 +24,24 @@ const CustomDateHeader = (props: Props) => {
   );
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
-  const setDatePickerTrue = () => {
-    setDatePickerOpen(true);
+  const datePickerIsOpen = () => {
+    setDatePickerOpen(!datePickerOpen);
   };
 
-  const setDatePickerFalse = () => {
-    setDatePickerOpen(false);
-  };
+  console.log(datePickerOpen);
 
   const goBack = () => {
     navigation.goBack();
   };
 
+  useEffect(() => {
+    props.getDate(date);
+  }, [date]);
+
   return (
     <View style={styles.container}>
       {/*------------- date -------------*/}
-      <TouchableOpacity style={styles.dateContent} onPress={setDatePickerTrue}>
+      <TouchableOpacity style={styles.dateContent} onPress={datePickerIsOpen}>
         <Text style={styles.dateText}>{date}</Text>
         <Entypo style={styles.downIcon} name="chevron-down" size={22} />
       </TouchableOpacity>
@@ -48,16 +51,16 @@ const CustomDateHeader = (props: Props) => {
           modal
           mode="date"
           locale="ko"
-          title="o_<"
+          title="choose the date"
           open={datePickerOpen}
-          date={new Date()}
+          date={today}
           onConfirm={date => {
             setDatePickerOpen(false);
             setDate(
               String(date.toISOString()).slice(0, 10).replace(/-/gi, '.'),
             );
           }}
-          onCancel={setDatePickerFalse}
+          onCancel={datePickerIsOpen}
         />
       )}
 

@@ -21,6 +21,7 @@ import PrivacyPolicy from '../screens/tab3/container/PrivacyPolicy';
 
 // Ect
 import Login from '../screens/intro/SignInScreen';
+import QRCodeScanner from '../screens/tab2/container/QRCodeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,11 @@ function RootScreen() {
       <Stack.Screen
         name="EditPhotoScreen"
         component={EditPhotoScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="QRCodeScreen"
+        component={QRCodeScanner}
         options={{headerShown: false}}
       />
 

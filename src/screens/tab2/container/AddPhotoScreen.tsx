@@ -11,11 +11,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
-  ScrollView,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {CameraScreen} from 'react-native-camera-kit';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
@@ -24,6 +24,7 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import QRCodeScanner from './QRCodeScreen';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
@@ -33,36 +34,57 @@ function AddPhotoScreen() {
 
   const [input, setInput] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [response, setResponse] = useState<any>(null); // 갤러리에서 가져온 사진 uri
+  const [date, setDate] = useState(
+    String(new Date().toISOString()).slice(0, 10).replace(/-/gi, '.'),
+  );
 
-  const moveToCamera = () => {
-    launchCamera(
-      {
-        saveToPhotos: true,
-        mediaType: 'photo',
-        includeBase64: false,
-      },
-      setResponse,
-    );
+  // gallery
+  const [imageUri, setImageUri] = useState(null);
+  const [response, setResponse] = useState<any>(null); // 갤러리에서 가져온 사진 response
+
+  const getDate = value => {
+    setDate(value); // 변경된 날짜 받아옴
   };
 
-  const moveToGallery = () => {
-    launchImageLibrary(
-      {
-        selectionLimit: 1,
-        mediaType: 'photo',
-        includeBase64: false,
-      },
-      setResponse,
-    );
+  // const moveToCamera = () => {
+  //   launchCamera(
+  //     {
+  //       saveToPhotos: true,
+  //       mediaType: 'photo',
+  //       includeBase64: false,
+  //     },
+  //     setResponse,
+  //   );
+  // };
+
+  const openGallery = () => {
+    const option = {
+      // noData: true,
+      mediaType: 'photo' as const,
+      quality: 1,
+    };
+
+    launchImageLibrary(option, response => {
+      if (response.didCancel) {
+        console.log('User Cancelled image picker');
+      } else if (response.errorCode) {
+        console.log(response.errorMessage);
+      } else {
+        const data = response.assets[0];
+        setImageUri(data);
+        console.log('data ????????? ', data);
+      }
+    });
   };
-
-  console.log('Memo ~~~~~~~~~~~', input);
-
-  console.log('Photo URI ========', response);
 
   // 작성 완료 Btn
-  const confirm = () => {};
+  const confirm = () => {
+    if (imageUri === null) {
+      console.log('사진을 선택해주세요.');
+    } else {
+      console.log('사진 저장');
+    }
+  };
 
   // 키보드 이벤트
   useEffect(() => {
@@ -85,6 +107,10 @@ function AddPhotoScreen() {
     };
   }, []);
 
+  console.log('get Date', date);
+  console.log('Memo ~~~~~~~~~~~', input);
+  console.log('Photo URI ========', imageUri);
+
   return (
     <>
       <KeyboardAvoidingView
@@ -94,15 +120,57 @@ function AddPhotoScreen() {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.SafeAreaView}>
               {/*================== header ==================*/}
-              <CustomDateHeader date={''} />
+              <CustomDateHeader date={''} getDate={getDate} />
 
               {/*================== photo ==================*/}
               <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
                 <Text style={area.title}>Photo</Text>
                 <TouchableOpacity
                   style={area.photoSection}
-                  onPress={moveToGallery}>
-                  <Ionicons name="camera-outline" size={42} />
+                  onPress={openGallery}>
+                  {imageUri === null && (
+                    <Ionicons name="camera-outline" size={42} color="#3a2e23" />
+                  )}
+                  {imageUri != null && (
+                    <Image
+                      source={{uri: imageUri.uri}}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  )}
+                  {/* <CameraScreen
+                    showFrame={true}
+                    scanBarcode={false}
+                    laserColor={'#FF3D00'}
+                    frameColor={'#00C853'}
+                    colorForScannerFrame={'black'}
+                    onReadCode={event =>
+                      event.onQR_Code_Scan_Done(
+                        console.log('event', event.nativeEvent.codeStringValue),
+                      )
+                    }
+                    // Barcode props
+                    // scanBarcode={true}
+                    // onReadCode={event => console.log('QR code found')} // optional
+                    // showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
+                    // laserColor="red" // (default red) optional, color of laser in scanner frame
+                    // frameColor="white" // (default white) optional, color of border of scanner frame
+                    // cameraRatioOverlay={undefined}
+                    // captureButtonImage={undefined}
+                    // captureButtonImageStyle={undefined}
+                    // cameraFlipImage={undefined}
+                    // cameraFlipImageStyle={undefined}
+                    // hideControls={undefined}
+                    // torchOnImage={undefined}
+                    // torchOffImage={undefined}
+                    // torchImageStyle={undefined}
+                    // onBottomButtonPressed={function (event: any): void {
+                    //   throw new Error('Function not implemented.');
+                    // }}
+                  /> */}
                 </TouchableOpacity>
               </View>
 
@@ -152,7 +220,8 @@ function AddPhotoScreen() {
 
 export default AddPhotoScreen;
 
-const SectionBGColor = '#eaeaea';
+// const SectionBGColor = '#eaeaea';
+const SectionBGColor = '#f7f2ed';
 
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
@@ -181,6 +250,7 @@ const area = StyleSheet.create({
   },
   photoSection: {
     flex: 1,
+    padding: 20,
     marginTop: 15,
     marginLeft: 35,
     marginRight: 35,

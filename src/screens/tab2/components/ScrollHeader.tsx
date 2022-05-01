@@ -98,7 +98,9 @@ function Header({
         {isEdit && (
           <View style={styles.optionCon}>
             {/*----------- Grid -----------*/}
-            <TouchableOpacity style={styles.options} onPress={setGridF}>
+            <TouchableOpacity
+              style={[styles.options, {marginTop: 0}]}
+              onPress={setGridF}>
               <CommunityIcons
                 name={'grid-large'}
                 size={21}
@@ -122,7 +124,7 @@ function Header({
             <TouchableOpacity style={styles.options} onPress={setBgColorF}>
               <Ionicons
                 name={'color-palette-outline'}
-                size={24}
+                size={25}
                 color={optionColor}
               />
             </TouchableOpacity>
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
   },
   rowOptions: {
     padding: toolPadding,
-    paddingTop: 8,
+    paddingTop: 12,
     marginTop: toolsmarginTop,
     marginRight: toolMarginRight,
     flexDirection: 'row',

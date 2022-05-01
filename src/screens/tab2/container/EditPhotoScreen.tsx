@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+// React & packages
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,198 +7,196 @@ import {
   Keyboard,
   Image,
   StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import DatePicker from 'react-native-date-picker';
-import {useNavigation} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-// Icon
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// custom components
+import CustomDateHeader from '../../../components/header/CustomDateHeader';
+import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
-// Page
-import CustomHeader from '../../../components/header/CustomHeader';
+// image
+const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
-// Image
-const backgroundImg = '../../../assets/images/background/photoModify_bg.png';
+// variable
+const userImg = require('../../../assets/images/user/image4.png');
+const preMemo = '헤헤 hihi !!';
+const preDate = '2022.04.29';
 
 function EditPhotoScreen() {
-  const navigation = useNavigation();
-  const [userDate, setUserDate] = useState('2020.03.03');
-  const [date, setDate] = useState(new Date());
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [editText, setEditText] = useState(false);
-  const [input, setInput] = useState(
-    '오늘은 3월 3일 \n 다음주면 대통령 선거날이다. 뽀앵 배고팡 ㅇㅅㅇ \n 근데 누굴 뽑아야 할 지 모르겠는데 어떡하지 ? \n 그냥 내가 됐으면 좋곘다 ㅎㅎ \n 오늘 아침 9시에 날씨 좋다고 느끼면서 출근했는데 벌써 오후 8시다 \n 시간은 참 빨라 룰루 \n 오늘 논너가기 조은 날이라던데 .. 다들 내 몫까지 놀아주라 희희 ..',
+  const [input, setInput] = useState(preMemo);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [date, setDate] = useState(
+    String(new Date().toISOString()).slice(0, 10).replace(/-/gi, '.'),
   );
 
+  console.log('Memo ~~~~~~~~~~~', input);
+  console.log('date ~~~~~~~~~~~', date);
+
+  const getDate = value => {
+    setDate(value);
+  };
+
+  // 작성 완료 Btn
+  const confirm = () => {
+    console.log('사진 저장');
+  };
+
+  // 키보드 이벤트
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingView}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={styles.SafeAreaView}>
-          <CustomHeader
-            headerTitle="Edit"
-            goBackArrow={true}
-            navigation={navigation}
-          />
-          <ImageBackground
-            source={require(backgroundImg)}
-            style={styles.imageBackground}>
-            <View style={styles.imageContainer}>
-              {/********************** Image **********************/}
-              <View style={styles.imageContent}>
-                <Image
-                  source={require('../../../assets/images/user/image2.png')}
-                  style={styles.image}
-                />
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}>
+        <FastImage source={require(bgImg)} style={styles.bgImg}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.SafeAreaView}>
+              {/*================== header ==================*/}
+              <CustomDateHeader date={preDate} getDate={getDate} />
+
+              {/*================== photo ==================*/}
+              <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
+                <Text style={area.title}>Photo</Text>
+                <View style={area.photoSection}>
+                  <Image source={userImg} style={area.photoStyle} />
+                </View>
               </View>
 
-              {/*********************** Date ***********************/}
-              <TouchableOpacity
-                style={styles.dateContaier}
-                onPress={() => {
-                  setDatePickerOpen(true);
-                }}>
-                <Text style={styles.dateText}>{userDate}</Text>
-                <MaterialIcons name="pencil-outline" size={20} color="#111" />
-              </TouchableOpacity>
-              {datePickerOpen ? (
-                <DatePicker
-                  modal
-                  mode="date"
-                  open={datePickerOpen}
-                  date={date}
-                  onConfirm={date => {
-                    setDatePickerOpen(false);
-                    setDate(date);
-                    setUserDate(
-                      String(date.toISOString())
-                        .slice(0, 10)
-                        .replace(/-/gi, '.'),
-                    );
-                  }}
-                  onCancel={() => {
-                    setDatePickerOpen(false);
-                  }}
-                />
-              ) : null}
-            </View>
+              {/*=================== memo ===================*/}
+              <View
+                style={[
+                  area.container,
+                  {
+                    flex: isKeyboardVisible ? 7 : 3.2,
+                  },
+                ]}>
+                <Text style={area.title}>Memo</Text>
+                <View style={area.memoSection}>
+                  <TextInput
+                    value={input}
+                    multiline={true}
+                    editable={true}
+                    maxLength={300}
+                    style={area.memoText}
+                    onChangeText={text => {
+                      console.log('hihi'); // fix
+                      setInput(text);
+                    }}
+                    onEndEditing={() => {
+                      console.log('input is Done ~~~~~');
+                    }}
+                    onSubmitEditing={() => {
+                      console.log('input is ');
+                    }}
+                  />
+                </View>
+              </View>
 
-            {/************************* Text *************************/}
-            <View style={styles.editTextCon}>
-              <TextInput
-                value={input}
-                multiline={true}
-                editable={editText}
-                maxLength={300}
-                style={styles.textContent}
-                onChangeText={text => {
-                  console.log('hihi'); // fix
-                  setInput(text);
-                }}
-                onEndEditing={() => {
-                  console.log('input is Done ~~~~~');
-                }}
-                onSubmitEditing={() => {}}
-              />
-            </View>
-
-            {/********************** Edit Image **********************/}
-            <View style={styles.textEditCon}>
-              <TouchableOpacity
-                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => {
-                  editText ? setEditText(false) : setEditText(true);
-                }}>
-                <MaterialIcons
-                  name={editText ? 'check' : 'pencil-outline'}
-                  size={27}
-                  color="#111"
-                />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              {/*================ bottom btn ================*/}
+              {isKeyboardVisible === false && (
+                <>
+                  <View style={area.bottomSection} />
+                  <CustomFooterButton title="작성 완료" action={confirm} />
+                </>
+              )}
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </FastImage>
+      </KeyboardAvoidingView>
+    </>
   );
 }
 
 export default EditPhotoScreen;
 
+// const SectionBGColor = '#eaeaea';
+const SectionBGColor = '#f7f2ed';
+
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  bgImg: {
+    flex: 1,
+    // marginBottom: ifIphoneX(-40, -10),
   },
   SafeAreaView: {
     flex: 1,
-    marginBottom: ifIphoneX(-40, -20),
   },
-  imageBackground: {
-    flex: 1,
+});
+
+const area = StyleSheet.create({
+  container: {
+    margin: 20,
+    borderRadius: 15,
     backgroundColor: '#fff',
   },
-  imageContainer: {
-    width: '100%',
-    height: '55%',
-    alignItems: 'center',
-    justifyContent: 'center',
+  title: {
+    fontSize: 16,
+    paddingTop: 15,
+    paddingLeft: 17,
+    fontWeight: '500',
   },
-  imageContent: {
-    width: '70%',
-    height: '67%',
-    marginTop: 40,
+  photoSection: {
+    flex: 1,
+    marginTop: 15,
+    marginLeft: 35,
+    marginRight: 35,
     marginBottom: 40,
+    borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
+  photoStyle: {
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
   },
-  dateContaier: {
-    width: '40%',
-    height: 30,
-    marginLeft: '60%',
-    paddingRight: 20,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-  },
-  dateText: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    paddingRight: 8,
-  },
-  editTextCon: {
-    height: '30%',
-    paddingLeft: '3%',
-    paddingRight: '3%',
-    paddingTop: 20,
-    paddingBottom: 15,
-  },
-  textContent: {
+  memoSection: {
     flex: 1,
-    fontSize: 15,
-    fontWeight: '500',
-    // font design
-    lineHeight: 28,
-    letterSpacing: -0.7,
-    paddingLeft: '10%',
-    paddingRight: '10%',
+    marginTop: 15,
+    marginLeft: 17,
+    marginRight: 17,
+    marginBottom: 25,
+    borderRadius: 13,
+    backgroundColor: SectionBGColor,
   },
-  textEditCon: {
-    width: '100%',
-    paddingRight: 25,
-    alignItems: 'flex-end',
+  memoText: {
+    flex: 1,
+    color: 'black',
+    fontSize: 15,
+    // fontWeight: '600',
+    lineHeight: 20,
+    // letterSpacing: -0.7,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingBottom: 10,
+    borderRadius: 10,
+  },
+  bottomSection: {
+    flex: 1.8,
   },
 });
