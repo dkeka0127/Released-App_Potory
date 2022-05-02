@@ -1,4 +1,5 @@
 // React & Package
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
@@ -8,10 +9,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 interface Props {
   headerTitle: string;
   goBackArrow?: boolean;
-  navigation?: any;
 }
 
-function CustomHeader({headerTitle, goBackArrow, navigation}: Props) {
+function CustomHeader({headerTitle, goBackArrow}: Props) {
+  const navigation = useNavigation();
+
   const goBack = () => {
     navigation.goBack();
   };

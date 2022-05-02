@@ -1,23 +1,16 @@
 // React & Package
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 
 // custom components
 import CustomHeader from '../../../components/header/CustomHeader';
 import PrivacyPolicyContent from '../components/PrivacyPolicyContent';
 
 function PrivacyPolicy() {
-  const navigation = useNavigation();
-
   return (
     <SafeAreaView style={styles.container}>
       {/*--------- Header ---------*/}
-      <CustomHeader
-        headerTitle={'개인정보 처리방침'}
-        goBackArrow={true}
-        navigation={navigation}
-      />
+      <CustomHeader headerTitle={'개인정보 처리방침'} goBackArrow={true} />
 
       {/*--------- Content ---------*/}
       <PrivacyPolicyContent />

@@ -1,7 +1,6 @@
 // React & Package
 import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 
 // custom components
 import CustomHeader from '../../../components/header/CustomHeader';
@@ -16,16 +15,10 @@ const IconSize = 17;
 const IconColor = '#111';
 
 function SettingScreen() {
-  const navigation = useNavigation();
-
   return (
     <SafeAreaView style={styles.container}>
       {/*---------- Header ----------*/}
-      <CustomHeader
-        headerTitle={'설정'}
-        goBackArrow={true}
-        navigation={navigation}
-      />
+      <CustomHeader headerTitle={'설정'} goBackArrow={true} />
 
       {/*---------- Content ----------*/}
       <SettingContent />

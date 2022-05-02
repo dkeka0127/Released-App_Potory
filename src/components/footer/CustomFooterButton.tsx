@@ -36,6 +36,3 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-function useNavigation() {
-  throw new Error('Function not implemented.');
-}
