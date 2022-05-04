@@ -127,11 +127,10 @@ function AddPhotoScreen() {
                 <Text style={area.title}>Photo</Text>
                 <TouchableOpacity
                   style={area.photoSection}
-                  onPress={() => {
-                    navigation.navigate('QRCodeScreen');
-                  }}
-                  // onPress={openGallery}
-                >
+                  // onPress={() => {
+                  //   navigation.navigate('QRCodeScreen');
+                  // }}
+                  onPress={openGallery}>
                   {imageUri === null && (
                     <Ionicons name="camera-outline" size={42} color="#3a2e23" />
                   )}

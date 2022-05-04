@@ -268,9 +268,9 @@ const QRCodeScanner = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 30,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
     backgroundColor: '#fff',

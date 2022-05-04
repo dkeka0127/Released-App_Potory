@@ -1,14 +1,12 @@
-// React & Package
+// React & package
 import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   Alert,
-  Image,
   StyleSheet,
   Dimensions,
   ScrollView,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -16,33 +14,41 @@ import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
 // icons & images
-const bgImg = '../../../assets/images/background/photoPopup_bg.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+const userImg = require('../../../assets/images/user/image2.png');
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
+const ModalWidth = deviceWidth * 0.85;
+const ModalHeight = deviceHeight * 0.6;
 
-const userImg = require('../../../assets/images/user/image3.png');
 const userText =
-  '오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';
+  '오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.\n오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타\n 스토리를 봤다.오늘은 인스타 스토리를 봤다.늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤\n다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';
 const date = '22.03.02';
 
 //
 //
+//
 
-export default function PhotoModal({isModal}) {
+export default function PhotoModal({isModal}: any) {
   const navigation = useNavigation();
   const [shownModal, setShownModal] = useState(false);
 
-  // 폴라로이드 터치 시 하위 컴포넌트 렌더링 (= Modal shown)
+  // set Modal Shown
   useEffect(() => {
     if (isModal) {
       setShownModal(true);
     }
   }, [isModal]);
 
-  // 사진 삭제 시 동작하는 Alert
+  // 사진 수정
+  const Edit = () => {
+    setShownModal(false);
+    navigation.navigate('EditPhotoScreen');
+  };
+
+  // 사진 삭제 Alert
   const Delete = () => {
     Alert.alert('', '삭제 하시겠습니까 ?', [
       {
@@ -59,12 +65,6 @@ export default function PhotoModal({isModal}) {
     ]);
   };
 
-  // 사진 수정 시 동작
-  const Edit = () => {
-    setShownModal(false);
-    navigation.navigate('EditPhotoScreen');
-  };
-
   return (
     <Modal
       style={styles.container}
@@ -72,119 +72,112 @@ export default function PhotoModal({isModal}) {
       hasBackdrop={true}
       backdropColor="black"
       backdropOpacity={0.7}
-      onBackdropPress={() => {
-        setShownModal(false);
-      }}>
-      <View style={styles.content}>
-        <View style={styles.modalContent}>
-          {/*===================== Content =====================*/}
-          <ImageBackground source={require(bgImg)} style={styles.bgImage}>
-            {/*----------------- Image -----------------*/}
-            <View style={styles.imageContainer}>
-              <ImageModal
-                style={styles.image}
-                resizeMode="contain"
-                hideCloseButton={true}
-                overlayBackgroundColor="#000000"
-                source={userImg}
-              />
-            </View>
-
-            {/*----------------- Text -----------------*/}
-            <ScrollView>
-              <Text style={styles.textContaier}>{userText}</Text>
-            </ScrollView>
-          </ImageBackground>
+      onBackdropPress={() => setShownModal(false)}>
+      {/*===================== header =====================*/}
+      <View style={styles.header}>
+        <Text>{date}</Text>
+        <View style={styles.headerIcon}>
+          <TouchableOpacity style={styles.editIcon} onPress={Edit}>
+            <MaterialIcons name="pencil-outline" size={22} color="#555" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.deleteIcon} onPress={Delete}>
+            <MaterialIcons name="delete-outline" size={24} color="#555" />
+          </TouchableOpacity>
         </View>
+      </View>
 
-        {/*===================== Footer =====================*/}
-        <View style={styles.modalFooter}>
-          <Text style={styles.date}>{date}</Text>
-          <View style={styles.iconsContaier}>
-            {/*----------------- Edit Photo -----------------*/}
-            <TouchableOpacity style={styles.editIcon} onPress={Edit}>
-              <MaterialIcons name="pencil-outline" size={24} color="black" />
-            </TouchableOpacity>
-            {/*----------------- Delete Photo -----------------*/}
-            <TouchableOpacity style={styles.deleteIcon} onPress={Delete}>
-              <MaterialIcons name="delete-outline" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
-        </View>
+      {/*====================== image ======================*/}
+      <View style={styles.image}>
+        <ImageModal
+          style={styles.imageModal}
+          resizeMode="contain"
+          hideCloseButton={true}
+          overlayBackgroundColor="#000000"
+          source={userImg}
+        />
+      </View>
+
+      {/*====================== text ======================*/}
+      <View style={styles.text}>
+        <ScrollView style={styles.textScrollView}>
+          <Text style={styles.textStyle}>{userText}</Text>
+        </ScrollView>
       </View>
     </Modal>
   );
 }
 
+const BGColor = '#f5f4fc';
+const BorderRadius = 10;
+const ImageHeight = 0.73;
+const ImageHeightMargin = 0.04;
+const TextHeight = 1 - ImageHeight;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    width: deviceWidth * 0.85,
-    height: deviceHeight * 0.63,
-    padding: 18,
-    paddingBottom: 8,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-  },
-  modalContent: {
-    height: '88%',
-    backgroundColor: '#ccc',
-  },
-  bgImage: {
-    flex: 1,
-    margin: 1.5,
-    paddingTop: 20,
-    paddingBottom: 20,
-    alignItems: 'center',
-  },
-  imageContainer: {
-    width: '83%',
-    height: '70%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
   },
-  image: {
-    width: deviceWidth * 0.85 * 0.75,
-    height: deviceHeight * 0.63 * 0.47,
-  },
-  textContaier: {
-    paddingTop: 5,
-    paddingLeft: 30,
-    paddingRight: 30,
-  },
-  modalFooter: {
-    height: '12%',
-    paddingTop: 10,
-    paddingBottom: 3,
+  header: {
+    width: ModalWidth,
+    height: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: BGColor,
+    borderTopLeftRadius: BorderRadius,
+    borderTopRightRadius: BorderRadius,
   },
-  date: {
-    fontSize: 16,
-    fontWeight: '600',
-    paddingLeft: 10,
-  },
-  iconsContaier: {
-    paddingTop: 5,
+  headerIcon: {
     flexDirection: 'row',
-    // backgroundColor: 'pink',
+  },
+  image: {
+    width: ModalWidth,
+    height: ModalHeight * ImageHeight, // ModalHeight 7:3
+    backgroundColor: '#fff',
+  },
+  imageModal: {
+    width: ModalWidth * 0.9,
+    marginLeft: ModalWidth * 0.05,
+    marginRight: ModalWidth * 0.05,
+
+    height: ModalHeight * (ImageHeight - ImageHeightMargin * 2), // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+    marginTop: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+    marginBottom: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+  },
+  text: {
+    width: ModalWidth,
+    height: ModalHeight * TextHeight, // ModalHeight 7:3
+    backgroundColor: BGColor,
+    borderBottomLeftRadius: BorderRadius,
+    borderBottomRightRadius: BorderRadius,
+  },
+  textScrollView: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 20,
+    paddingLeft: 35,
+    paddingRight: 35,
+    borderRadius: BorderRadius,
+  },
+  textStyle: {
+    paddingTop: 0,
+    paddingBottom: 20,
   },
   editIcon: {
     width: 30,
     height: 30,
-    marginRight: 10,
+    marginRight: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   deleteIcon: {
     width: 30,
     height: 30,
-    marginRight: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
