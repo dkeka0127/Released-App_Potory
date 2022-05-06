@@ -97,6 +97,11 @@ export default function PhotoModal({isModal}: any) {
         />
       </View>
 
+      {/*================== divided line ==================*/}
+      <View style={styles.divideLineContainer}>
+        <View style={styles.devideLine} />
+      </View>
+
       {/*====================== text ======================*/}
       <View style={styles.text}>
         <ScrollView style={styles.textScrollView}>
@@ -108,8 +113,9 @@ export default function PhotoModal({isModal}: any) {
 }
 
 const BGColor = '#f5f4fc';
+// const BGColor = '#fff';
 const BorderRadius = 10;
-const ImageHeight = 0.73;
+const ImageHeight = 0.71;
 const ImageHeightMargin = 0.04;
 const TextHeight = 1 - ImageHeight;
 
@@ -134,6 +140,20 @@ const styles = StyleSheet.create({
   headerIcon: {
     flexDirection: 'row',
   },
+  editIcon: {
+    width: 30,
+    height: 30,
+    marginRight: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deleteIcon: {
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   image: {
     width: ModalWidth,
     height: ModalHeight * ImageHeight, // ModalHeight 7:3
@@ -148,6 +168,7 @@ const styles = StyleSheet.create({
     marginTop: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
     marginBottom: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
   },
+
   text: {
     width: ModalWidth,
     height: ModalHeight * TextHeight, // ModalHeight 7:3
@@ -167,17 +188,17 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 20,
   },
-  editIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 5,
+
+  divideLineContainer: {
+    width: ModalWidth,
+    height: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  deleteIcon: {
-    width: 30,
-    height: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+  devideLine: {
+    width: ModalWidth * 0.8,
+    height: 1,
+    backgroundColor: '#dcdaea',
   },
 });
