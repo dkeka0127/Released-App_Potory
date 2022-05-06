@@ -15,13 +15,13 @@ import {useNavigation} from '@react-navigation/native';
 
 // icons & images
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const userImg = require('../../../assets/images/user/image2.png');
+const userImg = require('../../../assets/images/user/image5.png');
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const ModalWidth = deviceWidth * 0.85;
-const ModalHeight = deviceHeight * 0.6;
+const ModalHeight = deviceHeight * 0.5;
 
 const userText =
   '오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.\n오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타\n 스토리를 봤다.오늘은 인스타 스토리를 봤다.늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤\n다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';
@@ -31,39 +31,46 @@ const date = '22.03.02';
 //
 //
 
-export default function PhotoModal({isModal}: any) {
+interface Props {
+  isModalShown: boolean;
+  modalImgPath: string;
+}
+
+export default function PhotoModal({isModalShown, modalImgPath}: Props) {
   const navigation = useNavigation();
   const [shownModal, setShownModal] = useState(false);
 
-  // set Modal Shown
-  useEffect(() => {
-    if (isModal) {
-      setShownModal(true);
-    }
-  }, [isModal]);
-
-  // 사진 수정
-  const Edit = () => {
+  console.log('==', modalImgPath);
+  // function
+  const moveToEditScreen = () => {
     setShownModal(false);
     navigation.navigate('EditPhotoScreen');
   };
 
-  // 사진 삭제 Alert
-  const Delete = () => {
+  const alertBeforeDelete = () => {
     Alert.alert('', '삭제 하시겠습니까 ?', [
       {
         text: '취소',
-        onPress: () => console.log('Cancel Pressed'),
+        onPress: () => {},
         style: 'cancel',
       },
       {
         text: '확인',
-        onPress: () => {
-          setShownModal(false);
-        },
+        onPress: deletePhoto,
       },
     ]);
   };
+
+  const deletePhoto = () => {
+    setShownModal(false);
+  };
+
+  // useEffect
+  useEffect(() => {
+    if (isModalShown) {
+      setShownModal(true);
+    }
+  }, [isModalShown]);
 
   return (
     <Modal
@@ -75,13 +82,18 @@ export default function PhotoModal({isModal}: any) {
       onBackdropPress={() => setShownModal(false)}>
       {/*===================== header =====================*/}
       <View style={styles.header}>
-        <Text>{date}</Text>
+        <View style={styles.haederTextCon}>
+          <View style={styles.headerCircleShape} />
+          <Text style={styles.headerText}>{date}</Text>
+        </View>
         <View style={styles.headerIcon}>
-          <TouchableOpacity style={styles.editIcon} onPress={Edit}>
-            <MaterialIcons name="pencil-outline" size={22} color="#555" />
+          <TouchableOpacity style={styles.editIcon} onPress={moveToEditScreen}>
+            <MaterialIcons name="pencil-outline" size={22} color="#5d5963" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteIcon} onPress={Delete}>
-            <MaterialIcons name="delete-outline" size={24} color="#555" />
+          <TouchableOpacity
+            style={styles.deleteIcon}
+            onPress={alertBeforeDelete}>
+            <MaterialIcons name="delete-outline" size={24} color="#5d5963" />
           </TouchableOpacity>
         </View>
       </View>
@@ -98,9 +110,9 @@ export default function PhotoModal({isModal}: any) {
       </View>
 
       {/*================== divided line ==================*/}
-      <View style={styles.divideLineContainer}>
+      {/* <View style={styles.divideLineContainer}>
         <View style={styles.devideLine} />
-      </View>
+      </View> */}
 
       {/*====================== text ======================*/}
       <View style={styles.text}>
@@ -112,10 +124,10 @@ export default function PhotoModal({isModal}: any) {
   );
 }
 
-const BGColor = '#f5f4fc';
 // const BGColor = '#fff';
+const BGColor = '#f9f7ff';
 const BorderRadius = 10;
-const ImageHeight = 0.71;
+const ImageHeight = 0.7;
 const ImageHeightMargin = 0.04;
 const TextHeight = 1 - ImageHeight;
 
@@ -127,7 +139,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: ModalWidth,
-    height: 60,
+    height: 58,
     paddingLeft: 20,
     paddingRight: 20,
     flexDirection: 'row',
@@ -136,6 +148,21 @@ const styles = StyleSheet.create({
     backgroundColor: BGColor,
     borderTopLeftRadius: BorderRadius,
     borderTopRightRadius: BorderRadius,
+  },
+  haederTextCon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerCircleShape: {
+    width: 31,
+    height: 25,
+    marginRight: -17,
+    backgroundColor: '#cfc7e2',
+    borderRadius: 30,
+  },
+  headerText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   headerIcon: {
     flexDirection: 'row',
@@ -156,7 +183,9 @@ const styles = StyleSheet.create({
 
   image: {
     width: ModalWidth,
-    height: ModalHeight * ImageHeight, // ModalHeight 7:3
+    height: ModalHeight * ImageHeight + 10, // ModalHeight 7:3
+    paddingTop: 5,
+    paddingBottom: 5,
     backgroundColor: '#fff',
   },
   imageModal: {
@@ -178,7 +207,8 @@ const styles = StyleSheet.create({
   },
   textScrollView: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 15,
+    paddingTop: 8,
     marginBottom: 20,
     paddingLeft: 35,
     paddingRight: 35,
@@ -199,6 +229,6 @@ const styles = StyleSheet.create({
   devideLine: {
     width: ModalWidth * 0.8,
     height: 1,
-    backgroundColor: '#dcdaea',
+    backgroundColor: '#e1dced',
   },
 });

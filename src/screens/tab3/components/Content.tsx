@@ -37,6 +37,10 @@ const PercentageString = String(percentage);
 
 // Icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 function Content() {
   const [response, setResponse] = useState<any>(null); // 사진 uri
@@ -53,22 +57,31 @@ function Content() {
     );
   };
 
-  const InfoBox = ({title, value}) => {
+  const MemuArea = ({title, value}) => {
     return (
       <View style={styles.infoBaxContainer}>
-        <View style={styles.infoBoxContent}>
-          <View style={styles.infoBoxImg}>
-            <MaterialIcons name="pencil-outline" size={28} color="#666" />
+        <View style={styles.memuAreaContent}>
+          <View style={styles.memuAreaImg}>
+            {title === 'Level' ? (
+              // <MaterialIcons name="medal" size={28} color="#735e9b" />
+              // <FontAwesome name="signal" size={28} color="#735e9b" />
+              // <FontAwesome5 name="chart-bar" size={28} color="#735e9b" />
+              <FontAwesome5 name="route" size={25} color="#735e9b" />
+            ) : (
+              // <MaterialIcon name="photo" size={28} color="#735e9b" />
+              <Entypo name="documents" size={26} color="#735e9b" />
+            )}
           </View>
 
           <View>
-            <Text style={styles.infoBoxTitle}>{title}</Text>
-            <Text style={styles.infoBoxText}>{value}</Text>
+            <Text style={styles.memuAreaTitle}>{title}</Text>
+            <Text style={styles.memuAreaText}>{value}</Text>
           </View>
         </View>
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       {/*============================== Nav ==============================*/}
@@ -85,15 +98,15 @@ function Content() {
           <Text style={styles.userNameText}>{userName}</Text>
 
           <TouchableOpacity hitSlop={styles.hitslop}>
-            <MaterialIcons name="pencil-outline" size={20} color="#666" />
+            <MaterialIcons name="pencil-outline" size={18} color="#666" />
           </TouchableOpacity>
         </View>
 
-        {/*----------- info box -----------*/}
-        <View style={styles.infoBox}>
-          <InfoBox title="Level" value={2} />
+        {/*----------- menu box -----------*/}
+        <View style={styles.memuArea}>
+          <MemuArea title="Level" value={2} />
           <View style={styles.centerLine} />
-          <InfoBox title="Photos" value={20} />
+          <MemuArea title="Photos" value={20} />
         </View>
       </View>
 
@@ -139,13 +152,17 @@ function Content() {
 export default Content;
 
 const borderRadius = 60;
-const navFlex = 4;
-const contentFlex = 6;
+const navFlex = 3.2;
+const contentFlex = 5.5;
+const backgroundColor = '#fdfcff';
+const barBackgroundColor = '#8273a0';
+const barPointColor = '#fdfcff';
+const fontColor = '#362f44';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   hitslop: {
     top: 10,
@@ -157,10 +174,11 @@ const styles = StyleSheet.create({
   // ---------------- nav ----------------
   nav: {
     flex: navFlex,
+    marginTop: -5,
+    marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#f7f0e8',
-    backgroundColor: '#efe8e1',
+    backgroundColor: backgroundColor,
   },
   userImgContainer: {
     borderWidth: 4, // 프로필 사진 외부 선 두께
@@ -175,8 +193,8 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 0, width: 0},
   },
   userImg: {
-    width: 105,
-    height: 105,
+    width: 100,
+    height: 100,
     resizeMode: 'cover',
     borderRadius: borderRadius,
     opacity: 0.4,
@@ -184,58 +202,58 @@ const styles = StyleSheet.create({
   userNameContainer: {
     width: '100%',
     height: 50,
-    marginTop: 7, // 유저네임 marginTop
-    marginBottom: 12, // 유저네임 marginBottom
+    marginTop: 0, // 유저네임 marginTop
+    marginBottom: 10, // 유저네임 marginBottom
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
   userNameText: {
-    fontSize: 21,
+    fontSize: 19,
     paddingLeft: 17,
     paddingRight: 7,
   },
-  infoBox: {
+  memuArea: {
     width: '80%',
-    height: 70,
-    marginBottom: 45, // nav marginBottom
+    height: 68,
+    marginBottom: 40, // nav marginBottom
     borderRadius: 20,
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#fff',
     // 그림자
     elevation: 4,
-    shadowRadius: 5,
+    shadowRadius: 4,
     shadowOpacity: 0.1,
-    shadowColor: 'rgb(145, 129, 113)',
+    shadowColor: 'rgb(118, 93, 160)',
     shadowOffset: {height: 0, width: 0},
   },
   infoBaxContainer: {
     width: '50%',
     height: '100%',
   },
-  infoBoxContent: {
+  memuAreaContent: {
     height: '100%',
     alignItems: 'center',
     flexDirection: 'row',
   },
-  infoBoxImg: {
+  memuAreaImg: {
     width: 65,
     height: '100%',
     paddingLeft: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  infoBoxTitle: {
+  memuAreaTitle: {
     fontSize: 13,
-    fontWeight: '500',
+    color: '#333',
   },
-  infoBoxText: {
+  memuAreaText: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '500',
     paddingTop: 2,
     paddingBottom: 0,
-    color: '#7A6D5B',
+    color: fontColor,
   },
   centerLine: {
     width: 1,
@@ -246,7 +264,16 @@ const styles = StyleSheet.create({
   // ---------------- content ----------------
   content: {
     flex: contentFlex,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     backgroundColor: '#fff',
+
+    // 그림자
+    elevation: 4,
+    shadowRadius: 12,
+    shadowOpacity: 0.3,
+    shadowColor: 'rgb(162, 148, 192)',
+    shadowOffset: {height: 0, width: 0},
   },
   scrollView: {
     flex: 1,
@@ -267,7 +294,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   designText: {
-    color: '#7A6D5B',
+    color: fontColor,
   },
   subText: {
     fontSize: 14,
@@ -320,7 +347,7 @@ const scale = StyleSheet.create({
     marginRight: barMargin,
     borderRadius: 30,
     // backgroundColor: '#7A6D5B',
-    backgroundColor: '#f2ece6',
+    backgroundColor: barBackgroundColor,
     // 그림자
     elevation: 4,
     shadowRadius: 0.5,
@@ -334,7 +361,7 @@ const scale = StyleSheet.create({
     margin: '2.3%',
     borderRadius: 30,
     // backgroundColor: '#f7f0e8',
-    backgroundColor: '#aa9c8d',
+    backgroundColor: barPointColor,
   },
 
   scaleContainer: {

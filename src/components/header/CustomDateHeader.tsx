@@ -10,7 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = {
   date: string;
-  getDate: Function;
+  getChangedDate: Function;
 };
 
 const CustomDateHeader = (props: Props) => {
@@ -35,7 +35,7 @@ const CustomDateHeader = (props: Props) => {
   };
 
   useEffect(() => {
-    props.getDate(date);
+    props.getChangedDate(date);
   }, [date]);
 
   return (

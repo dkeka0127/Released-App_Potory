@@ -17,14 +17,16 @@ interface Props {
   gridPress?: Function;
   sequencePress?: Function;
   bgColorPress?: Function;
-  initToolValue?: Function;
+  initialAsyncValue?: Function;
+  actionForScrollTop: Function;
 }
 
 function Header({
   gridPress,
   sequencePress,
   bgColorPress,
-  initToolValue,
+  initialAsyncValue,
+  actionForScrollTop,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
@@ -80,18 +82,20 @@ function Header({
   // 초기 Async 값 Main으로 전달하는 useEffect
   useEffect(() => {
     if (grid !== undefined && sequence !== undefined && bgColor !== undefined) {
-      initToolValue({grid, sequence, bgColor});
+      initialAsyncValue({grid, sequence, bgColor});
     }
   }, [grid, sequence, bgColor]);
 
   return (
     <View style={styles.container}>
       {/*========================== Logo ==========================*/}
-      <View style={styles.appName}>
+      <TouchableOpacity
+        style={styles.appName}
+        onPress={() => actionForScrollTop()}>
         <Text style={styles.appNameFont}>
           {isEdit ? 'Potory' : 'Photo in memory'}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.toolCon}>
         {/*======================== Tools ========================*/}

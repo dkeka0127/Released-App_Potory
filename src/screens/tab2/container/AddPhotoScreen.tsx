@@ -19,31 +19,31 @@ import {CameraScreen} from 'react-native-camera-kit';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
+import QRCodeScanner from './QRCodeScreen';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import QRCodeScanner from './QRCodeScreen';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
-
-  const [input, setInput] = useState('');
+  const [memo, setMemo] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [date, setDate] = useState(
     String(new Date().toISOString()).slice(0, 10).replace(/-/gi, '.'),
   );
 
-  // gallery
   const [imageUri, setImageUri] = useState(null);
-  const [response, setResponse] = useState<any>(null); // 갤러리에서 가져온 사진 response
+  const [response, setResponse] = useState<any>(null); // photo response from gallery
 
-  const getDate = value => {
-    setDate(value); // 변경된 날짜 받아옴
+  // function
+
+  const getChangedDate = value => {
+    setDate(value);
   };
 
   // const moveToCamera = () => {
@@ -77,8 +77,7 @@ function AddPhotoScreen() {
     });
   };
 
-  // 작성 완료 Btn
-  const confirm = () => {
+  const saveTheData = () => {
     if (imageUri === null) {
       console.log('사진을 선택해주세요.');
     } else {
@@ -108,7 +107,7 @@ function AddPhotoScreen() {
   }, []);
 
   console.log('get Date', date);
-  console.log('Memo ~~~~~~~~~~~', input);
+  console.log('Memo ~~~~~~~~~~~', memo);
   console.log('Photo URI ========', imageUri);
 
   return (
@@ -120,7 +119,7 @@ function AddPhotoScreen() {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.SafeAreaView}>
               {/*================== header ==================*/}
-              <CustomDateHeader date={''} getDate={getDate} />
+              <CustomDateHeader date={''} getChangedDate={getChangedDate} />
 
               {/*================== photo ==================*/}
               <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
@@ -188,20 +187,20 @@ function AddPhotoScreen() {
                 <Text style={area.title}>Memo</Text>
                 <View style={area.memoSection}>
                   <TextInput
-                    value={input}
+                    value={memo}
                     multiline={true}
                     editable={true}
                     maxLength={300}
                     style={area.memoText}
                     onChangeText={text => {
                       console.log('hihi'); // fix
-                      setInput(text);
+                      setMemo(text);
                     }}
                     onEndEditing={() => {
-                      console.log('input is Done ~~~~~');
+                      console.log('memo is Done ~~~~~');
                     }}
                     onSubmitEditing={() => {
-                      console.log('input is ');
+                      console.log('memo is ');
                     }}
                   />
                 </View>
@@ -210,7 +209,7 @@ function AddPhotoScreen() {
               {isKeyboardVisible === false && (
                 <>
                   <View style={area.bottomSection} />
-                  <CustomFooterButton title="작성 완료" action={confirm} />
+                  <CustomFooterButton title="작성 완료" action={saveTheData} />
                 </>
               )}
             </SafeAreaView>

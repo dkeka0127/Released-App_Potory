@@ -36,7 +36,7 @@ function EditPhotoScreen() {
   console.log('Memo ~~~~~~~~~~~', input);
   console.log('date ~~~~~~~~~~~', date);
 
-  const getDate = value => {
+  const getChangedDate = value => {
     setDate(value);
   };
 
@@ -75,7 +75,10 @@ function EditPhotoScreen() {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.SafeAreaView}>
               {/*================== header ==================*/}
-              <CustomDateHeader date={preDate} getDate={getDate} />
+              <CustomDateHeader
+                date={preDate}
+                getChangedDate={getChangedDate}
+              />
 
               {/*================== photo ==================*/}
               <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
