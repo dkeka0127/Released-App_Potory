@@ -15,13 +15,13 @@ import {useNavigation} from '@react-navigation/native';
 
 // icons & images
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const userImg = require('../../../assets/images/user/image5.png');
+const userImg = require('../../../assets/images/user/image4.png');
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const ModalWidth = deviceWidth * 0.85;
-const ModalHeight = deviceHeight * 0.5;
+const ModalHeight = deviceHeight * 0.51;
 
 const userText =
   '오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.\n오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타\n 스토리를 봤다.오늘은 인스타 스토리를 봤다.늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤\n다.오늘은 인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';

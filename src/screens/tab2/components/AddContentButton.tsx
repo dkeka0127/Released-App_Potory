@@ -33,10 +33,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 20,
     // 그림자
-    elevation: 4,
+    // elevation: 4,
+    // shadowRadius: 4,
+    // shadowOpacity: 0.2,
+    // shadowColor: 'rgb(50, 50, 50)',
+    // shadowOffset: {height: 0, width: 0},
+    // 그림자
+    elevation: 2,
     shadowRadius: 4,
-    shadowOpacity: 0.2,
-    shadowColor: 'rgb(50, 50, 50)',
+    shadowOpacity: 0.15,
+    shadowColor: 'rgb(54, 47, 68)',
     shadowOffset: {height: 0, width: 0},
   },
 });

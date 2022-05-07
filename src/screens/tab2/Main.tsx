@@ -6,6 +6,7 @@ import {
   ImageBackground,
   Dimensions,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -174,7 +175,8 @@ function Main() {
   //
 
   return (
-    <ImageBackground source={require(backgroundImg)} style={styles.container}>
+    // <ImageBackground source={require(backgroundImg)} style={styles.container}>
+    <View style={[styles.container, {backgroundColor: '#f9f7ff'}]}>
       {/*======================= header =======================*/}
       <Animated.View
         style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
@@ -218,7 +220,8 @@ function Main() {
 
       {/*======================= Footer =======================*/}
       <AddContentButton />
-    </ImageBackground>
+      {/* </ImageBackground> */}
+    </View>
   );
 }
 

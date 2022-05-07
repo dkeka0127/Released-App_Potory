@@ -135,8 +135,7 @@ function EditPhotoScreen() {
 
 export default EditPhotoScreen;
 
-// const SectionBGColor = '#eaeaea';
-const SectionBGColor = '#f7f2ed';
+const SectionBGColor = '#f9f7ff';
 
 const styles = StyleSheet.create({
   keyboardAvoidingView: {

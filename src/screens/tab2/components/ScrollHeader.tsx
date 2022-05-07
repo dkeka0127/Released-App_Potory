@@ -189,12 +189,12 @@ const styles = StyleSheet.create({
     padding: 9,
     borderRadius: 12,
     justifyContent: 'center',
-    backgroundColor: '#fcfcfc',
+    backgroundColor: '#fff',
     // 그림자
     elevation: 2,
-    shadowRadius: 2,
+    shadowRadius: 3,
     shadowOpacity: 0.1,
-    shadowColor: 'rgb(50, 50, 50)',
+    shadowColor: 'rgb(54, 47, 68)',
     shadowOffset: {height: 0, width: 0},
   },
   optionCon: {

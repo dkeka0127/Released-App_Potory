@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     ...ifIphoneX({marginBottom: 0}, {marginBottom: 20}),
-    width: '85%',
+    width: '87%',
     height: 60,
     borderRadius: 17,
     alignItems: 'center',

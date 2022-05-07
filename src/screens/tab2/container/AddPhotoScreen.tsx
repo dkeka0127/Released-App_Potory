@@ -123,13 +123,18 @@ function AddPhotoScreen() {
 
               {/*================== photo ==================*/}
               <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
-                <Text style={area.title}>Photo</Text>
+                <View style={area.headerTitleCon}>
+                  <View style={area.headerCircleShape} />
+                  <Text style={area.title}>Photo</Text>
+                </View>
+
                 <TouchableOpacity
                   style={area.photoSection}
-                  // onPress={() => {
-                  //   navigation.navigate('QRCodeScreen');
-                  // }}
-                  onPress={openGallery}>
+                  onPress={() => {
+                    navigation.navigate('QRCodeScreen');
+                  }}
+                  // onPress={openGallery}
+                >
                   {imageUri === null && (
                     <Ionicons name="camera-outline" size={42} color="#3a2e23" />
                   )}
@@ -184,7 +189,10 @@ function AddPhotoScreen() {
                     flex: isKeyboardVisible ? 7 : 3.2,
                   },
                 ]}>
-                <Text style={area.title}>Memo</Text>
+                <View style={area.headerTitleCon}>
+                  <View style={area.headerCircleShape} />
+                  <Text style={area.title}>Memo</Text>
+                </View>
                 <View style={area.memoSection}>
                   <TextInput
                     value={memo}
@@ -222,8 +230,8 @@ function AddPhotoScreen() {
 
 export default AddPhotoScreen;
 
-// const SectionBGColor = '#eaeaea';
-const SectionBGColor = '#f7f2ed';
+const SectionBGColor = '#fff';
+// const SectionBGColor = '#f9f7ff';
 
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
@@ -243,11 +251,29 @@ const area = StyleSheet.create({
     margin: 20,
     borderRadius: 15,
     backgroundColor: '#fff',
+
+    // 그림자
+    elevation: 2,
+    shadowRadius: 2,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(50, 50, 50)',
+    shadowOffset: {height: 0, width: 0},
+  },
+  headerTitleCon: {
+    paddingTop: 13,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerCircleShape: {
+    width: 31,
+    height: 25,
+    marginLeft: 17,
+    marginRight: -17,
+    backgroundColor: '#d7ceed',
+    borderRadius: 30,
   },
   title: {
     fontSize: 16,
-    paddingTop: 15,
-    paddingLeft: 17,
     fontWeight: '500',
   },
   photoSection: {
@@ -261,15 +287,29 @@ const area = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: SectionBGColor,
+
+    // 그림자
+    elevation: 2,
+    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(50, 50, 50)',
+    shadowOffset: {height: 0, width: 0},
   },
   memoSection: {
     flex: 1,
     marginTop: 15,
-    marginLeft: 17,
-    marginRight: 17,
+    marginLeft: 20,
+    marginRight: 20,
     marginBottom: 25,
     borderRadius: 13,
     backgroundColor: SectionBGColor,
+
+    // 그림자
+    elevation: 2,
+    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(50, 50, 50)',
+    shadowOffset: {height: 0, width: 0},
   },
   memoText: {
     flex: 1,
