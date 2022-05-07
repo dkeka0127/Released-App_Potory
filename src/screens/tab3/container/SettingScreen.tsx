@@ -27,6 +27,6 @@ export default SettingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa', // 설정페이지 배경색
+    backgroundColor: '#fdfcff', // 설정페이지 배경색
   },
 });

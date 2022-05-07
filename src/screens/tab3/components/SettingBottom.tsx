@@ -24,6 +24,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor: '#fff',
+    // 그림자
+    elevation: 4,
+    shadowRadius: 6,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(96, 83, 68)',
+    shadowOffset: {height: 0, width: 0},
   },
   emailText: {
     fontSize: 15,

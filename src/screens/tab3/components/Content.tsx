@@ -7,22 +7,23 @@ import {
   ScrollView,
   StyleSheet,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // Image
-const profile = '../../../assets/images/icons/userProfile.png';
+const profile = '../../../assets/images/potory/profile_potory.png';
 const bubble = require('../../../assets/images/icons/bubble.png');
 const scale0 = require('../../../assets/images/icons/scale_0.png');
 const scale1 = require('../../../assets/images/icons/scale_1.png');
 const scale2 = require('../../../assets/images/icons/scale_2.png');
 const scale3 = require('../../../assets/images/icons/scale_3.png');
 const scale4 = require('../../../assets/images/icons/scale_4.png');
-const potory_green = require('../../../assets/images/potory/potory_blue.png');
-const potory_orange = require('../../../assets/images/potory/potory_blue.png');
-const potory_blue = require('../../../assets/images/potory/potory_blue.png');
-const potory_purple = require('../../../assets/images/potory/potory_blue.png');
-const potory_pink = require('../../../assets/images/potory/potory_blue.png');
+const potory_green = require('../../../assets/images/potory/slide_potory_blue.png');
+const potory_orange = require('../../../assets/images/potory/slide_potory_blue.png');
+const potory_blue = require('../../../assets/images/potory/slide_potory_blue.png');
+const potory_purple = require('../../../assets/images/potory/slide_potory_blue.png');
+const potory_pink = require('../../../assets/images/potory/slide_potory_blue.png');
 
 // Variable
 const point = 150;
@@ -31,7 +32,7 @@ const userLevel = '소꿉친구';
 const photoNum = 32;
 const userName = '포토리 유저';
 
-const percent = 37;
+const percent = 60;
 const percentage = Math.round((percent / 100) * 95) + '%';
 const PercentageString = String(percentage);
 
@@ -41,6 +42,10 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo';
+
+const deviceHeight = Dimensions.get('window').height;
+
+console.log(deviceHeight);
 
 function Content() {
   const [response, setResponse] = useState<any>(null); // 사진 uri
@@ -126,12 +131,7 @@ function Content() {
           <View style={scale.container}>
             <View style={scale.bubbleContainer}>
               <View style={scale.bubbleContent}>
-                <ImageBackground
-                  resizeMode="contain"
-                  source={bubble}
-                  style={scale.bubbleImg}>
-                  <Image source={potory_green} style={scale.potoryImg} />
-                </ImageBackground>
+                <Image source={potory_green} style={scale.bubbleImg} />
               </View>
             </View>
 
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // 그림자
     elevation: 4,
-    shadowRadius: 7,
+    shadowRadius: 6,
     shadowOpacity: 0.1,
     shadowColor: 'rgb(96, 83, 68)',
     shadowOffset: {height: 0, width: 0},
@@ -221,9 +221,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#fff',
+
     // 그림자
     elevation: 4,
-    shadowRadius: 4,
+    shadowRadius: 3,
     shadowOpacity: 0.1,
     shadowColor: 'rgb(118, 93, 160)',
     shadowOffset: {height: 0, width: 0},
@@ -267,11 +268,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: '#fff',
+    alignContent: 'space-around',
+    alignSelf: 'stretch',
+    justifyContent: 'center',
 
     // 그림자
     elevation: 4,
-    shadowRadius: 12,
-    shadowOpacity: 0.3,
+    shadowRadius: 18,
+    shadowOpacity: 0.35,
     shadowColor: 'rgb(162, 148, 192)',
     shadowOffset: {height: 0, width: 0},
   },
@@ -279,9 +283,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textContainer: {
+    // flex: 1,
     width: '100%',
     height: 150,
-    marginTop: 10,
+    marginTop: deviceHeight > 900 ? 40 : 10,
+    // marginTop: 10,
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -295,6 +301,7 @@ const styles = StyleSheet.create({
   },
   designText: {
     color: fontColor,
+    fontWeight: '500',
   },
   subText: {
     fontSize: 14,
@@ -311,6 +318,7 @@ const addMargin = 10;
 const scale = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: deviceHeight > 900 ? 30 : deviceHeight > 840 ? 25 : 0,
   },
 
   bubbleContainer: {
@@ -325,11 +333,12 @@ const scale = StyleSheet.create({
     paddingBottom: 18,
     alignItems: 'flex-end',
     justifyContent: 'center',
-    marginLeft: bubbleSize / 2,
+    marginLeft: bubbleSize / 2 - 10,
   },
   bubbleImg: {
     width: bubbleSize,
     height: bubbleSize,
+    resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -342,18 +351,11 @@ const scale = StyleSheet.create({
 
   barContainer: {
     flex: 1,
-    height: 50,
+    height: 45,
     marginLeft: barMargin,
     marginRight: barMargin,
     borderRadius: 30,
-    // backgroundColor: '#7A6D5B',
     backgroundColor: barBackgroundColor,
-    // 그림자
-    elevation: 4,
-    shadowRadius: 0.5,
-    shadowOpacity: 0.3,
-    shadowColor: 'rgb(76, 69, 63)',
-    shadowOffset: {height: 0, width: 0},
   },
   barContent: {
     flex: 1,
@@ -368,6 +370,7 @@ const scale = StyleSheet.create({
     flex: 1.5,
     marginLeft: barMargin + 10,
     marginRight: barMargin + 10,
+    marginBottom: 10,
   },
   scaleImg: {
     width: '100%',
