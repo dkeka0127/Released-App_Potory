@@ -81,8 +81,12 @@ function EditPhotoScreen() {
               />
 
               {/*================== photo ==================*/}
-              <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
-                <Text style={area.title}>Photo</Text>
+              <View
+                style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
+                <View style={area.headerTitleCon}>
+                  <View style={area.headerCircleShape} />
+                  <Text style={area.title}>Photo</Text>
+                </View>
                 <View style={area.photoSection}>
                   <Image source={userImg} style={area.photoStyle} />
                 </View>
@@ -96,7 +100,10 @@ function EditPhotoScreen() {
                     flex: isKeyboardVisible ? 7 : 3.2,
                   },
                 ]}>
-                <Text style={area.title}>Memo</Text>
+                <View style={area.headerTitleCon}>
+                  <View style={area.headerCircleShape} />
+                  <Text style={area.title}>Memo</Text>
+                </View>
                 <View style={area.memoSection}>
                   <TextInput
                     value={input}
@@ -135,7 +142,7 @@ function EditPhotoScreen() {
 
 export default EditPhotoScreen;
 
-const SectionBGColor = '#f9f7ff';
+const SectionBGColor = '#fff';
 
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
@@ -156,10 +163,21 @@ const area = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: '#fff',
   },
+  headerTitleCon: {
+    paddingTop: 13,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerCircleShape: {
+    width: 31,
+    height: 25,
+    marginLeft: 17,
+    marginRight: -17,
+    backgroundColor: '#d7ceed',
+    borderRadius: 30,
+  },
   title: {
     fontSize: 16,
-    paddingTop: 15,
-    paddingLeft: 17,
     fontWeight: '500',
   },
   photoSection: {
@@ -180,11 +198,18 @@ const area = StyleSheet.create({
   memoSection: {
     flex: 1,
     marginTop: 15,
-    marginLeft: 17,
-    marginRight: 17,
+    marginLeft: 20,
+    marginRight: 20,
     marginBottom: 25,
     borderRadius: 13,
     backgroundColor: SectionBGColor,
+
+    // 그림자
+    elevation: 2,
+    shadowRadius: 3,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(50, 50, 50)',
+    shadowOffset: {height: 0, width: 0},
   },
   memoText: {
     flex: 1,

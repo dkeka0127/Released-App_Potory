@@ -109,6 +109,7 @@ function AddPhotoScreen() {
   console.log('get Date', date);
   console.log('Memo ~~~~~~~~~~~', memo);
   console.log('Photo URI ========', imageUri);
+  console.log('isKeyboardVisible========', isKeyboardVisible);
 
   return (
     <>
@@ -122,33 +123,39 @@ function AddPhotoScreen() {
               <CustomDateHeader date={''} getChangedDate={getChangedDate} />
 
               {/*================== photo ==================*/}
-              <View style={[area.container, {flex: isKeyboardVisible ? 1 : 6}]}>
+              <View
+                style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
                 <View style={area.headerTitleCon}>
                   <View style={area.headerCircleShape} />
                   <Text style={area.title}>Photo</Text>
                 </View>
 
-                <TouchableOpacity
-                  style={area.photoSection}
-                  onPress={() => {
-                    navigation.navigate('QRCodeScreen');
-                  }}
-                  // onPress={openGallery}
-                >
-                  {imageUri === null && (
-                    <Ionicons name="camera-outline" size={42} color="#3a2e23" />
-                  )}
-                  {imageUri != null && (
-                    <Image
-                      source={{uri: imageUri.uri}}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  )}
-                  {/* <CameraScreen
+                {!isKeyboardVisible && (
+                  <TouchableOpacity
+                    style={area.photoSection}
+                    onPress={() => {
+                      navigation.navigate('QRCodeScreen');
+                    }}
+                    // onPress={openGallery}
+                  >
+                    {imageUri === null && (
+                      <Ionicons
+                        name="camera-outline"
+                        size={42}
+                        color="#3a2e23"
+                      />
+                    )}
+                    {imageUri != null && (
+                      <Image
+                        source={{uri: imageUri.uri}}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          resizeMode: 'contain',
+                        }}
+                      />
+                    )}
+                    {/* <CameraScreen
                     showFrame={true}
                     scanBarcode={false}
                     laserColor={'#FF3D00'}
@@ -178,7 +185,8 @@ function AddPhotoScreen() {
                     //   throw new Error('Function not implemented.');
                     // }}
                   /> */}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
               </View>
 
               {/*=================== memo ===================*/}
@@ -248,6 +256,7 @@ const styles = StyleSheet.create({
 
 const area = StyleSheet.create({
   container: {
+    flex: 6,
     margin: 20,
     borderRadius: 15,
     backgroundColor: '#fff',
@@ -290,7 +299,7 @@ const area = StyleSheet.create({
 
     // 그림자
     elevation: 2,
-    shadowRadius: 4,
+    shadowRadius: 3,
     shadowOpacity: 0.1,
     shadowColor: 'rgb(50, 50, 50)',
     shadowOffset: {height: 0, width: 0},
@@ -306,7 +315,7 @@ const area = StyleSheet.create({
 
     // 그림자
     elevation: 2,
-    shadowRadius: 5,
+    shadowRadius: 3,
     shadowOpacity: 0.1,
     shadowColor: 'rgb(50, 50, 50)',
     shadowOffset: {height: 0, width: 0},

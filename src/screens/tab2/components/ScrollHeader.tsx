@@ -137,7 +137,7 @@ function Header({
 
         {/*======================= Edit & Save =======================*/}
         <TouchableOpacity
-          style={styles.tool}
+          style={[styles.tool, {backgroundColor: isEdit ? '#d7ceed' : '#fff'}]}
           hitSlop={styles.hitslop}
           onPress={EditOrSaveF}>
           {isEdit ? (
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     padding: 9,
     borderRadius: 12,
     justifyContent: 'center',
-    backgroundColor: '#fff',
+
     // 그림자
     elevation: 2,
     shadowRadius: 3,

@@ -9,6 +9,7 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import axios from 'axios';
+import LottieView from 'lottie-react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -84,8 +85,11 @@ function App() {
   };
 
   useEffect(() => {
+    SplashScreen.hide();
     connectAPI();
-    getLoginAsync();
+    setTimeout(() => {
+      getLoginAsync();
+    }, 1800);
   }, []);
 
   // useEffect(() => {
@@ -95,7 +99,13 @@ function App() {
   if (isLogin === null) {
     return (
       <View style={{flex: 1}}>
-        <Loading />
+        <LottieView
+          resizeMode="cover"
+          style={{flex: 1}}
+          source={require('./src/assets/lottie/splash.json')}
+          autoPlay
+          speed={1.2}
+        />
       </View>
     );
   }
@@ -103,15 +113,6 @@ function App() {
   return (
     <NavigationContainer>
       {isLogin ? <RootScreen /> : <SignInScreen isLoginF={isLoginF} />}
-      {/* {!isLogin ? (
-        <SignInScreen isLoginF={isLoginF} />
-      ) : isSplashScreen ? (
-        <SplashScreen />
-      ) : (
-        <RootScreen />
-      )} */}
-      {/* <RootScreen /> */}
-      {/* <SignInScreen isLoginF={isLoginF} /> */}
     </NavigationContainer>
   );
 }
