@@ -151,7 +151,7 @@ function Content() {
             </Text> */}
             <Text style={styles.mainText}>
               포토리 성장까지{'\n'}
-              <Text style={styles.designText}>{leftPhotoForNextLevel}장</Text>
+              <Text style={styles.designText}>{leftPhotoForNextLevel}장 </Text>
               남았어요 !
             </Text>
             {/* <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text> */}
@@ -326,10 +326,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mainText: {
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: '500',
     lineHeight: 37,
-    letterSpacing: -0.24,
+    // letterSpacing: -0.74,
     textAlign: 'center',
   },
   designText: {
