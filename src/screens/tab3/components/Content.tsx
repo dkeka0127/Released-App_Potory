@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 
+// icons
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 // images
 const profile = '../../../assets/images/potory/profile_potory.png';
 const scale0 = require('../../../assets/images/icons/scale_0.png');
@@ -17,16 +21,17 @@ const scale1 = require('../../../assets/images/icons/scale_1.png');
 const scale2 = require('../../../assets/images/icons/scale_2.png');
 const scale3 = require('../../../assets/images/icons/scale_3.png');
 const scale4 = require('../../../assets/images/icons/scale_4.png');
+const potory_pink = require('../../../assets/images/potory/slide_potory_pink.png');
+const potory_blue = require('../../../assets/images/potory/slide_potory_blue.png');
 const potory_green = require('../../../assets/images/potory/slide_potory_green.png');
 const potory_orange = require('../../../assets/images/potory/slide_potory_orange.png');
-const potory_blue = require('../../../assets/images/potory/slide_potory_blue.png');
 const potory_purple = require('../../../assets/images/potory/slide_potory_purple.png');
-const potory_pink = require('../../../assets/images/potory/slide_potory_pink.png');
 
 // variable
+const deviceHeight = Dimensions.get('window').height;
 // 0 : 동네친구 / 15 : 소꿉친구 / 50 : 친한친구 / 100 : 단짝친구 / 200 : 깐부
 const userName = '리리';
-const photoNum = 40;
+const photoNum = 101;
 const userLevel =
   photoNum > 200
     ? '깐부'
@@ -66,17 +71,17 @@ const percent = reminder === 0 && quotient !== 0 ? 100 : reminder * 2; // photoN
 const percentage = Math.round((percent / 100) * 95) + '%';
 const PercentageString = String(percentage);
 
-// icons
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const deviceHeight = Dimensions.get('window').height;
+const leftPhotoForNextLevel =
+  reminder === 0 && quotient === 0
+    ? 51
+    : reminder === 0 && quotient !== 0
+    ? 1
+    : 50 - reminder + 1;
 
 function Content() {
   const [response, setResponse] = useState<any>(null); // 사진 uri
 
-  // 프로필 사진 설정
+  // function
   const moveToGallery = () => {
     launchImageLibrary(
       {
@@ -88,7 +93,7 @@ function Content() {
     );
   };
 
-  const MemuArea = ({title, value}) => {
+  const LevelAndPhotoComponent = ({title, value}: any) => {
     return (
       <View style={styles.infoBaxContainer}>
         <View style={styles.memuAreaContent}>
@@ -99,7 +104,6 @@ function Content() {
               <Entypo name="documents" size={26} color="#735e9b" />
             )}
           </View>
-
           <View>
             <Text style={styles.memuAreaTitle}>{title}</Text>
             <Text style={styles.memuAreaText}>{value}</Text>
@@ -124,16 +128,16 @@ function Content() {
         <View style={styles.userNameContainer}>
           <Text style={styles.userNameText}>{userName}</Text>
 
-          <TouchableOpacity hitSlop={styles.hitslop}>
+          {/* <TouchableOpacity hitSlop={styles.hitslop}>
             <MaterialIcons name="pencil-outline" size={18} color="#666" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/*----------- menu box -----------*/}
         <View style={styles.memuArea}>
-          <MemuArea title="Level" value={userLevel} />
+          <LevelAndPhotoComponent title="Level" value={userLevel} />
           <View style={styles.centerLine} />
-          <MemuArea title="Photos" value={photoNum} />
+          <LevelAndPhotoComponent title="Photos" value={photoNum} />
         </View>
       </View>
 
@@ -142,11 +146,18 @@ function Content() {
         <ScrollView style={styles.scrollView}>
           {/*----------- text -----------*/}
           <View style={styles.textContainer}>
+            {/* <Text style={styles.mainText}>
+              오늘도 행복한 {'\n'}하루 보내세요 !
+            </Text> */}
             <Text style={styles.mainText}>
-              레벨업까지 {'\n'}
-              <Text style={styles.designText}>2장</Text> 남았어요 !
+              포토리 성장까지{'\n'}
+              <Text style={styles.designText}>{leftPhotoForNextLevel}장</Text>
+              남았어요 !
             </Text>
-            <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text>
+            {/* <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text> */}
+            <Text style={styles.subText}>
+              {userName}랑 포토리는 {userLevel} ❤︎
+            </Text>
           </View>
 
           {/*----------- rating -----------*/}
@@ -231,8 +242,9 @@ const styles = StyleSheet.create({
   },
   userNameText: {
     fontSize: 19,
-    paddingLeft: 17,
-    paddingRight: 7,
+    fontWeight: '500',
+    // paddingLeft: 17,
+    // paddingRight: 7,
   },
   memuArea: {
     width: '80%',

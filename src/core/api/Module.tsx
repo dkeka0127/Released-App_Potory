@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const axiosConfig = {
+export const axiosConfig = {
+  // baseURL: '',
   baseURL: 'http://bdg407.synology.me:12162',
   headers: {
     Accept: 'application/json',
@@ -32,18 +33,10 @@ export function registDevice(deviceID: string) {
 }
 
 // 기기 확인
-export function confirmDevice(user: number) {
-  const response = axios
-    .get(`/user/${user}`, axiosConfig)
-    .then(response => {
-      console.log('response == ', response);
-    })
-    .catch(err => {
-      console.log('err == ', err);
-    });
-
+export const api_checkDeviceExist = async (user: number) => {
+  const response = await axios.get(`/user/${user}`, axiosConfig);
   return response;
-}
+};
 
 // 사진 등록
 export function registPhoto(userIdx, date, memo, image) {

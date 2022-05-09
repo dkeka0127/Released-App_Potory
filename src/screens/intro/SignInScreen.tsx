@@ -16,6 +16,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 // kakao
 import {
   KakaoOAuthToken,
@@ -26,101 +27,105 @@ import {
 import {
   appleAuth,
   AppleButton,
+  AppleCredentialState,
 } from '@invertase/react-native-apple-authentication';
 
 // icons & images
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-community/async-storage';
 const potoryImg = require('../../assets/images/potory/login.png');
 const kakaoImg = require('../../assets/images/icons/kakaoLogin.png');
 
-function SignInScreen({isLoginF}) {
+interface Props {
+  isLoginF: () => void;
+}
+
+function SignInScreen({isLoginF}: Props) {
   const [deviceId, setDeviceId] = useState<string>();
 
   // -------------- ① Kakao --------------
-  // Login
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-    getProfile();
     console.log('token ========== ', token);
+    getProfile();
   };
-  // Get device_Id
   const getProfile = async (): Promise<void> => {
     const profile = await getKakaoProfile();
+    console.log('profile ======== ', profile);
     await setDeviceId(profile.id);
-    console.log('profile =============== ', profile);
   };
 
   // -------------- ② Apple --------------
-  let user = null;
+  // let user: string | null = null;
 
-  async function fetchAndUpdateCredentialState(updateCredentialStateForUser) {
-    if (user === null) {
-      updateCredentialStateForUser('N/A');
-    } else {
-      const credentialState = await appleAuth.getCredentialStateForUser(user);
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        updateCredentialStateForUser('AUTHORIZED');
-      } else {
-        updateCredentialStateForUser(credentialState);
-      }
-    }
-  }
+  // async function fetchAndUpdateCredentialState(
+  //   updateCredentialStateForUser: any,
+  // ) {
+  //   if (user === null) {
+  //     updateCredentialStateForUser('N/A');
+  //   } else {
+  //     const credentialState = await appleAuth.getCredentialStateForUser(user);
+  //     if (credentialState === appleAuth.State.AUTHORIZED) {
+  //       updateCredentialStateForUser('AUTHORIZED');
+  //     } else {
+  //       updateCredentialStateForUser(credentialState);
+  //     }
+  //   }
+  // }
 
-  // Login
-  async function onAppleButtonPress(updateCredentialStateForUser) {
-    console.warn('Beginning Apple Authentication');
+  // // Login
+  // async function onAppleButtonPress(updateCredentialStateForUser: any) {
+  //   console.warn('Beginning Apple Authentication');
 
-    // start a login request
-    try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
+  //   // start a login request
+  //   try {
+  //     const appleAuthRequestResponse = await appleAuth.performRequest({
+  //       requestedOperation: appleAuth.Operation.LOGIN,
+  //       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  //     });
 
-      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+  //     console.log('appleAuthRequestResponse', appleAuthRequestResponse);
 
-      const {
-        user: newUser,
-        email,
-        nonce,
-        identityToken,
-        realUserStatus /* etc */,
-      } = appleAuthRequestResponse;
+  //     const {
+  //       user: newUser,
+  //       email,
+  //       nonce,
+  //       identityToken,
+  //       realUserStatus /* etc */,
+  //     } = appleAuthRequestResponse;
 
-      user = newUser;
+  //     user = newUser;
 
-      fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-        updateCredentialStateForUser(`Error: ${error.code}`),
-      );
+  //     fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+  //       updateCredentialStateForUser(`Error: ${error.code}`),
+  //     );
 
-      if (identityToken) {
-        // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-        console.log(nonce, identityToken);
-      } else {
-        // no token - failed sign-in?
-      }
+  //     if (identityToken) {
+  //       // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+  //       console.log(nonce, identityToken);
+  //     } else {
+  //       // no token - failed sign-in?
+  //     }
 
-      if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-        console.log("I'm a real person!");
-      }
+  //     if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
+  //       console.log("I'm a real person!");
+  //     }
 
-      console.warn(`Apple Authentication Completed, ${user}, ${email}`);
-    } catch (error) {
-      if (error.code === appleAuth.Error.CANCELED) {
-        console.warn('User canceled Apple Sign in.');
-      } else {
-        console.error(error);
-      }
-    }
-  }
+  //     console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+  //   } catch (error) {
+  //     if (error.code === appleAuth.Error.CANCELED) {
+  //       console.warn('User canceled Apple Sign in.');
+  //     } else {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
   // Get device_Id
 
   // 로그인 성공 시 실행
   useEffect(() => {
     if (deviceId) {
       setLoginAsync(); // 자동 로그인
-      isLoginF(true); // 서버에 device_id 넘겨줌
+      isLoginF(); // 서버에 device_id 넘겨줌
     }
   }, [deviceId]);
 

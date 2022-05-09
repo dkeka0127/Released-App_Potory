@@ -1,12 +1,12 @@
 // React & Package
 import React, {useRef, useEffect, useState} from 'react';
 import {
+  View,
   Animated,
   StyleSheet,
-  ImageBackground,
   Dimensions,
   TouchableOpacity,
-  View,
+  LayoutChangeEvent,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -16,9 +16,6 @@ import PhotoModal from './components/PhotoModal';
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import AddContentButton from './components/AddContentButton';
-
-// image
-const backgroundImg = '../../assets/images/background/tab2_main_bg.jpg';
 
 // variable
 const HEADER_HEIGHT = 80;
@@ -56,8 +53,14 @@ const polaroidSortRandomly = photoData.map(() => {
   return Math.floor(Math.random() * 12);
 });
 
+interface AsyncProps {
+  grid: number;
+  sequence: string;
+  bgColor: string;
+}
+
 function Main() {
-  // scrolling header variable
+  // scroll header variable
   const flatListRef = useRef<any>(true);
   const [scrollAnim] = useState(new Animated.Value(0));
   const [offsetAnim] = useState(new Animated.Value(0));
@@ -86,29 +89,27 @@ function Main() {
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
-  const [modalImgPath, setModalImgPath] = useState();
+  const [modalImgPath, setModalImgPath] = useState('');
   const [isModalShown, setIsModalShown] = useState(false);
   const polaroidWidth = (deviceWidth - flatListPadding * 2) / grid;
 
   // function
-  const gridPress = value => setGrid(value);
+  const gridPress = (value: number) => setGrid(value);
 
-  const sequencePress = value => setSequence(value);
+  const sequencePress = (value: string) => setSequence(value);
 
-  const bgColorPress = value => setBgColor(value);
+  const bgColorPress = (value: string) => setBgColor(value);
 
-  const actionForScrollTop = () => {
-    console.log('Action for Scroll Top is Clicked');
+  const actionForScrollTop = () =>
     flatListRef.current.scrollToOffset({animated: true, offset: 0});
-  };
 
-  const initialAsyncValue = value => {
+  const initialAsyncValue = (value: AsyncProps) => {
     setGrid(value.grid);
     setSequence(value.sequence);
     setBgColor(value.bgColor);
   };
 
-  const headerScrollEvent = event => {
+  const headerScrollEvent = (event: LayoutChangeEvent) => {
     let {height} = event.nativeEvent.layout;
     setClampedScroll(
       Animated.diffClamp(
@@ -126,42 +127,53 @@ function Main() {
     );
   };
 
-  console.log(modalImgPath);
-  const RenderItem = ({item, index}) => {
+  console.log('modalImgPath', modalImgPath);
+
+  const RenderItem = ({item, index}: any) => {
     return (
-      <FastImage
-        resizeMode="contain"
-        source={
-          bgColor === '#111'
-            ? polaroid_black[polaroidSortRandomly[index]].uri
-            : polaroid_gray[polaroidSortRandomly[index]].uri
-        }
-        style={[
-          renderItem.container,
-          {
-            width: polaroidWidth,
-            height: polaroidWidth * 1.18,
-            marginBottom: index === photoData.length - 1 && 100,
-          },
-        ]}>
-        <TouchableOpacity
-          style={{
-            marginTop: -(polaroidWidth * 0.14),
-            marginLeft: -3,
-            width: polaroidWidth * 0.55,
-            height: polaroidWidth * 0.5,
-          }}
-          onPress={() => {
-            setIsModalShown(true);
-            setModalImgPath(photoData[index].uri);
-          }}>
-          <FastImage
-            resizeMode="contain"
-            source={photoData[index].uri}
-            style={renderItem.photo}
+      <>
+        <FastImage
+          resizeMode="contain"
+          source={
+            bgColor === '#111'
+              ? polaroid_black[polaroidSortRandomly[index]].uri
+              : polaroid_gray[polaroidSortRandomly[index]].uri
+          }
+          style={[
+            renderItem.container,
+            {
+              width: polaroidWidth,
+              height: polaroidWidth * 1.18,
+            },
+          ]}>
+          <TouchableOpacity
+            style={{
+              marginTop: -(polaroidWidth * 0.14),
+              marginLeft: -3,
+              width: polaroidWidth * 0.55,
+              height: polaroidWidth * 0.5,
+            }}
+            onPress={() => {
+              setIsModalShown(true);
+              setModalImgPath(photoData[index].uri);
+            }}>
+            <FastImage
+              resizeMode="contain"
+              source={photoData[index].uri}
+              style={renderItem.photo}
+            />
+          </TouchableOpacity>
+        </FastImage>
+        {index === photoData.length - 1 && (
+          <View
+            style={{
+              width: polaroidWidth,
+              height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+              marginBottom: 100,
+            }}
           />
-        </TouchableOpacity>
-      </FastImage>
+        )}
+      </>
     );
   };
 
@@ -175,8 +187,7 @@ function Main() {
   //
 
   return (
-    // <ImageBackground source={require(backgroundImg)} style={styles.container}>
-    <View style={[styles.container, {backgroundColor: '#f9f7ff'}]}>
+    <View style={styles.container}>
       {/*======================= header =======================*/}
       <Animated.View
         style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
@@ -192,17 +203,17 @@ function Main() {
 
       {/*======================= content =======================*/}
       <Animated.FlatList
-        ref={flatListRef}
-        style={styles.flatList}
-        renderItem={RenderItem}
         key={grid}
-        numColumns={grid} // grid 개수
-        windowSize={15}
+        ref={flatListRef}
+        renderItem={RenderItem}
+        style={styles.flatList}
         bounces={false}
-        data={sequence === 'new' ? photoData : photoData.reverse()}
-        initialNumToRender={15}
-        ListEmptyComponent={EmptyDataScreen}
+        numColumns={grid} // grid 개수
+        windowSize={15} // 추가 렌더링 개수
+        initialNumToRender={10} // 초기 랜더링 개수
         keyExtractor={(item, index) => index.toString()}
+        data={sequence === 'new' ? photoData : photoData.reverse()}
+        ListEmptyComponent={EmptyDataScreen}
         onScroll={Animated.event(
           [
             {
@@ -216,11 +227,8 @@ function Main() {
       />
       <PhotoModal isModalShown={isModalShown} modalImgPath={modalImgPath} />
 
-      {/* <View style={{width: '100%', height: 200, backgroundColor: 'green'}} /> */}
-
       {/*======================= Footer =======================*/}
       <AddContentButton />
-      {/* </ImageBackground> */}
     </View>
   );
 }
@@ -235,6 +243,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     paddingTop: 7,
+    backgroundColor: '#f9f7ff',
   },
   safeAreaViewContainer: {
     flex: 1,

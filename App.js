@@ -8,8 +8,7 @@
 
 // React & packages
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import axios from 'axios';
+import {StyleSheet} from 'react-native';
 import LottieView from 'lottie-react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
@@ -19,78 +18,33 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
 
+// api
+import {api_checkDeviceExist} from './src/core/api/Module';
+
 // variable
 const lottiePath = require('./src/assets/lottie/splash.json');
 
 function App() {
   const [isLogin, setIsLogin] = useState(null);
 
-  // api
-  const axiosConfig = {
-    // baseURL: '',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=UTF-8',
-      // memberIdx: 0,
-      // deviceId: '',
-    },
-    // timeout: 3000,
-  };
-
-  const connectAPI = () => {
-    const response = axios
-      .get('http://bdg407.synology.me:12162/user/8', axiosConfig)
-      .then(response => {
-        console.log('API response == ', response);
-      })
-      .catch(err => {
-        console.log('API err == ', err);
-      });
-
-    return response;
-  };
-
-  {
-    /*
-  const api = () => {
-    fetch('http://bdg407.synology.me:12162/user/8', {
-      method: 'GET',
-      headers: {
-        // 'x-access-token':
-        //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoicGhvdG9seSJ9.zcAbn0TXYrHMu4DSTrd7MIuuulrcCBN22_N1jGidLbY',
-      },
-    })
-      .then(response => {
-        console.log('API response == ', response);
-      })
-      .catch(err => {
-        console.log('API err == ', err);
-      });
-  };
-    */
-  }
-
   // login
-  const isLoginF = () => {
-    setIsLogin(true);
-  };
+  const isLoginF = () => setIsLogin(true);
 
-  const getLoginAsync = () => {
+  const getLoginAsync = () =>
     AsyncStorage.getItem('login', (_err, value) => {
       value === 'true' ? setIsLogin(true) : setIsLogin(false);
-      // if (value === 'true') {
-      //   setIsLogin(true);
-      // } else {
-      //   setIsLogin(false);
-      // }
     });
-  };
 
-  // useEffect
+  // useEffect (splash / api / async)
   useEffect(() => {
     SplashScreen.hide();
 
-    connectAPI();
+    api_checkDeviceExist(8)
+      .then(res => {
+        console.log('api_checkDeviceExist == !! ', res.data.data);
+      })
+      .catch(() => {});
+
     setTimeout(() => {
       getLoginAsync();
     }, 1800);
@@ -100,11 +54,11 @@ function App() {
     <NavigationContainer>
       {isLogin === null ? (
         <LottieView
-          resizeMode="cover"
-          style={styles.lottieContainer}
-          source={lottiePath}
           autoPlay
           speed={1.2}
+          resizeMode="cover"
+          source={lottiePath}
+          style={styles.lottieContainer}
         />
       ) : isLogin ? (
         <RootScreen />
