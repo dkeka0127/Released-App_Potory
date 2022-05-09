@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -39,6 +40,7 @@ function AddPhotoScreen() {
 
   const [imageUri, setImageUri] = useState(null);
   const [response, setResponse] = useState<any>(null); // photo response from gallery
+  const [shownModal, setShownModal] = useState(false);
 
   // function
 
@@ -122,22 +124,46 @@ function AddPhotoScreen() {
               {/*================== header ==================*/}
               <CustomDateHeader date={''} getChangedDate={getChangedDate} />
 
+              {/*================== modal ==================*/}
+              <Modal
+                style={styles.modalContainer}
+                isVisible={shownModal}
+                hasBackdrop={true}
+                backdropColor="black"
+                backdropOpacity={0.7}
+                onBackdropPress={() => {
+                  setShownModal(false);
+                }}>
+                <View style={styles.modalContent}>
+                  <TouchableOpacity
+                    style={[styles.modalTextCon, styles.modalDivideLine]}
+                    onPress={openGallery}>
+                    <Text>갤러리에서 사진 선택</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.modalTextCon}
+                    onPress={() => {
+                      setShownModal(false);
+                      navigation.navigate('QRCodeScreen');
+                      // <QRCodeScanner />
+                    }}>
+                    <Text>QR 코드로 사진 저장</Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
+
               {/*================== photo ==================*/}
               <View
                 style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
-                <View style={area.headerTitleCon}>
-                  <View style={area.headerCircleShape} />
-                  <Text style={area.title}>Photo</Text>
-                </View>
+                <Text style={area.title}>Photo</Text>
 
                 {!isKeyboardVisible && (
                   <TouchableOpacity
                     style={area.photoSection}
                     onPress={() => {
-                      navigation.navigate('QRCodeScreen');
-                    }}
-                    // onPress={openGallery}
-                  >
+                      setShownModal(true);
+                    }}>
                     {imageUri === null && (
                       <Ionicons
                         name="camera-outline"
@@ -155,40 +181,9 @@ function AddPhotoScreen() {
                         }}
                       />
                     )}
-                    {/* <CameraScreen
-                    showFrame={true}
-                    scanBarcode={false}
-                    laserColor={'#FF3D00'}
-                    frameColor={'#00C853'}
-                    colorForScannerFrame={'black'}
-                    onReadCode={event =>
-                      event.onQR_Code_Scan_Done(
-                        console.log('event', event.nativeEvent.codeStringValue),
-                      )
-                    }
-                    // Barcode props
-                    // scanBarcode={true}
-                    // onReadCode={event => console.log('QR code found')} // optional
-                    // showFrame={true} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
-                    // laserColor="red" // (default red) optional, color of laser in scanner frame
-                    // frameColor="white" // (default white) optional, color of border of scanner frame
-                    // cameraRatioOverlay={undefined}
-                    // captureButtonImage={undefined}
-                    // captureButtonImageStyle={undefined}
-                    // cameraFlipImage={undefined}
-                    // cameraFlipImageStyle={undefined}
-                    // hideControls={undefined}
-                    // torchOnImage={undefined}
-                    // torchOffImage={undefined}
-                    // torchImageStyle={undefined}
-                    // onBottomButtonPressed={function (event: any): void {
-                    //   throw new Error('Function not implemented.');
-                    // }}
-                  /> */}
                   </TouchableOpacity>
                 )}
               </View>
-
               {/*=================== memo ===================*/}
               <View
                 style={[
@@ -197,10 +192,7 @@ function AddPhotoScreen() {
                     flex: isKeyboardVisible ? 7 : 3.2,
                   },
                 ]}>
-                <View style={area.headerTitleCon}>
-                  <View style={area.headerCircleShape} />
-                  <Text style={area.title}>Memo</Text>
-                </View>
+                <Text style={area.title}>Memo</Text>
                 <View style={area.memoSection}>
                   <TextInput
                     value={memo}
@@ -221,6 +213,7 @@ function AddPhotoScreen() {
                   />
                 </View>
               </View>
+
               {/*================ bottom btn ================*/}
               {isKeyboardVisible === false && (
                 <>
@@ -239,7 +232,6 @@ function AddPhotoScreen() {
 export default AddPhotoScreen;
 
 const SectionBGColor = '#fff';
-// const SectionBGColor = '#f9f7ff';
 
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
@@ -247,10 +239,34 @@ const styles = StyleSheet.create({
   },
   bgImg: {
     flex: 1,
-    // marginBottom: ifIphoneX(-40, -10),
   },
   SafeAreaView: {
     flex: 1,
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
+    width: 250,
+    height: 150,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalTextCon: {
+    width: '80%',
+    height: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalDivideLine: {
+    borderBottomColor: '#aaa',
+    borderBottomWidth: 1,
   },
 });
 
@@ -268,21 +284,24 @@ const area = StyleSheet.create({
     shadowColor: 'rgb(50, 50, 50)',
     shadowOffset: {height: 0, width: 0},
   },
-  headerTitleCon: {
-    paddingTop: 13,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerCircleShape: {
-    width: 31,
-    height: 25,
-    marginLeft: 17,
-    marginRight: -17,
-    backgroundColor: '#d7ceed',
-    borderRadius: 30,
-  },
+  // headerTitleCon: {
+  //   paddingTop: 13,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  // },
+  // headerCircleShape: {
+  //   width: 31,
+  //   height: 25,
+  //   marginLeft: 17,
+  //   marginRight: -17,
+  //   backgroundColor: '#d7ceed',
+  //   borderRadius: 30,
+  // },
   title: {
     fontSize: 16,
+    paddingTop: 13,
+    marginLeft: 17,
+    lignItems: 'center',
     fontWeight: '500',
   },
   photoSection: {

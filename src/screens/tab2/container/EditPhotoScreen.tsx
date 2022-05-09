@@ -83,10 +83,7 @@ function EditPhotoScreen() {
               {/*================== photo ==================*/}
               <View
                 style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
-                <View style={area.headerTitleCon}>
-                  <View style={area.headerCircleShape} />
-                  <Text style={area.title}>Photo</Text>
-                </View>
+                <Text style={area.title}>Photo</Text>
                 <View style={area.photoSection}>
                   <Image source={userImg} style={area.photoStyle} />
                 </View>
@@ -100,10 +97,7 @@ function EditPhotoScreen() {
                     flex: isKeyboardVisible ? 7 : 3.2,
                   },
                 ]}>
-                <View style={area.headerTitleCon}>
-                  <View style={area.headerCircleShape} />
-                  <Text style={area.title}>Memo</Text>
-                </View>
+                <Text style={area.title}>Memo</Text>
                 <View style={area.memoSection}>
                   <TextInput
                     value={input}
@@ -164,20 +158,23 @@ const area = StyleSheet.create({
     backgroundColor: '#fff',
   },
   headerTitleCon: {
-    paddingTop: 13,
-    flexDirection: 'row',
-    alignItems: 'center',
+    // paddingTop: 13,
+    // flexDirection: 'row',
+    // alignItems: 'center',
   },
   headerCircleShape: {
-    width: 31,
-    height: 25,
-    marginLeft: 17,
-    marginRight: -17,
-    backgroundColor: '#d7ceed',
-    borderRadius: 30,
+    // width: 31,
+    // height: 25,
+    // marginLeft: 17,
+    // marginRight: -17,
+    // backgroundColor: '#d7ceed',
+    // borderRadius: 30,
   },
   title: {
     fontSize: 16,
+    paddingTop: 13,
+    marginLeft: 17,
+    alignItems: 'center',
     fontWeight: '500',
   },
   photoSection: {

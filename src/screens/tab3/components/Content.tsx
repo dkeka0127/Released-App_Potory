@@ -6,46 +6,72 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  ImageBackground,
   Dimensions,
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
-// Image
+// images
 const profile = '../../../assets/images/potory/profile_potory.png';
-const bubble = require('../../../assets/images/icons/bubble.png');
 const scale0 = require('../../../assets/images/icons/scale_0.png');
 const scale1 = require('../../../assets/images/icons/scale_1.png');
 const scale2 = require('../../../assets/images/icons/scale_2.png');
 const scale3 = require('../../../assets/images/icons/scale_3.png');
 const scale4 = require('../../../assets/images/icons/scale_4.png');
-const potory_green = require('../../../assets/images/potory/slide_potory_blue.png');
-const potory_orange = require('../../../assets/images/potory/slide_potory_blue.png');
+const potory_green = require('../../../assets/images/potory/slide_potory_green.png');
+const potory_orange = require('../../../assets/images/potory/slide_potory_orange.png');
 const potory_blue = require('../../../assets/images/potory/slide_potory_blue.png');
-const potory_purple = require('../../../assets/images/potory/slide_potory_blue.png');
-const potory_pink = require('../../../assets/images/potory/slide_potory_blue.png');
+const potory_purple = require('../../../assets/images/potory/slide_potory_purple.png');
+const potory_pink = require('../../../assets/images/potory/slide_potory_pink.png');
 
-// Variable
-const point = 150;
-const name = '리리';
-const userLevel = '소꿉친구';
-const photoNum = 32;
-const userName = '포토리 유저';
+// variable
+// 0 : 동네친구 / 15 : 소꿉친구 / 50 : 친한친구 / 100 : 단짝친구 / 200 : 깐부
+const userName = '리리';
+const photoNum = 40;
+const userLevel =
+  photoNum > 200
+    ? '깐부'
+    : photoNum > 100
+    ? '단짝친구'
+    : photoNum > 50
+    ? '친한친구'
+    : photoNum > 15
+    ? '소꿉친구'
+    : '동네친구';
 
-const percent = 60;
+const setScale =
+  photoNum > 200
+    ? scale4
+    : photoNum > 150
+    ? scale3
+    : photoNum > 100
+    ? scale2
+    : photoNum > 50
+    ? scale1
+    : scale0;
+
+const setPotory =
+  photoNum > 200
+    ? potory_pink
+    : photoNum > 150
+    ? potory_orange
+    : photoNum > 100
+    ? potory_green
+    : photoNum > 50
+    ? potory_blue
+    : potory_purple;
+
+const quotient = parseInt(photoNum / 50); // photoNum의 몫
+const reminder = photoNum % 50; // photoNum의 나머지
+const percent = reminder === 0 && quotient !== 0 ? 100 : reminder * 2; // photoNum 퍼센트 변환
 const percentage = Math.round((percent / 100) * 95) + '%';
 const PercentageString = String(percentage);
 
-// Icons
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// icons
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const deviceHeight = Dimensions.get('window').height;
-
-console.log(deviceHeight);
 
 function Content() {
   const [response, setResponse] = useState<any>(null); // 사진 uri
@@ -68,12 +94,8 @@ function Content() {
         <View style={styles.memuAreaContent}>
           <View style={styles.memuAreaImg}>
             {title === 'Level' ? (
-              // <MaterialIcons name="medal" size={28} color="#735e9b" />
-              // <FontAwesome name="signal" size={28} color="#735e9b" />
-              // <FontAwesome5 name="chart-bar" size={28} color="#735e9b" />
               <FontAwesome5 name="route" size={25} color="#735e9b" />
             ) : (
-              // <MaterialIcon name="photo" size={28} color="#735e9b" />
               <Entypo name="documents" size={26} color="#735e9b" />
             )}
           </View>
@@ -109,9 +131,9 @@ function Content() {
 
         {/*----------- menu box -----------*/}
         <View style={styles.memuArea}>
-          <MemuArea title="Level" value={2} />
+          <MemuArea title="Level" value={userLevel} />
           <View style={styles.centerLine} />
-          <MemuArea title="Photos" value={20} />
+          <MemuArea title="Photos" value={photoNum} />
         </View>
       </View>
 
@@ -131,7 +153,7 @@ function Content() {
           <View style={scale.container}>
             <View style={scale.bubbleContainer}>
               <View style={scale.bubbleContent}>
-                <Image source={potory_green} style={scale.bubbleImg} />
+                <Image source={setPotory} style={scale.bubbleImg} />
               </View>
             </View>
 
@@ -140,7 +162,7 @@ function Content() {
             </View>
 
             <View style={scale.scaleContainer}>
-              <Image source={scale0} style={scale.scaleImg} />
+              <Image source={setScale} style={scale.scaleImg} />
             </View>
           </View>
         </ScrollView>
@@ -151,18 +173,17 @@ function Content() {
 
 export default Content;
 
-const borderRadius = 60;
 const navFlex = 3.2;
 const contentFlex = 5.5;
-const backgroundColor = '#fdfcff';
-const barBackgroundColor = '#8273a0';
-const barPointColor = '#fdfcff';
 const fontColor = '#362f44';
+const barPointColor = '#fdfcff';
+const barBackgroundColor = '#8273a0';
+const backgroundColor = '#fdfcff';
+const borderRadius = 60;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
   },
   hitslop: {
     top: 10,
@@ -239,7 +260,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   memuAreaImg: {
-    width: 65,
+    width: 60,
     height: '100%',
     paddingLeft: 3,
     alignItems: 'center',
@@ -250,9 +271,9 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   memuAreaText: {
-    fontSize: 20,
-    fontWeight: '500',
-    paddingTop: 2,
+    fontSize: 17,
+    fontWeight: '600',
+    paddingTop: 4,
     paddingBottom: 0,
     color: fontColor,
   },

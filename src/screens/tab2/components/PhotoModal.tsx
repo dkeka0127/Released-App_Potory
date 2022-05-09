@@ -83,7 +83,7 @@ export default function PhotoModal({isModalShown, modalImgPath}: Props) {
       {/*===================== header =====================*/}
       <View style={styles.header}>
         <View style={styles.haederTextCon}>
-          <View style={styles.headerCircleShape} />
+          {/* <View style={styles.headerCircleShape} /> */}
           <Text style={styles.headerText}>{date}</Text>
         </View>
         <View style={styles.headerIcon}>

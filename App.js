@@ -6,21 +6,26 @@
  * @flow strict-local
  */
 
+// React & packages
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import axios from 'axios';
 import LottieView from 'lottie-react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-// Page
-import Loading from './src/components/Loading';
+// custom components
 import RootScreen from './src/routes/rootScreen';
-// import SplashScreen from './src/screens/intro/SplashScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
 
+// variable
+const lottiePath = require('./src/assets/lottie/splash.json');
+
 function App() {
+  const [isLogin, setIsLogin] = useState(null);
+
+  // api
   const axiosConfig = {
     // baseURL: '',
     headers: {
@@ -32,7 +37,7 @@ function App() {
     // timeout: 3000,
   };
 
-  function connectAPI() {
+  const connectAPI = () => {
     const response = axios
       .get('http://bdg407.synology.me:12162/user/8', axiosConfig)
       .then(response => {
@@ -43,11 +48,10 @@ function App() {
       });
 
     return response;
-  }
+  };
 
-  const [isLogin, setIsLogin] = useState(null);
-  // const [isSplashScreen, setIsSplashScreen] = useState(true);
-
+  {
+    /*
   const api = () => {
     fetch('http://bdg407.synology.me:12162/user/8', {
       method: 'GET',
@@ -63,58 +67,58 @@ function App() {
         console.log('API err == ', err);
       });
   };
+    */
+  }
 
-  const isLoginF = value => {
+  // login
+  const isLoginF = () => {
     setIsLogin(true);
   };
 
-  // 로그인 이력 확인 Async
   const getLoginAsync = () => {
     AsyncStorage.getItem('login', (_err, value) => {
-      // console.log('getLoginAsync _err == ', _err);
-      // console.log(' getLoginAsync value == ', value);
-      // console.log(' getLoginAsync value == ', typeof value);
-      if (value === 'true') {
-        // console.log('true !');
-        setIsLogin(true);
-      } else {
-        // console.log('false !');
-        setIsLogin(false);
-      }
+      value === 'true' ? setIsLogin(true) : setIsLogin(false);
+      // if (value === 'true') {
+      //   setIsLogin(true);
+      // } else {
+      //   setIsLogin(false);
+      // }
     });
   };
 
+  // useEffect
   useEffect(() => {
     SplashScreen.hide();
+
     connectAPI();
     setTimeout(() => {
       getLoginAsync();
     }, 1800);
   }, []);
 
-  // useEffect(() => {
-  //   isLogin && SplashScreen.hide();
-  // }, [isLogin]);
-
-  if (isLogin === null) {
-    return (
-      <View style={{flex: 1}}>
+  return (
+    <NavigationContainer>
+      {isLogin === null ? (
         <LottieView
           resizeMode="cover"
-          style={{flex: 1}}
-          source={require('./src/assets/lottie/splash.json')}
+          style={styles.lottieContainer}
+          source={lottiePath}
           autoPlay
           speed={1.2}
         />
-      </View>
-    );
-  }
-
-  return (
-    <NavigationContainer>
-      {isLogin ? <RootScreen /> : <SignInScreen isLoginF={isLoginF} />}
+      ) : isLogin ? (
+        <RootScreen />
+      ) : (
+        <SignInScreen isLoginF={isLoginF} />
+      )}
     </NavigationContainer>
   );
 }
 
 export default App;
+
+const styles = StyleSheet.create({
+  lottieContainer: {
+    flex: 1,
+  },
+});
