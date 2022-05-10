@@ -20,86 +20,117 @@ import {CameraScreen} from 'react-native-camera-kit';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
+import Toast from '../../../components/Toast/Toast';
 import QRCodeScanner from './QRCodeScreen';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {api_registPhoto} from 'core/api/Module';
+import Loading from 'components/Loading';
+import axios from 'axios';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
+
   const [memo, setMemo] = useState('');
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [date, setDate] = useState(
     String(new Date().toISOString()).slice(0, 10).replace(/-/gi, '.'),
   );
-
   const [imageUri, setImageUri] = useState(null);
-  const [response, setResponse] = useState<any>(null); // photo response from gallery
   const [shownModal, setShownModal] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   // function
-
-  const getChangedDate = value => {
-    setDate(value);
-  };
-
-  // const moveToCamera = () => {
-  //   launchCamera(
-  //     {
-  //       saveToPhotos: true,
-  //       mediaType: 'photo',
-  //       includeBase64: false,
-  //     },
-  //     setResponse,
-  //   );
-  // };
+  const receiveDateFromHeader = (value: string) => setDate(value);
 
   const openGallery = () => {
     const option = {
+      // quality: 1,
       // noData: true,
       mediaType: 'photo' as const,
-      quality: 1,
     };
 
     launchImageLibrary(option, response => {
+      setShownModal(false);
+
       if (response.didCancel) {
-        console.log('User Cancelled image picker');
+        console.log('user cancelled image picker');
       } else if (response.errorCode) {
-        console.log(response.errorMessage);
+        console.log('image picker error', response.errorMessage);
       } else {
-        const data = response.assets[0];
-        setImageUri(data);
-        console.log('data ????????? ', data);
+        setImageUri(response.assets[0]);
       }
     });
   };
 
+  const openQRScreen = () => {
+    setShownModal(false);
+    navigation.navigate('QRCodeScreen');
+  };
+
+  const axiosConfig = {
+    baseURL: '',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
+      // memberIdx: 0,
+      // deviceId: '',
+    },
+    // timeout: 30000,
+  };
+
   const saveTheData = () => {
     if (imageUri === null) {
-      console.log('사진을 선택해주세요.');
+      Toast.show('사진을 선택해주세요.');
     } else {
+      api_registPhoto(8, date, memo, imageUri.uri)
+        .then(response => {
+          console.log('response == ', response);
+        })
+        .catch(err => {
+          console.log('err == ', err);
+        });
+      // registPhoto();
       console.log('사진 저장');
+
+      // console.log('Date ---- ', date);
+      // console.log('Memo ----', memo);
+      // console.log('Img URI ----', imageUri.uri);
     }
   };
 
-  // 키보드 이벤트
+  const registPhoto = () => {
+    console.log('Date ---- ', date);
+    console.log('Memo ----', memo);
+    console.log('Img URI ----', imageUri.uri);
+
+    api_registPhoto(8, '2022-04-06', 'memo', '/Users/sol/Desktop/codepush.png')
+      .then(res => {
+        navigation.navigate('Tab2');
+        console.log('regist photo Success !', res);
+      })
+      .catch(err => {
+        Toast.show(
+          '사진 저장 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
+        );
+        console.log('oh no ......', err);
+      });
+  };
+
+  // useEffect (* keyboard)
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-      },
+      () => setKeyboardVisible(true),
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
+      () => setKeyboardVisible(false),
     );
 
     return () => {
@@ -108,124 +139,94 @@ function AddPhotoScreen() {
     };
   }, []);
 
-  console.log('get Date', date);
-  console.log('Memo ~~~~~~~~~~~', memo);
-  console.log('Photo URI ========', imageUri);
-  console.log('isKeyboardVisible========', isKeyboardVisible);
+  //
+  //
+  //
 
   return (
-    <>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardAvoidingView}>
-        <FastImage source={require(bgImg)} style={styles.bgImg}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <SafeAreaView style={styles.SafeAreaView}>
-              {/*================== header ==================*/}
-              <CustomDateHeader date={''} getChangedDate={getChangedDate} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.keyboardAvoidingView}>
+      <FastImage source={require(bgImg)} style={styles.bgImg}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaView style={styles.SafeAreaView}>
+            {/*================== header ==================*/}
+            <CustomDateHeader
+              date={''}
+              getChangedDate={receiveDateFromHeader}
+            />
 
-              {/*================== modal ==================*/}
-              <Modal
-                style={styles.modalContainer}
-                isVisible={shownModal}
-                hasBackdrop={true}
-                backdropColor="black"
-                backdropOpacity={0.7}
-                onBackdropPress={() => {
-                  setShownModal(false);
-                }}>
-                <View style={styles.modalContent}>
-                  <TouchableOpacity
-                    style={[styles.modalTextCon, styles.modalDivideLine]}
-                    onPress={openGallery}>
-                    <Text>갤러리에서 사진 선택</Text>
-                  </TouchableOpacity>
+            {/*================ select modal ================*/}
+            <Modal
+              style={styles.modalContainer}
+              isVisible={shownModal}
+              hasBackdrop={true}
+              backdropColor="black"
+              backdropOpacity={0.8}
+              onBackdropPress={() => setShownModal(false)}>
+              <View style={styles.modalContent}>
+                <TouchableOpacity
+                  style={[styles.modalTextCon, styles.modalDivideLine]}
+                  onPress={openGallery}>
+                  <Text>갤러리에서 사진 선택</Text>
+                </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={styles.modalTextCon}
-                    onPress={() => {
-                      setShownModal(false);
-                      navigation.navigate('QRCodeScreen');
-                      // <QRCodeScanner />
-                    }}>
-                    <Text>QR 코드로 사진 저장</Text>
-                  </TouchableOpacity>
-                </View>
-              </Modal>
-
-              {/*================== photo ==================*/}
-              <View
-                style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
-                <Text style={area.title}>Photo</Text>
-
-                {!isKeyboardVisible && (
-                  <TouchableOpacity
-                    style={area.photoSection}
-                    onPress={() => {
-                      setShownModal(true);
-                    }}>
-                    {imageUri === null && (
-                      <Ionicons
-                        name="camera-outline"
-                        size={42}
-                        color="#3a2e23"
-                      />
-                    )}
-                    {imageUri != null && (
-                      <Image
-                        source={{uri: imageUri.uri}}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          resizeMode: 'contain',
-                        }}
-                      />
-                    )}
-                  </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                  style={styles.modalTextCon}
+                  onPress={openQRScreen}>
+                  <Text>QR 코드로 사진 저장</Text>
+                </TouchableOpacity>
               </View>
-              {/*=================== memo ===================*/}
-              <View
-                style={[
-                  area.container,
-                  {
-                    flex: isKeyboardVisible ? 7 : 3.2,
-                  },
-                ]}>
-                <Text style={area.title}>Memo</Text>
-                <View style={area.memoSection}>
-                  <TextInput
-                    value={memo}
-                    multiline={true}
-                    editable={true}
-                    maxLength={300}
-                    style={area.memoText}
-                    onChangeText={text => {
-                      console.log('hihi'); // fix
-                      setMemo(text);
-                    }}
-                    onEndEditing={() => {
-                      console.log('memo is Done ~~~~~');
-                    }}
-                    onSubmitEditing={() => {
-                      console.log('memo is ');
-                    }}
-                  />
-                </View>
-              </View>
+            </Modal>
 
-              {/*================ bottom btn ================*/}
-              {isKeyboardVisible === false && (
-                <>
-                  <View style={area.bottomSection} />
-                  <CustomFooterButton title="작성 완료" action={saveTheData} />
-                </>
+            {/*==================== photo ====================*/}
+            <View style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
+              <Text style={area.title}>Photo</Text>
+              {!isKeyboardVisible && (
+                <TouchableOpacity
+                  style={area.photoSection}
+                  onPress={() => setShownModal(true)}>
+                  {imageUri === null ? (
+                    <Ionicons name="camera-outline" size={42} color="#3a2e23" />
+                  ) : (
+                    <Image source={{uri: imageUri.uri}} style={area.image} />
+                  )}
+                </TouchableOpacity>
               )}
-            </SafeAreaView>
-          </TouchableWithoutFeedback>
-        </FastImage>
-      </KeyboardAvoidingView>
-    </>
+            </View>
+
+            {/*===================== memo =====================*/}
+            <View
+              style={[
+                area.container,
+                {
+                  flex: isKeyboardVisible ? 7 : 3.2,
+                },
+              ]}>
+              <Text style={area.title}>Memo</Text>
+              <View style={area.memoSection}>
+                <TextInput
+                  value={memo}
+                  multiline={true}
+                  editable={true}
+                  maxLength={500}
+                  style={area.memoText}
+                  onChangeText={text => setMemo(text)}
+                />
+              </View>
+            </View>
+
+            {/*================= bottom btn =================*/}
+            {isKeyboardVisible === false && (
+              <>
+                <View style={area.bottomSection} />
+                <CustomFooterButton title="작성 완료" action={saveTheData} />
+              </>
+            )}
+          </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </FastImage>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -299,18 +300,18 @@ const area = StyleSheet.create({
   // },
   title: {
     fontSize: 16,
+    fontWeight: '500',
     paddingTop: 13,
     marginLeft: 17,
-    lignItems: 'center',
-    fontWeight: '500',
+    alignItems: 'center',
   },
   photoSection: {
     flex: 1,
     padding: 20,
     marginTop: 15,
-    marginLeft: 35,
-    marginRight: 35,
-    marginBottom: 40,
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 30,
     borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
@@ -322,6 +323,11 @@ const area = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowColor: 'rgb(50, 50, 50)',
     shadowOffset: {height: 0, width: 0},
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   memoSection: {
     flex: 1,

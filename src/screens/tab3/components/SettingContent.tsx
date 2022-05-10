@@ -222,9 +222,9 @@ const styles = StyleSheet.create({
     color: '#111',
   },
   devideLine: {
-    height: 3,
-    margin: 7,
+    height: 2.5,
+    margin: 9,
     opacity: 0.5,
-    backgroundColor: '#eee',
+    backgroundColor: '#f1eff4',
   },
 });

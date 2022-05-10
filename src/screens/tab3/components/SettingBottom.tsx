@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // 그림자
     elevation: 4,
-    shadowRadius: 6,
+    shadowRadius: 15,
     shadowOpacity: 0.1,
-    shadowColor: 'rgb(96, 83, 68)',
+    shadowColor: 'rgb(109, 84, 150)',
     shadowOffset: {height: 0, width: 0},
   },
   emailText: {

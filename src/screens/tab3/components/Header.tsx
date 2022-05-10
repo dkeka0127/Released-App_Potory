@@ -8,6 +8,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 function Header() {
   const navigation = useNavigation();
+
   return (
     <View style={styles.navContainer}>
       <TouchableOpacity

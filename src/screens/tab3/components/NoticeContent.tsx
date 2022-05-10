@@ -1,32 +1,15 @@
-// React & Package
-import React from 'react';
+// React & package
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
+
+// custom component
+import Loading from 'components/Loading';
+
+// api
+import {api_noticeList} from '../../../../src/core/api/Module';
 
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const data = [
-  {
-    noticeNum: 1,
-    mainText: '포토리의 첫번째 생일이애오 !',
-    date: '2022.05.27',
-  },
-  // {
-  //   noticeNum: 2,
-  //   mainText: '오늘은 어떤 새로운 기능이 ?',
-  //   date: '2022.05.27',
-  // },
-  // {
-  //   noticeNum: 3,
-  //   mainText: '여러분들의 소듕한 의견을 모아모아',
-  //   date: '2022.05.05',
-  // },
-  // {
-  //   noticeNum: 4,
-  //   mainText: '희희 업데이트 했다룽',
-  //   date: '2022.06.30',
-  // },
-];
 
 interface Props {
   noticeNum: number;
@@ -34,32 +17,56 @@ interface Props {
   date: string;
 }
 
-function NoticeContent() {
-  // 공지사항 컴포넌트
-  const NoticeList = ({noticeNum, mainText, date}) => {
-    return (
-      <View style={styles.noticeContainer}>
-        <View style={styles.noticeListSide}>
-          <MaterialIcons name="alarm-light-outline" size={26} color="#ed745e" />
-          <Text style={styles.noticeListSideText}>No.{noticeNum}</Text>
-        </View>
-        <View style={styles.noticeCotent}>
-          <Text style={styles.cotentMainText}>{mainText}</Text>
-          <Text style={styles.cotentSubText}>{date}</Text>
-        </View>
+// component
+const NoticeList = ({noticeNum, mainText, date}: Props) => {
+  return (
+    <View style={styles.noticeContainer}>
+      <View style={styles.noticeListSide}>
+        <MaterialIcons name="alarm-light-outline" size={26} color="#ed745e" />
+        <Text style={styles.noticeListSideText}>No.{noticeNum}</Text>
       </View>
-    );
+      <View style={styles.noticeCotent}>
+        <Text style={styles.cotentMainText}>{mainText}</Text>
+        <Text style={styles.cotentSubText}>{date}</Text>
+      </View>
+    </View>
+  );
+};
+
+function NoticeContent() {
+  const [noticeListData, setNoticeListData] = useState([]);
+
+  // useEffect
+  useEffect(() => {
+    connectAPI();
+  }, []);
+
+  // api
+  const connectAPI = () => {
+    api_noticeList()
+      .then(res => {
+        setNoticeListData(res.data.data);
+        console.log('Notice List Success == ', res.data.data);
+      })
+      .catch(err => {
+        console.log('Notice List Err == ', err);
+      });
+
+    return;
   };
+
+  if (noticeListData === []) return <Loading />;
 
   return (
     <ScrollView style={styles.container}>
-      {data.reverse().map(index => {
+      {/* noticeListData.reverse().map */}
+      {noticeListData.map((item: any) => {
         return (
           <NoticeList
-            key={index.noticeNum}
-            noticeNum={index.noticeNum}
-            mainText={index.mainText}
-            date={index.date}
+            key={item.notice_idx}
+            noticeNum={item.notice_idx}
+            mainText={item.title}
+            date={item.create_date.slice(0, 10)}
           />
         );
       })}
@@ -78,12 +85,11 @@ const styles = StyleSheet.create({
     marginBottom: 90,
   },
   noticeContainer: {
-    height: 77,
+    height: 80,
     borderBottomWidth: 0.5,
     borderBottomColor: '#ccc',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
   },
   noticeListSide: {
     height: '100%',

@@ -13,9 +13,11 @@ import Modal from 'react-native-modal';
 import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
-// icons & images
+// api
+import {api_deletePhoto} from '../../../core/api/Module';
+
+// icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const userImg = require('../../../assets/images/user/image4.png');
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
@@ -23,24 +25,39 @@ const deviceHeight = Dimensions.get('window').height;
 const ModalWidth = deviceWidth * 0.85;
 const ModalHeight = deviceHeight * 0.51;
 
-const userText =
-  '인스타 스토리를 봤다.오늘은 인스타 스\n토인스타 스토리를 봤다.오늘은 인스타 스토리를 봤다. ';
-const date = '22.03.02';
-
-//
-//
-//
-
 interface Props {
   isModalShown: boolean;
-  modalImgPath: string;
+  modalImageInfo:
+    | undefined
+    | {
+        photo_idx: number;
+        date: string;
+        photo_url: string;
+        memo?: string;
+      };
+  imageDeletedFromModal: Function;
 }
 
-export default function PhotoModal({isModalShown, modalImgPath}: Props) {
+export default function PhotoModal({
+  isModalShown,
+  modalImageInfo,
+  imageDeletedFromModal,
+}: Props) {
   const navigation = useNavigation();
+
+  const date = modalImageInfo?.date;
+  const memo = modalImageInfo?.memo;
+  const ImgNum = modalImageInfo?.photo_idx;
+  const ImgURL = modalImageInfo?.photo_url;
   const [shownModal, setShownModal] = useState(false);
 
-  console.log('==', modalImgPath);
+  // useEffect
+  useEffect(() => {
+    if (isModalShown) {
+      setShownModal(true);
+    }
+  }, [isModalShown]);
+
   // function
   const moveToEditScreen = () => {
     setShownModal(false);
@@ -56,21 +73,22 @@ export default function PhotoModal({isModalShown, modalImgPath}: Props) {
       },
       {
         text: '확인',
-        onPress: deletePhoto,
+        onPress: connectAPI_Delete,
       },
     ]);
   };
 
-  const deletePhoto = () => {
-    setShownModal(false);
+  const connectAPI_Delete = () => {
+    api_deletePhoto(ImgNum, 8)
+      .then(res => {
+        setShownModal(false);
+        imageDeletedFromModal();
+        console.log('delete photo api Success == ');
+      })
+      .catch(err => {
+        console.log('delete photo api Err == ', err);
+      });
   };
-
-  // useEffect
-  useEffect(() => {
-    if (isModalShown) {
-      setShownModal(true);
-    }
-  }, [isModalShown]);
 
   return (
     <Modal
@@ -105,26 +123,20 @@ export default function PhotoModal({isModalShown, modalImgPath}: Props) {
           resizeMode="contain"
           hideCloseButton={true}
           overlayBackgroundColor="#000000"
-          source={userImg}
+          source={{uri: ImgURL}}
         />
       </View>
-
-      {/*================== divided line ==================*/}
-      {/* <View style={styles.divideLineContainer}>
-        <View style={styles.devideLine} />
-      </View> */}
 
       {/*====================== text ======================*/}
       <View style={styles.text}>
         <ScrollView style={styles.textScrollView}>
-          <Text style={styles.textStyle}>{userText}</Text>
+          <Text style={styles.textStyle}>{memo}</Text>
         </ScrollView>
       </View>
     </Modal>
   );
 }
 
-// const BGColor = '#fff';
 const BGColor = '#f9f7ff';
 const BorderRadius = 10;
 const ImageHeight = 0.7;
@@ -217,18 +229,5 @@ const styles = StyleSheet.create({
   textStyle: {
     paddingTop: 0,
     paddingBottom: 20,
-  },
-
-  divideLineContainer: {
-    width: ModalWidth,
-    height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  devideLine: {
-    width: ModalWidth * 0.8,
-    height: 1,
-    backgroundColor: '#e1dced',
   },
 });

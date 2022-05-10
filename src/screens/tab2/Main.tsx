@@ -17,41 +17,13 @@ import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import AddContentButton from './components/AddContentButton';
 
+// api
+import {api_getPhotoList} from 'core/api/Module';
+
 // variable
 const HEADER_HEIGHT = 80;
 const deviceWidth = Dimensions.get('window').width;
 import {polaroid_gray, polaroid_black} from '../../core/Polaroid';
-const photoData = [
-  {uri: require('../../assets/images/user/image1.png')},
-  {uri: require('../../assets/images/user/image2.png')},
-  {uri: require('../../assets/images/user/image3.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-  {uri: require('../../assets/images/user/image5.png')},
-  {uri: require('../../assets/images/user/image1.png')},
-  {uri: require('../../assets/images/user/image2.png')},
-  {uri: require('../../assets/images/user/image3.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-  {uri: require('../../assets/images/user/image5.png')},
-  {uri: require('../../assets/images/user/image1.png')},
-  {uri: require('../../assets/images/user/image2.png')},
-  {uri: require('../../assets/images/user/image3.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-  {uri: require('../../assets/images/user/image3.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-  {uri: require('../../assets/images/user/image5.png')},
-  {uri: require('../../assets/images/user/image1.png')},
-  {uri: require('../../assets/images/user/image2.png')},
-  {uri: require('../../assets/images/user/image3.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-  {uri: require('../../assets/images/user/image3.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-  {uri: require('../../assets/images/user/image4.png')},
-];
-
-// 폴라로이드 랜덤 정렬
-const polaroidSortRandomly = photoData.map(() => {
-  return Math.floor(Math.random() * 12);
-});
 
 interface AsyncProps {
   grid: number;
@@ -60,6 +32,11 @@ interface AsyncProps {
 }
 
 function Main() {
+  const [photoListData, setPhotoListData] = useState<any>([]);
+  const polaroidSortRandomly = photoListData.map(() => {
+    return Math.floor(Math.random() * 12); // 폴라로이드 랜덤 배정
+  });
+
   // scroll header variable
   const flatListRef = useRef<any>(true);
   const [scrollAnim] = useState(new Animated.Value(0));
@@ -89,9 +66,32 @@ function Main() {
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
-  const [modalImgPath, setModalImgPath] = useState('');
+  const [modalImageInfo, setModalImageInfo] = useState();
   const [isModalShown, setIsModalShown] = useState(false);
   const polaroidWidth = (deviceWidth - flatListPadding * 2) / grid;
+
+  // useEffect
+  useEffect(() => {
+    connectAPI();
+  }, []);
+
+  useEffect(() => {
+    if (isModalShown) setIsModalShown(false);
+  }, [isModalShown]);
+
+  // api
+  const connectAPI = () => {
+    api_getPhotoList(8)
+      .then(res => {
+        setPhotoListData(res.data.data);
+        console.log('get photo list Success == ');
+      })
+      .catch(err => {
+        console.log('get photo list Err == ', err);
+      });
+
+    return;
+  };
 
   // function
   const gridPress = (value: number) => setGrid(value);
@@ -100,14 +100,14 @@ function Main() {
 
   const bgColorPress = (value: string) => setBgColor(value);
 
-  const actionForScrollTop = () =>
-    flatListRef.current.scrollToOffset({animated: true, offset: 0});
-
   const initialAsyncValue = (value: AsyncProps) => {
     setGrid(value.grid);
     setSequence(value.sequence);
     setBgColor(value.bgColor);
   };
+
+  const actionForScrollTop = () =>
+    flatListRef.current.scrollToOffset({animated: true, offset: 0});
 
   const headerScrollEvent = (event: LayoutChangeEvent) => {
     let {height} = event.nativeEvent.layout;
@@ -127,7 +127,10 @@ function Main() {
     );
   };
 
-  console.log('modalImgPath', modalImgPath);
+  const imageDeletedFromModal = () => {
+    connectAPI(); // api refetch because image deleted
+    console.log('-- imageDeleted --');
+  };
 
   const RenderItem = ({item, index}: any) => {
     return (
@@ -155,16 +158,16 @@ function Main() {
             }}
             onPress={() => {
               setIsModalShown(true);
-              setModalImgPath(photoData[index].uri);
+              setModalImageInfo(photoListData[index]);
             }}>
             <FastImage
               resizeMode="contain"
-              source={photoData[index].uri}
+              source={{uri: photoListData[index].photo_url}}
               style={renderItem.photo}
             />
           </TouchableOpacity>
         </FastImage>
-        {index === photoData.length - 1 && (
+        {index === photoListData.length - 1 && (
           <View
             style={{
               width: polaroidWidth,
@@ -177,14 +180,11 @@ function Main() {
     );
   };
 
-  // useEffect
-  useEffect(() => {
-    if (isModalShown) setIsModalShown(false);
-  }, [isModalShown]);
+  //
+  //
+  //
 
-  //
-  //
-  //
+  if (photoListData === []) return <Loading />;
 
   return (
     <View style={styles.container}>
@@ -211,8 +211,8 @@ function Main() {
         numColumns={grid} // grid 개수
         windowSize={15} // 추가 렌더링 개수
         initialNumToRender={10} // 초기 랜더링 개수
-        keyExtractor={(item, index) => index.toString()}
-        data={sequence === 'new' ? photoData : photoData.reverse()}
+        keyExtractor={item => item.photo_idx}
+        data={sequence === 'new' ? photoListData : photoListData.reverse()}
         ListEmptyComponent={EmptyDataScreen}
         onScroll={Animated.event(
           [
@@ -225,7 +225,11 @@ function Main() {
           {useNativeDriver: true},
         )}
       />
-      <PhotoModal isModalShown={isModalShown} modalImgPath={modalImgPath} />
+      <PhotoModal
+        isModalShown={isModalShown}
+        modalImageInfo={modalImageInfo}
+        imageDeletedFromModal={imageDeletedFromModal}
+      />
 
       {/*======================= Footer =======================*/}
       <AddContentButton />
