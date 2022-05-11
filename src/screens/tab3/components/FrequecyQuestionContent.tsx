@@ -24,7 +24,14 @@ const styles = StyleSheet.create({
     marginBottom: 90,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ededed',
+    backgroundColor: '#fff',
+
+    // 그림자
+    elevation: 4,
+    shadowRadius: 7,
+    shadowOpacity: 0.15,
+    shadowColor: 'rgb(158, 158, 158)',
+    shadowOffset: {height: 3, width: 0},
   },
   text: {
     fontSize: 16,

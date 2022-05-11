@@ -9,6 +9,7 @@ import {
   LayoutChangeEvent,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {useFocusEffect} from '@react-navigation/native';
 
 // custom component
 import Loading from '../../components/Loading';
@@ -72,8 +73,16 @@ function Main() {
 
   // useEffect
   useEffect(() => {
+    console.log('*********** connectAPI useEffect ***********');
     connectAPI();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      connectAPI();
+      console.log('*********** connectAPI ReLoad useEffect ***********');
+    }, []),
+  );
 
   useEffect(() => {
     if (isModalShown) setIsModalShown(false);
@@ -179,10 +188,6 @@ function Main() {
       </>
     );
   };
-
-  //
-  //
-  //
 
   if (photoListData === []) return <Loading />;
 

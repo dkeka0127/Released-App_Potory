@@ -28,8 +28,6 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {api_registPhoto} from 'core/api/Module';
-import Loading from 'components/Loading';
-import axios from 'axios';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
@@ -45,13 +43,29 @@ function AddPhotoScreen() {
   const [shownModal, setShownModal] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+  // useEffect (* keyboard)
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => setKeyboardVisible(true),
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => setKeyboardVisible(false),
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   // function
-  const receiveDateFromHeader = (value: string) => setDate(value);
+  const receiveAsyncDateFromHeader = (value: string) => setDate(value);
 
   const openGallery = () => {
     const option = {
-      // quality: 1,
-      // noData: true,
+      // quality: 1, noData: true,
       mediaType: 'photo' as const,
     };
 
@@ -73,71 +87,33 @@ function AddPhotoScreen() {
     navigation.navigate('QRCodeScreen');
   };
 
-  const axiosConfig = {
-    baseURL: '',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=UTF-8',
-      // memberIdx: 0,
-      // deviceId: '',
-    },
-    // timeout: 30000,
-  };
+  // console.log('Date ---- ', date);
+  // console.log('Memo ----', memo);
+  // console.log('Img URI ----', imageUri.uri);
 
-  const saveTheData = () => {
+  const sendDataToAPI = () => {
     if (imageUri === null) {
       Toast.show('사진을 선택해주세요.');
     } else {
-      api_registPhoto(8, date, memo, imageUri.uri)
-        .then(response => {
-          console.log('response == ', response);
-        })
-        .catch(err => {
-          console.log('err == ', err);
-        });
-      // registPhoto();
-      console.log('사진 저장');
-
-      // console.log('Date ---- ', date);
-      // console.log('Memo ----', memo);
-      // console.log('Img URI ----', imageUri.uri);
+      connectAPI_regist();
     }
   };
 
-  const registPhoto = () => {
-    console.log('Date ---- ', date);
-    console.log('Memo ----', memo);
-    console.log('Img URI ----', imageUri.uri);
-
-    api_registPhoto(8, '2022-04-06', 'memo', '/Users/sol/Desktop/codepush.png')
+  const connectAPI_regist = () => {
+    api_registPhoto(8, date, memo, 'file', imageUri.uri)
       .then(res => {
-        navigation.navigate('Tab2');
-        console.log('regist photo Success !', res);
+        Toast.show('저장이 완료되었습니다.');
+        console.log('regist photo Success == ', res);
       })
       .catch(err => {
         Toast.show(
           '사진 저장 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
         );
-        console.log('oh no ......', err);
+        console.log('regist photo Err == ', err);
       });
+
+    return;
   };
-
-  // useEffect (* keyboard)
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => setKeyboardVisible(true),
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => setKeyboardVisible(false),
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
 
   //
   //
@@ -153,7 +129,7 @@ function AddPhotoScreen() {
             {/*================== header ==================*/}
             <CustomDateHeader
               date={''}
-              getChangedDate={receiveDateFromHeader}
+              getChangedDate={receiveAsyncDateFromHeader}
             />
 
             {/*================ select modal ================*/}
@@ -220,7 +196,7 @@ function AddPhotoScreen() {
             {isKeyboardVisible === false && (
               <>
                 <View style={area.bottomSection} />
-                <CustomFooterButton title="작성 완료" action={saveTheData} />
+                <CustomFooterButton title="작성 완료" action={sendDataToAPI} />
               </>
             )}
           </SafeAreaView>

@@ -18,31 +18,23 @@ const CustomDateHeader = (props: Props) => {
 
   const today = new Date();
   const [date, setDate] = useState(
-    props.date === ''
-      ? String(today.toISOString()).slice(0, 10).replace(/-/gi, '.')
-      : props.date,
+    props.date === '' ? String(today.toISOString()).slice(0, 10) : props.date,
   );
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-
-  const datePickerIsOpen = () => {
-    setDatePickerOpen(!datePickerOpen);
-  };
-
-  console.log(datePickerOpen);
-
-  const goBack = () => {
-    navigation.goBack();
-  };
 
   useEffect(() => {
     props.getChangedDate(date);
   }, [date]);
 
+  const datePickerIsOpen = () => {
+    setDatePickerOpen(!datePickerOpen);
+  };
+
   return (
     <View style={styles.container}>
       {/*------------- date -------------*/}
       <TouchableOpacity style={styles.dateContent} onPress={datePickerIsOpen}>
-        <Text style={styles.dateText}>{date}</Text>
+        <Text style={styles.dateText}>{date.replace(/-/gi, '.')}</Text>
         <Entypo style={styles.downIcon} name="chevron-down" size={22} />
       </TouchableOpacity>
 
@@ -56,9 +48,7 @@ const CustomDateHeader = (props: Props) => {
           date={today}
           onConfirm={date => {
             setDatePickerOpen(false);
-            setDate(
-              String(date.toISOString()).slice(0, 10).replace(/-/gi, '.'),
-            );
+            setDate(String(date.toISOString()).slice(0, 10));
           }}
           onCancel={datePickerIsOpen}
         />
@@ -67,7 +57,7 @@ const CustomDateHeader = (props: Props) => {
       {/*------------- close -------------*/}
       <TouchableOpacity
         style={styles.closeIcon}
-        onPress={goBack}
+        onPress={() => navigation.goBack()}
         hitSlop={styles.hitslop}>
         <Ionicons name="close" size={28} />
       </TouchableOpacity>

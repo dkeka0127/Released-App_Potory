@@ -28,17 +28,45 @@ export async function api_registDevice(deviceID: string) {
     {
       device_id: deviceID,
     },
-    axiosConfigNoneToken,
+    axiosConfig,
   );
 
   return response;
 }
 
-export const api_checkDeviceExist = async (user: number) => {
-  const response = await axios.get(`/user/${user}`, axiosConfigNoneToken);
+export const api_checkDeviceExist = async (userIdx: number) => {
+  const response = await axios.get(`/user/${userIdx}`, axiosConfig);
   return response;
 };
 
+export async function api_editDevice(
+  userIdx: string,
+  userName: string,
+  profileImg: any,
+) {
+  const response = await axios.post(
+    `/user/${userIdx}`,
+    {
+      nick_name: userName,
+      profile_image: profileImg,
+    },
+    axiosConfig,
+  );
+
+  return response;
+}
+
+export async function api_deleteDevice(userIdx: number) {
+  const response = await axios.delete(
+    `${axiosConfig.baseURL}/user/${userIdx}`,
+    {
+      data: {user_idx: userIdx},
+      headers: axiosConfig.headers,
+    },
+  );
+
+  return response;
+}
 // ************************** 사진 **************************
 
 export async function api_getPhotoList(userIdx: number) {

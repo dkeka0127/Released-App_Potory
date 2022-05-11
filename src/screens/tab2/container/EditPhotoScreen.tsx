@@ -12,40 +12,30 @@ import {
   Platform,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 // custom components
+import Toast from 'components/Toast/Toast';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
+
+// api
+import {api_editPhoto} from 'core/api/Module';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
-// variable
-const userImg = require('../../../assets/images/user/image4.png');
-const preMemo = '헤헤 hihi !!';
-const preDate = '2022.04.29';
-
-function EditPhotoScreen() {
-  const [input, setInput] = useState(preMemo);
+function EditPhotoScreen({route}: any) {
+  const navigation = useNavigation();
+  const ImgURL = route.params.modalImageInfo?.photo_url;
+  const photoNum = route.params.modalImageInfo?.photo_idx;
+  const [memo, setMemo] = useState(route.params.modalImageInfo?.memo);
+  const [date, setDate] = useState(route.params.modalImageInfo?.date);
+  const preDate = route.params.modalImageInfo?.date;
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [date, setDate] = useState(
-    String(new Date().toISOString()).slice(0, 10).replace(/-/gi, '.'),
-  );
 
-  console.log('Memo ~~~~~~~~~~~', input);
-  console.log('date ~~~~~~~~~~~', date);
-
-  const getChangedDate = value => {
-    setDate(value);
-  };
-
-  // 작성 완료 Btn
-  const confirm = () => {
-    console.log('사진 저장');
-  };
-
-  // 키보드 이벤트
+  // useEffect (* keyboard)
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -66,6 +56,30 @@ function EditPhotoScreen() {
     };
   }, []);
 
+  // function
+  const sendDataToAPI = () => {
+    connectAPI_edit();
+  };
+
+  const connectAPI_edit = () => {
+    api_editPhoto(photoNum, date, memo, 8)
+      .then(res => {
+        Toast.show('편집이 완료되었습니다.');
+        navigation.navigate('Tab2');
+        console.log('edit photo Success == ');
+      })
+      .catch(err => {
+        Toast.show(
+          '사진 편집 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
+        );
+        console.log('edit photo Err == ', err);
+      });
+  };
+
+  const getChangedDate = (value: string) => {
+    setDate(value);
+  };
+
   return (
     <>
       <KeyboardAvoidingView
@@ -85,7 +99,7 @@ function EditPhotoScreen() {
                 style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
                 <Text style={area.title}>Photo</Text>
                 <View style={area.photoSection}>
-                  <Image source={userImg} style={area.photoStyle} />
+                  <Image source={{uri: ImgURL}} style={area.photoStyle} />
                 </View>
               </View>
 
@@ -100,21 +114,14 @@ function EditPhotoScreen() {
                 <Text style={area.title}>Memo</Text>
                 <View style={area.memoSection}>
                   <TextInput
-                    value={input}
+                    value={memo}
                     multiline={true}
                     editable={true}
                     maxLength={300}
                     style={area.memoText}
-                    onChangeText={text => {
-                      console.log('hihi'); // fix
-                      setInput(text);
-                    }}
-                    onEndEditing={() => {
-                      console.log('input is Done ~~~~~');
-                    }}
-                    onSubmitEditing={() => {
-                      console.log('input is ');
-                    }}
+                    onChangeText={text => setMemo(text)}
+                    // onEndEditing={() => console.log('memo is Done ~~~~~')}
+                    // onSubmitEditing={() => console.log('memo is ')}
                   />
                 </View>
               </View>
@@ -123,7 +130,10 @@ function EditPhotoScreen() {
               {isKeyboardVisible === false && (
                 <>
                   <View style={area.bottomSection} />
-                  <CustomFooterButton title="작성 완료" action={confirm} />
+                  <CustomFooterButton
+                    title="작성 완료"
+                    action={sendDataToAPI}
+                  />
                 </>
               )}
             </SafeAreaView>
@@ -157,19 +167,19 @@ const area = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: '#fff',
   },
-  headerTitleCon: {
-    // paddingTop: 13,
-    // flexDirection: 'row',
-    // alignItems: 'center',
-  },
-  headerCircleShape: {
-    // width: 31,
-    // height: 25,
-    // marginLeft: 17,
-    // marginRight: -17,
-    // backgroundColor: '#d7ceed',
-    // borderRadius: 30,
-  },
+  // headerTitleCon: {
+  //   paddingTop: 13,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  // },
+  // headerCircleShape: {
+  //   width: 31,
+  //   height: 25,
+  //   marginLeft: 17,
+  //   marginRight: -17,
+  //   backgroundColor: '#d7ceed',
+  //   borderRadius: 30,
+  // },
   title: {
     fontSize: 16,
     paddingTop: 13,

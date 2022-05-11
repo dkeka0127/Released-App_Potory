@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import Loading from 'components/Loading';
+import {api_checkDeviceExist} from 'core/api/Module';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -13,9 +15,10 @@ import {launchImageLibrary} from 'react-native-image-picker';
 // icons
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // images
-const profile = '../../../assets/images/potory/profile_potory.png';
+const baseProfile = '../../../assets/images/potory/profile_potory.png';
 const scale0 = require('../../../assets/images/icons/scale_0.png');
 const scale1 = require('../../../assets/images/icons/scale_1.png');
 const scale2 = require('../../../assets/images/icons/scale_2.png');
@@ -30,58 +33,87 @@ const potory_purple = require('../../../assets/images/potory/slide_potory_purple
 // variable
 const deviceHeight = Dimensions.get('window').height;
 // 0 : 동네친구 / 15 : 소꿉친구 / 50 : 친한친구 / 100 : 단짝친구 / 200 : 깐부
-const userName = '리리';
-const photoNum = 101;
-const userLevel =
-  photoNum > 200
-    ? '깐부'
-    : photoNum > 100
-    ? '단짝친구'
-    : photoNum > 50
-    ? '친한친구'
-    : photoNum > 15
-    ? '소꿉친구'
-    : '동네친구';
-
-const setScale =
-  photoNum > 200
-    ? scale4
-    : photoNum > 150
-    ? scale3
-    : photoNum > 100
-    ? scale2
-    : photoNum > 50
-    ? scale1
-    : scale0;
-
-const setPotory =
-  photoNum > 200
-    ? potory_pink
-    : photoNum > 150
-    ? potory_orange
-    : photoNum > 100
-    ? potory_green
-    : photoNum > 50
-    ? potory_blue
-    : potory_purple;
-
-const quotient = parseInt(photoNum / 50); // photoNum의 몫
-const reminder = photoNum % 50; // photoNum의 나머지
-const percent = reminder === 0 && quotient !== 0 ? 100 : reminder * 2; // photoNum 퍼센트 변환
-const percentage = Math.round((percent / 100) * 95) + '%';
-const PercentageString = String(percentage);
-
-const leftPhotoForNextLevel =
-  reminder === 0 && quotient === 0
-    ? 51
-    : reminder === 0 && quotient !== 0
-    ? 1
-    : 50 - reminder + 1;
 
 function Content() {
   const [response, setResponse] = useState<any>(null); // 사진 uri
 
+  // user info
+  const [userInfoData, setUserInfoData] = useState(null);
+  const [photoNum, setPhotoNum] = useState(0);
+  const [userName, setUserName] = useState('');
+  const [deviceID, setDeviceID] = useState('');
+  const [profileImg, setProfileImg] = useState('');
+
+  const [userLevel, setUserLevel] = useState('');
+  const [setScale, setScaleImg] = useState(null);
+  const [setPotory, setPotoryImg] = useState(null);
+
+  // set percentage
+  const quotient = parseInt(photoNum / 50); // photoNum의 몫
+  const reminder = photoNum % 50; // photoNum의 나머지
+  const percent = reminder === 0 && quotient !== 0 ? 100 : reminder * 2; // photoNum 퍼센트 변환
+  const percentage = Math.round((percent / 100) * 95) + '%';
+  const PercentageString = String(percentage);
+
+  let leftPhotoForNextLevel =
+    reminder === 0 && quotient === 0
+      ? 51
+      : reminder === 0 && quotient !== 0
+      ? 1
+      : 50 - reminder + 1;
+
+  // useEffect
+  useEffect(() => {
+    connectAPI_userInfo(8);
+  }, []);
+
+  useEffect(() => {
+    if (userInfoData) initUserInfo();
+  }, [userInfoData]);
+
+  // api
+  const connectAPI_userInfo = (userIdx: number) => {
+    api_checkDeviceExist(userIdx)
+      .then(res => {
+        setUserInfoData(res.data.data);
+        console.log('connectAPI_userInfo Success == ');
+      })
+      .catch(err => {
+        console.log('connectAPI_userInfo Err == ', err);
+      });
+
+    return;
+  };
+
   // function
+  const initUserInfo = () => {
+    setUserName(userInfoData.nick_name);
+    setDeviceID(userInfoData.device_id);
+    setPhotoNum(userInfoData.photo_count);
+    setProfileImg(userInfoData.profile_image);
+    if (userInfoData.photo_count > 200) {
+      setUserLevel('깐부');
+      setScaleImg(scale4);
+      setPotoryImg(potory_pink);
+    } else if (userInfoData.photo_count > 100) {
+      setUserLevel('단짝친구');
+      setScaleImg(scale3);
+      setPotoryImg(potory_orange);
+    } else if (userInfoData.photo_count > 50) {
+      setUserLevel('친한친구');
+      setScaleImg(scale2);
+      setPotoryImg(potory_green);
+    } else if (userInfoData.photo_count > 15) {
+      setUserLevel('소꿉친구');
+      setScaleImg(scale1);
+      setPotoryImg(potory_blue);
+    } else {
+      setUserLevel('동네친구');
+      setScaleImg(scale0);
+      setPotoryImg(potory_purple);
+    }
+  };
+
   const moveToGallery = () => {
     launchImageLibrary(
       {
@@ -113,6 +145,8 @@ function Content() {
     );
   };
 
+  if (userInfoData === null) return <Loading />;
+
   return (
     <View style={styles.container}>
       {/*============================== Nav ==============================*/}
@@ -121,16 +155,22 @@ function Content() {
         <TouchableOpacity
           onPress={moveToGallery}
           style={styles.userImgContainer}>
-          <Image source={require(profile)} style={styles.userImg} />
+          {profileImg === '' ? (
+            <Image source={require(baseProfile)} style={styles.userImg} />
+          ) : (
+            <Image source={{uri: profileImg}} style={styles.userImg} />
+          )}
         </TouchableOpacity>
 
         {/*----------- user Name -----------*/}
         <View style={styles.userNameContainer}>
-          <Text style={styles.userNameText}>{userName}</Text>
+          <Text style={styles.userNameText}>
+            {userName === '' ? `user_${deviceID}` : userName}
+          </Text>
 
-          {/* <TouchableOpacity hitSlop={styles.hitslop}>
+          <TouchableOpacity hitSlop={styles.hitslop}>
             <MaterialIcons name="pencil-outline" size={18} color="#666" />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
 
         {/*----------- menu box -----------*/}
@@ -163,13 +203,13 @@ function Content() {
           {/*----------- rating -----------*/}
           <View style={scale.container}>
             <View style={scale.bubbleContainer}>
-              <View style={scale.bubbleContent}>
+              <View style={[scale.bubbleContent, {width: PercentageString}]}>
                 <Image source={setPotory} style={scale.bubbleImg} />
               </View>
             </View>
 
             <View style={scale.barContainer}>
-              <View style={scale.barContent} />
+              <View style={[scale.barContent, {width: PercentageString}]} />
             </View>
 
             <View style={scale.scaleContainer}>
@@ -243,8 +283,8 @@ const styles = StyleSheet.create({
   userNameText: {
     fontSize: 19,
     fontWeight: '500',
-    // paddingLeft: 17,
-    // paddingRight: 7,
+    paddingLeft: 17,
+    paddingRight: 7,
   },
   memuArea: {
     width: '80%',
@@ -362,7 +402,7 @@ const scale = StyleSheet.create({
   },
   bubbleContent: {
     flex: 1,
-    width: PercentageString, // bubble percentage
+    // width: PercentageString, // bubble percentage
     paddingBottom: 18,
     alignItems: 'flex-end',
     justifyContent: 'center',
@@ -392,7 +432,7 @@ const scale = StyleSheet.create({
   },
   barContent: {
     flex: 1,
-    width: PercentageString, // bar percentage
+    // width: PercentageString, // bar percentage
     margin: '2.3%',
     borderRadius: 30,
     // backgroundColor: '#f7f0e8',

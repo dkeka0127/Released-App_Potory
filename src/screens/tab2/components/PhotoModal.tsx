@@ -14,7 +14,7 @@ import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
 // api
-import {api_deletePhoto} from '../../../core/api/Module';
+import {api_deletePhoto, api_getPhotoList} from '../../../core/api/Module';
 
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -61,7 +61,7 @@ export default function PhotoModal({
   // function
   const moveToEditScreen = () => {
     setShownModal(false);
-    navigation.navigate('EditPhotoScreen');
+    navigation.navigate('EditPhotoScreen', {modalImageInfo: modalImageInfo});
   };
 
   const alertBeforeDelete = () => {
@@ -102,7 +102,7 @@ export default function PhotoModal({
       <View style={styles.header}>
         <View style={styles.haederTextCon}>
           {/* <View style={styles.headerCircleShape} /> */}
-          <Text style={styles.headerText}>{date}</Text>
+          <Text style={styles.headerText}>{date?.replace(/-/gi, '.')}</Text>
         </View>
         <View style={styles.headerIcon}>
           <TouchableOpacity style={styles.editIcon} onPress={moveToEditScreen}>
