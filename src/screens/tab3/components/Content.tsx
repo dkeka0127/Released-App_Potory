@@ -1,5 +1,4 @@
-import Loading from 'components/Loading';
-import {api_checkDeviceExist} from 'core/api/Module';
+// React & packages
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -10,7 +9,14 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
+
+// custom components
+import Loading from 'components/Loading';
+
+// api
+import {api_checkDeviceExist} from 'core/api/Module';
 
 // icons
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -32,8 +38,6 @@ const potory_purple = require('../../../assets/images/potory/slide_potory_purple
 
 // variable
 const deviceHeight = Dimensions.get('window').height;
-// 0 : 동네친구 / 15 : 소꿉친구 / 50 : 친한친구 / 100 : 단짝친구 / 200 : 깐부
-
 function Content() {
   const [response, setResponse] = useState<any>(null); // 사진 uri
 
@@ -42,11 +46,11 @@ function Content() {
   const [photoNum, setPhotoNum] = useState(0);
   const [userName, setUserName] = useState('');
   const [deviceID, setDeviceID] = useState('');
-  const [profileImg, setProfileImg] = useState('');
+  const [profileImg, setProfileImg] = useState();
 
-  const [userLevel, setUserLevel] = useState('');
-  const [setScale, setScaleImg] = useState(null);
-  const [setPotory, setPotoryImg] = useState(null);
+  const [userLevel, setUserLevel] = useState('동네친구');
+  const [setScale, setScaleImg] = useState(scale0);
+  const [setPotory, setPotoryImg] = useState(potory_purple);
 
   // set percentage
   const quotient = parseInt(photoNum / 50); // photoNum의 몫
@@ -63,17 +67,20 @@ function Content() {
       : 50 - reminder + 1;
 
   // useEffect
-  useEffect(() => {
-    connectAPI_userInfo(8);
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      connectAPI_userInfo();
+      console.log('********* UserInfo API will be ReLoading *********');
+    }, []),
+  );
 
   useEffect(() => {
     if (userInfoData) initUserInfo();
   }, [userInfoData]);
 
   // api
-  const connectAPI_userInfo = (userIdx: number) => {
-    api_checkDeviceExist(userIdx)
+  const connectAPI_userInfo = () => {
+    api_checkDeviceExist(11)
       .then(res => {
         setUserInfoData(res.data.data);
         console.log('connectAPI_userInfo Success == ');
@@ -92,24 +99,27 @@ function Content() {
     setPhotoNum(userInfoData.photo_count);
     setProfileImg(userInfoData.profile_image);
     if (userInfoData.photo_count > 200) {
-      setUserLevel('깐부');
       setScaleImg(scale4);
+      setUserLevel('깐부');
       setPotoryImg(potory_pink);
-    } else if (userInfoData.photo_count > 100) {
-      setUserLevel('단짝친구');
+    } else if (userInfoData.photo_count > 150) {
       setScaleImg(scale3);
       setPotoryImg(potory_orange);
-    } else if (userInfoData.photo_count > 50) {
-      setUserLevel('친한친구');
+    } else if (userInfoData.photo_count > 100) {
       setScaleImg(scale2);
+      setUserLevel('단짝친구');
       setPotoryImg(potory_green);
-    } else if (userInfoData.photo_count > 15) {
-      setUserLevel('소꿉친구');
+    } else if (userInfoData.photo_count > 50) {
       setScaleImg(scale1);
+      setUserLevel('친한친구');
       setPotoryImg(potory_blue);
-    } else {
-      setUserLevel('동네친구');
+    } else if (userInfoData.photo_count > 15) {
       setScaleImg(scale0);
+      setUserLevel('소꿉친구');
+      setPotoryImg(potory_purple);
+    } else {
+      setScaleImg(scale0);
+      setUserLevel('동네친구');
       setPotoryImg(potory_purple);
     }
   };
@@ -145,7 +155,9 @@ function Content() {
     );
   };
 
-  if (userInfoData === null) return <Loading />;
+  // if (userInfoData === null) return <Loading />;
+
+  console.log('photoNum ...................... ', photoNum);
 
   return (
     <View style={styles.container}>
@@ -155,7 +167,7 @@ function Content() {
         <TouchableOpacity
           onPress={moveToGallery}
           style={styles.userImgContainer}>
-          {profileImg === '' ? (
+          {profileImg === null ? (
             <Image source={require(baseProfile)} style={styles.userImg} />
           ) : (
             <Image source={{uri: profileImg}} style={styles.userImg} />
@@ -165,7 +177,7 @@ function Content() {
         {/*----------- user Name -----------*/}
         <View style={styles.userNameContainer}>
           <Text style={styles.userNameText}>
-            {userName === '' ? `user_${deviceID}` : userName}
+            {userName === '' ? `user_410${deviceID}` : userName}
           </Text>
 
           <TouchableOpacity hitSlop={styles.hitslop}>
@@ -196,7 +208,8 @@ function Content() {
             </Text>
             {/* <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text> */}
             <Text style={styles.subText}>
-              {userName}랑 포토리는 {userLevel} ❤︎
+              {userName === '' ? `user_410${deviceID}` : userName}랑 포토리는{' '}
+              {userLevel} ❤︎
             </Text>
           </View>
 
@@ -221,8 +234,7 @@ function Content() {
     </View>
   );
 }
-
-export default Content;
+export default React.memo(Content);
 
 const navFlex = 3.2;
 const contentFlex = 5.5;

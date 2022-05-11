@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {DeviceEventEmitter} from 'react-native';
 
 export const axiosConfig = {
   baseURL: 'http://bdg407.synology.me:12162',
@@ -60,7 +61,6 @@ export async function api_deleteDevice(userIdx: number) {
   const response = await axios.delete(
     `${axiosConfig.baseURL}/user/${userIdx}`,
     {
-      data: {user_idx: userIdx},
       headers: axiosConfig.headers,
     },
   );
@@ -82,6 +82,8 @@ export async function api_registPhoto(
   type: string,
   image: string,
 ) {
+  DeviceEventEmitter.emit('photoIsChanged');
+
   const response = await axios.post(
     '/photo',
     {
@@ -98,6 +100,8 @@ export async function api_registPhoto(
 }
 
 export async function api_registPhotoByQR(userIdx: number, photoURL: string) {
+  DeviceEventEmitter.emit('photoIsChanged');
+
   const response = await axios.post(
     '/qr_photo',
     {
@@ -116,6 +120,8 @@ export async function api_editPhoto(
   memo: string,
   userIdx: number,
 ) {
+  DeviceEventEmitter.emit('photoIsChanged');
+
   const response = await axios.patch(
     `/photo/${photoNum}`,
     {
@@ -130,6 +136,8 @@ export async function api_editPhoto(
 }
 
 export async function api_deletePhoto(photoNum: number | any, userIdx: number) {
+  DeviceEventEmitter.emit('photoIsChanged');
+
   const response = await axios.delete(
     `${axiosConfig.baseURL}/photo/${photoNum}`,
     {

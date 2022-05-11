@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
 
     // 그림자
     elevation: 4,
-    shadowRadius: 7,
-    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    shadowOpacity: 0.13,
     shadowColor: 'rgb(158, 158, 158)',
-    shadowOffset: {height: 3, width: 0},
+    shadowOffset: {height: 0, width: 0},
   },
   text: {
     fontSize: 16,

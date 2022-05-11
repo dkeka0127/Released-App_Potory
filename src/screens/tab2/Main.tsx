@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   LayoutChangeEvent,
+  DeviceEventEmitter,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useFocusEffect} from '@react-navigation/native';
@@ -72,11 +73,6 @@ function Main() {
   const polaroidWidth = (deviceWidth - flatListPadding * 2) / grid;
 
   // useEffect
-  useEffect(() => {
-    console.log('*********** connectAPI useEffect ***********');
-    connectAPI();
-  }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       connectAPI();
@@ -90,10 +86,10 @@ function Main() {
 
   // api
   const connectAPI = () => {
-    api_getPhotoList(8)
+    api_getPhotoList(11)
       .then(res => {
         setPhotoListData(res.data.data);
-        console.log('get photo list Success == ');
+        console.log('get photo list Success == ', res.data.data);
       })
       .catch(err => {
         console.log('get photo list Err == ', err);
@@ -167,11 +163,11 @@ function Main() {
             }}
             onPress={() => {
               setIsModalShown(true);
-              setModalImageInfo(photoListData[index]);
+              setModalImageInfo(item);
             }}>
             <FastImage
               resizeMode="contain"
-              source={{uri: photoListData[index].photo_url}}
+              source={{uri: item.photo_url}}
               style={renderItem.photo}
             />
           </TouchableOpacity>
@@ -242,8 +238,8 @@ function Main() {
   );
 }
 
-// export default React.memo(Main);
-export default Main;
+export default React.memo(Main);
+// export default Main;
 
 const flatListPadding = 15;
 
@@ -251,7 +247,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    paddingTop: 7,
+    paddingTop: 15,
     backgroundColor: '#f9f7ff',
   },
   safeAreaViewContainer: {

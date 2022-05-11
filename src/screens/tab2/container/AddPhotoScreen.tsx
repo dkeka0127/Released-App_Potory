@@ -93,14 +93,14 @@ function AddPhotoScreen() {
 
   const sendDataToAPI = () => {
     if (imageUri === null) {
-      Toast.show('사진을 선택해주세요.');
+      Toast.show(`사진을 선택해주세요 '-'`);
     } else {
       connectAPI_regist();
     }
   };
 
   const connectAPI_regist = () => {
-    api_registPhoto(8, date, memo, 'file', imageUri.uri)
+    api_registPhoto(8, date, memo, 'url', imageUri.uri)
       .then(res => {
         Toast.show('저장이 완료되었습니다.');
         console.log('regist photo Success == ', res);

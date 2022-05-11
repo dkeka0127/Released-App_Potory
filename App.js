@@ -27,28 +27,30 @@ const lottiePath = require('./src/assets/lottie/splash.json');
 function App() {
   const [isLogin, setIsLogin] = useState(null);
 
-  // login
-  const isLoginF = () => setIsLogin(true);
-
-  const getLoginAsync = () =>
-    AsyncStorage.getItem('login', (_err, value) => {
-      value === 'true' ? setIsLogin(true) : setIsLogin(false);
-    });
-
   // useEffect (splash / api / async)
   useEffect(() => {
     SplashScreen.hide();
 
-    api_checkDeviceExist(8)
+    api_checkDeviceExist(10)
       .then(res => {
-        console.log('api_checkDeviceExist == !! ', res.data.data);
+        console.log('api_checkDeviceExist Success == !! ', res.data.data);
       })
-      .catch(() => {});
+      .catch(err => {
+        console.log('api_checkDeviceExist Err == !! ', err);
+      });
 
     setTimeout(() => {
       getLoginAsync();
     }, 1800);
   }, []);
+
+  // function
+  const getLoginAsync = () =>
+    AsyncStorage.getItem('login', (_err, value) => {
+      value === 'true' ? setIsLogin(true) : setIsLogin(false);
+    });
+
+  const isLoginF = () => setIsLogin(true);
 
   return (
     <NavigationContainer>

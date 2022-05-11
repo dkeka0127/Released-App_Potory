@@ -24,6 +24,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 // icons
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {api_deleteDevice} from 'core/api/Module';
 
 // variable
 const IconSize = 17;
@@ -71,6 +72,54 @@ function SettingContent() {
 
   // Kakao Login
   const [result, setResult] = useState<string>('');
+
+  // function
+  const AlertText = (title: string) => {
+    Alert.alert(
+      '',
+      title === '로그아웃'
+        ? '로그아웃 하시겠습니까 ?'
+        : '회원탈퇴 시 회원님의 소중한 추억이\n삭제되며 복구가 불가합니다.\n정말로 탈퇴하시겠습니까 ?',
+      [
+        {
+          text: '취소',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'default',
+        },
+        {
+          text: '확인',
+          onPress: () => (title === '로그아웃' ? logOut() : signOut()),
+          style: 'default',
+        },
+      ],
+    );
+  };
+
+  const logOut = () => {
+    signOutWithKakao();
+    AsyncStorage.setItem('login', 'false');
+    Alert.alert('', '로그아웃 되었습니다.', [
+      {
+        text: '확인',
+        onPress: () => NativeModules.DevSettings.reload(),
+        style: 'default',
+      },
+    ]);
+  };
+
+  const signOut = () => {
+    unlinkKakao();
+    connectAPI_deleteUser();
+    AsyncStorage.setItem('login', 'false');
+    Alert.alert('', '회원탈퇴 되었습니다.', [
+      {
+        text: '확인',
+        onPress: () => NativeModules.DevSettings.reload(),
+        style: 'default',
+      },
+    ]);
+  };
+
   // 로그아웃
   const signOutWithKakao = async (): Promise<void> => {
     // const message = await logout();
@@ -82,51 +131,18 @@ function SettingContent() {
     // setResult(message);
   };
 
-  // Alert Message
-  const AlertText = title => {
-    const logOut = () => {
-      signOutWithKakao();
-      AsyncStorage.setItem('login', 'false');
-      Alert.alert('', '로그아웃 되었습니다.', []);
-      NativeModules.DevSettings.reload();
-    };
-
-    const signOut = () => {
-      unlinkKakao();
-      AsyncStorage.setItem('login', 'false');
-      Alert.alert('', '탈퇴 완료 되었습니다.', []);
-      NativeModules.DevSettings.reload();
-    };
-
-    Alert.alert(
-      '',
-      title === '로그아웃'
-        ? '로그아웃 하시겠습니까 ?'
-        : '회원탈퇴 시 회원님의 소중한 추억이\n삭제되며 복구가 불가합니다.\n정말로 탈퇴하시겠습니까 ?',
-      [
-        {
-          text: '취소',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {
-          text: '확인',
-          onPress: () => {
-            title === '로그아웃' ? logOut() : signOut();
-          },
-        },
-      ],
-    );
+  const connectAPI_deleteUser = () => {
+    api_deleteDevice(11)
+      .then(res => console.log('api_deleteDevice Success == ', res))
+      .catch(err => console.log('api_deleteDevice Err == ', err));
   };
 
-  // 로그아웃 / 회원가입
-  const SettingAccount = ({iconName, title}) => {
+  // component
+  const SettingAccount = ({iconName, title}: any) => {
     return (
       <TouchableOpacity
         style={styles.accountContent}
-        onPress={() => {
-          AlertText(title);
-        }}>
+        onPress={() => AlertText(title)}>
         <AntDesign
           style={{paddingRight: 8}}
           name={iconName}
@@ -197,7 +213,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   accountContainer: {
-    marginTop: 2,
+    padding: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
