@@ -22,13 +22,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 //   unlink,
 // } from '@react-native-seoul/kakao-login';
 
-// icons
-import AntDesign from 'react-native-vector-icons/AntDesign';
+// api
 import {api_deleteDevice} from 'core/api/Module';
 
 // variable
+import {userNum} from '../../../core/UserInfo';
 const IconSize = 17;
 const IconColor = '#111';
+
+// icons
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 // List Components
 const SettingContentList = ({iconName, title}) => {
@@ -132,7 +135,7 @@ function SettingContent() {
   };
 
   const connectAPI_deleteUser = () => {
-    api_deleteDevice(11)
+    api_deleteDevice(userNum)
       .then(res => console.log('api_deleteDevice Success == ', res))
       .catch(err => console.log('api_deleteDevice Err == ', err));
   };

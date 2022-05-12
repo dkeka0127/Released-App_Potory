@@ -1,0 +1,49 @@
+▶︎ 기술스택
+  dev : ReactNaitve, TypeScript, StyleSheet,
+  tool : github, githunDesktop, SourceTree
+  design : postman, zeplin, figma
+
+▶︎ 주요 기능
+  - Async Storage
+    : Auto Login
+    : Photo tools
+
+  - 소셜로그인
+    : Kakao
+    : Apple
+
+  - 지도 API
+    : Naver Map
+    : Kakao Map
+
+  - CRUD 구현
+    : 사진 저장
+    : 사진 수정
+    : 사진 삭제
+    : 사진 게시
+
+  - component 분리
+  - API 모듈화
+  - QR scan
+  - Progress Bar
+  - axois
+  - LoadingScreen with gif
+  - Animation Header
+  - FastImage
+  - DropBox
+  - Modal
+  - Toast
+  - FlatList
+  - KeyboardAvoidingView
+  - http 접근 허용 -> info.plist
+  - Camera 접근
+  - Gallery 접근
+  - 절대경로 설정
+  - DatePicker
+  - SplashScreen Custom with Lottie
+  - 최적화
+    : useMemo
+    : useCallback
+
+
+▶︎ 주요 기능

@@ -22,6 +22,7 @@ import SignInScreen from './src/screens/intro/SignInScreen';
 import {api_checkDeviceExist} from './src/core/api/Module';
 
 // variable
+import {userNum} from './src/core/UserInfo';
 const lottiePath = require('./src/assets/lottie/splash.json');
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
   useEffect(() => {
     SplashScreen.hide();
 
-    api_checkDeviceExist(10)
+    api_checkDeviceExist(userNum)
       .then(res => {
         console.log('api_checkDeviceExist Success == !! ', res.data.data);
       })

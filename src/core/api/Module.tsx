@@ -41,15 +41,15 @@ export const api_checkDeviceExist = async (userIdx: number) => {
 };
 
 export async function api_editDevice(
-  userIdx: string,
-  userName: string,
-  profileImg: any,
+  userIdx: number,
+  userName?: string,
+  profileImg?: any,
 ) {
   const response = await axios.post(
     `/user/${userIdx}`,
     {
-      nick_name: userName,
-      profile_image: profileImg,
+      nick_name: userName !== undefined && userName,
+      profile_image: profileImg !== undefined && profileImg,
     },
     axiosConfig,
   );

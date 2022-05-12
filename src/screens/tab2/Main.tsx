@@ -1,5 +1,5 @@
 // React & Package
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
 import {
   View,
   Animated,
@@ -23,6 +23,7 @@ import AddContentButton from './components/AddContentButton';
 import {api_getPhotoList} from 'core/api/Module';
 
 // variable
+import {userNum} from '../../core/UserInfo';
 const HEADER_HEIGHT = 80;
 const deviceWidth = Dimensions.get('window').width;
 import {polaroid_gray, polaroid_black} from '../../core/Polaroid';
@@ -82,11 +83,12 @@ function Main() {
 
   useEffect(() => {
     if (isModalShown) setIsModalShown(false);
+    else return;
   }, [isModalShown]);
 
   // api
   const connectAPI = () => {
-    api_getPhotoList(11)
+    api_getPhotoList(userNum)
       .then(res => {
         setPhotoListData(res.data.data);
         console.log('get photo list Success == ', res.data.data);
@@ -136,6 +138,56 @@ function Main() {
     connectAPI(); // api refetch because image deleted
     console.log('-- imageDeleted --');
   };
+
+  const _keyExtractor = useCallback(item => item.photo_idx, []);
+
+  const _renderItem = useCallback(({item, index}) => {
+    return (
+      <>
+        <FastImage
+          resizeMode="contain"
+          source={
+            bgColor === '#111'
+              ? polaroid_black[polaroidSortRandomly[index]].uri
+              : polaroid_gray[polaroidSortRandomly[index]].uri
+          }
+          style={[
+            renderItem.container,
+            {
+              width: polaroidWidth,
+              height: polaroidWidth * 1.18,
+            },
+          ]}>
+          <TouchableOpacity
+            style={{
+              marginTop: -(polaroidWidth * 0.14),
+              marginLeft: -3,
+              width: polaroidWidth * 0.55,
+              height: polaroidWidth * 0.5,
+            }}
+            onPress={() => {
+              setIsModalShown(true);
+              setModalImageInfo(item);
+            }}>
+            <FastImage
+              resizeMode="contain"
+              source={{uri: item.photo_url}}
+              style={renderItem.photo}
+            />
+          </TouchableOpacity>
+        </FastImage>
+        {index === photoListData.length - 1 && (
+          <View
+            style={{
+              width: polaroidWidth,
+              height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+              marginBottom: 100,
+            }}
+          />
+        )}
+      </>
+    );
+  }, []);
 
   const RenderItem = ({item, index}: any) => {
     return (
@@ -210,8 +262,9 @@ function Main() {
         style={styles.flatList}
         bounces={false}
         numColumns={grid} // grid 개수
-        windowSize={15} // 추가 렌더링 개수
-        initialNumToRender={10} // 초기 랜더링 개수
+        windowSize={12} // 추가 렌더링 개수
+        initialNumToRender={15} // 초기 랜더링 개수
+        // maxToRenderPerBatch={15} // 스크롤 시 렌더링 할 항목 (기본값 10)
         keyExtractor={item => item.photo_idx}
         data={sequence === 'new' ? photoListData : photoListData.reverse()}
         ListEmptyComponent={EmptyDataScreen}

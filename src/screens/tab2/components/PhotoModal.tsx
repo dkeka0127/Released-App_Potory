@@ -14,12 +14,13 @@ import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
 // api
-import {api_deletePhoto, api_getPhotoList} from '../../../core/api/Module';
+import {api_deletePhoto} from '../../../core/api/Module';
 
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // variable
+import {userNum} from '../../../core/UserInfo';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const ModalWidth = deviceWidth * 0.85;
@@ -38,7 +39,7 @@ interface Props {
   imageDeletedFromModal: Function;
 }
 
-export default function PhotoModal({
+function PhotoModal({
   isModalShown,
   modalImageInfo,
   imageDeletedFromModal,
@@ -79,7 +80,7 @@ export default function PhotoModal({
   };
 
   const connectAPI_Delete = () => {
-    api_deletePhoto(ImgNum, 8)
+    api_deletePhoto(ImgNum, userNum)
       .then(res => {
         setShownModal(false);
         imageDeletedFromModal();
@@ -136,6 +137,8 @@ export default function PhotoModal({
     </Modal>
   );
 }
+
+export default React.memo(PhotoModal);
 
 const BGColor = '#f9f7ff';
 const BorderRadius = 10;

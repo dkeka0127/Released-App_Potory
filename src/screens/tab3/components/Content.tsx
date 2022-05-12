@@ -8,6 +8,11 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Modal,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  Keyboard,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -16,10 +21,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Loading from 'components/Loading';
 
 // api
-import {api_checkDeviceExist} from 'core/api/Module';
+import {api_checkDeviceExist, api_editDevice} from 'core/api/Module';
 
 // icons
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -37,8 +43,12 @@ const potory_orange = require('../../../assets/images/potory/slide_potory_orange
 const potory_purple = require('../../../assets/images/potory/slide_potory_purple.png');
 
 // variable
+import {userNum} from '../../../core/UserInfo';
 const deviceHeight = Dimensions.get('window').height;
 function Content() {
+  const [newUserName, setNewUserName] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
   const [response, setResponse] = useState<any>(null); // 사진 uri
 
   // user info
@@ -69,7 +79,7 @@ function Content() {
   // useEffect
   useFocusEffect(
     React.useCallback(() => {
-      connectAPI_userInfo();
+      connectAPI_getUserInfo();
       console.log('********* UserInfo API will be ReLoading *********');
     }, []),
   );
@@ -79,14 +89,42 @@ function Content() {
   }, [userInfoData]);
 
   // api
-  const connectAPI_userInfo = () => {
-    api_checkDeviceExist(11)
+  const connectAPI_getUserInfo = () => {
+    api_checkDeviceExist(userNum)
       .then(res => {
         setUserInfoData(res.data.data);
-        console.log('connectAPI_userInfo Success == ');
+        console.log('connectAPI_getUserInfo Success == ');
       })
       .catch(err => {
-        console.log('connectAPI_userInfo Err == ', err);
+        console.log('connectAPI_getUserInfo Err == ', err);
+      });
+
+    return;
+  };
+
+  const connectAPI_editUserInfo_UserName = () => {
+    api_editDevice(userNum, newUserName, undefined)
+      .then(res => {
+        setUserInfoData(res.data.data);
+        setNewUserName('');
+        setModalVisible(false);
+        console.log('connectAPI_editUserInfo_UserName Success == ');
+      })
+      .catch(err => {
+        console.log('connectAPI_editUserInfo_UserName Err == ', err);
+      });
+
+    return;
+  };
+
+  const connectAPI_editUserInfo_UserImg = () => {
+    api_editDevice(userNum, undefined, profileImg)
+      .then(res => {
+        setUserInfoData(res.data.data);
+        console.log('connectAPI_editUserInfo_UserImg Success == ');
+      })
+      .catch(err => {
+        console.log('connectAPI_editUserInfo_UserImg Err == ', err);
       });
 
     return;
@@ -157,17 +195,15 @@ function Content() {
 
   // if (userInfoData === null) return <Loading />;
 
-  console.log('photoNum ...................... ', photoNum);
-
   return (
     <View style={styles.container}>
-      {/*============================== Nav ==============================*/}
+      {/*======================================== Nav ========================================*/}
       <View style={styles.nav}>
         {/*---------- profile Img ----------*/}
         <TouchableOpacity
           onPress={moveToGallery}
           style={styles.userImgContainer}>
-          {profileImg === null ? (
+          {!profileImg ? (
             <Image source={require(baseProfile)} style={styles.userImg} />
           ) : (
             <Image source={{uri: profileImg}} style={styles.userImg} />
@@ -180,7 +216,9 @@ function Content() {
             {userName === '' ? `user_410${deviceID}` : userName}
           </Text>
 
-          <TouchableOpacity hitSlop={styles.hitslop}>
+          <TouchableOpacity
+            hitSlop={styles.hitslop}
+            onPress={() => setModalVisible(true)}>
             <MaterialIcons name="pencil-outline" size={18} color="#666" />
           </TouchableOpacity>
         </View>
@@ -193,7 +231,7 @@ function Content() {
         </View>
       </View>
 
-      {/*============================ Content ============================*/}
+      {/*====================================== Content ======================================*/}
       <View style={styles.content}>
         <ScrollView style={styles.scrollView}>
           {/*----------- text -----------*/}
@@ -231,6 +269,42 @@ function Content() {
           </View>
         </ScrollView>
       </View>
+
+      {/*================================= edit userName modal =================================*/}
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={modal.container}>
+          <TouchableOpacity
+            style={{
+              zIndex: 1,
+              height: 20,
+              bottom: -33,
+              width: modalWidth,
+              paddingRight: 15,
+              alignItems: 'flex-end',
+            }}
+            onPress={() => setModalVisible(false)}>
+            <AntDesign name="close" size={22} color="white" />
+          </TouchableOpacity>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={modal.modalKeyboard}>
+            <View style={modal.inputContainer}>
+              <TextInput
+                value={newUserName}
+                multiline={false}
+                maxLength={10}
+                style={modal.input}
+                onChangeText={text => setNewUserName(text)}
+              />
+            </View>
+            <TouchableOpacity
+              style={modal.modalArrow}
+              onPress={connectAPI_editUserInfo_UserName}>
+              <AntDesign name="arrowright" size={20} color="#5b526d" />
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -281,7 +355,7 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: 'cover',
     borderRadius: borderRadius,
-    opacity: 0.4,
+    // opacity: 0.4,
   },
   userNameContainer: {
     width: '100%',
@@ -460,5 +534,54 @@ const scale = StyleSheet.create({
   scaleImg: {
     width: '100%',
     resizeMode: 'contain',
+  },
+});
+
+const modalWidth = '80%';
+const modal = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '70%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalKeyboard: {
+    width: modalWidth,
+    height: 200,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    backgroundColor: '#484254',
+    // borderColor: '#8273a0',
+    // borderWidth: 3,
+  },
+  inputContainer: {
+    width: '60%',
+    height: 55,
+    marginRight: 15,
+    borderRadius: 30,
+    justifyContent: 'center',
+    backgroundColor: '#fbf9ff',
+    borderColor: '#e8e1f7',
+    borderWidth: 3,
+  },
+  input: {
+    flex: 1,
+    color: 'black',
+    fontSize: 15,
+    lineHeight: 20,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingBottom: 10,
+    borderRadius: 10,
+  },
+  modalArrow: {
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f2fc',
   },
 });

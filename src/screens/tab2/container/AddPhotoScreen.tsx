@@ -29,6 +29,9 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {api_registPhoto} from 'core/api/Module';
 
+// variable
+import {userNum} from '../../../core/UserInfo';
+
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
@@ -95,12 +98,19 @@ function AddPhotoScreen() {
     if (imageUri === null) {
       Toast.show(`사진을 선택해주세요 '-'`);
     } else {
-      connectAPI_regist();
+      console.log('imageUri.uri', imageUri.uri);
+      // connectAPI_regist();
     }
   };
 
   const connectAPI_regist = () => {
-    api_registPhoto(8, date, memo, 'url', imageUri.uri)
+    api_registPhoto(
+      userNum,
+      date,
+      memo,
+      'file',
+      '/Users/sol/Desktop/codepush.png',
+    )
       .then(res => {
         Toast.show('저장이 완료되었습니다.');
         console.log('regist photo Success == ', res);
