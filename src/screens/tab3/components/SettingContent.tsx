@@ -100,7 +100,8 @@ function SettingContent() {
 
   const logOut = () => {
     signOutWithKakao();
-    AsyncStorage.setItem('login', 'false');
+    saveAsyncSignOut('logout');
+
     Alert.alert('', '로그아웃 되었습니다.', [
       {
         text: '확인',
@@ -113,7 +114,8 @@ function SettingContent() {
   const signOut = () => {
     unlinkKakao();
     connectAPI_deleteUser();
-    AsyncStorage.setItem('login', 'false');
+    saveAsyncSignOut('signOut');
+
     Alert.alert('', '회원탈퇴 되었습니다.', [
       {
         text: '확인',
@@ -121,6 +123,17 @@ function SettingContent() {
         style: 'default',
       },
     ]);
+  };
+
+  const saveAsyncSignOut = (value: string) => {
+    AsyncStorage.setItem(
+      'userInfo',
+      JSON.stringify({
+        autoLogin: false,
+        userNumber: value === 'logout' ? String(userNum) : null,
+      }),
+      () => console.log('------ 유저정보 삭제 ------'),
+    );
   };
 
   // 로그아웃

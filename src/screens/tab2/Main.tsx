@@ -20,6 +20,7 @@ import EmptyDataScreen from './container/EmptyDataScreen';
 import AddContentButton from './components/AddContentButton';
 
 // api
+
 import {api_getPhotoList} from 'core/api/Module';
 
 // variable

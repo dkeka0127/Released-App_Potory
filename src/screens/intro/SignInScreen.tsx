@@ -17,12 +17,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+
 // kakao
-import {
-  KakaoOAuthToken,
-  getProfile as getKakaoProfile,
-  login,
-} from '@react-native-seoul/kakao-login';
+import {getProfile} from '@react-native-seoul/kakao-login';
+
 // apple
 import {
   appleAuth,
@@ -32,106 +30,53 @@ import {
 
 // icons & images
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {api_registDevice} from '../../core/api/Module';
 const potoryImg = require('../../assets/images/potory/login.png');
 const kakaoImg = require('../../assets/images/icons/kakaoLogin.png');
 
 interface Props {
+  userNum: number;
   isLoginF: () => void;
 }
 
 function SignInScreen({isLoginF}: Props) {
-  const [deviceId, setDeviceId] = useState<string>();
+  // variable
 
   // -------------- ① Kakao --------------
-  const signInWithKakao = async (): Promise<void> => {
-    const token: KakaoOAuthToken = await login();
-    console.log('token ========== ', token);
-    getProfile();
-  };
-  const getProfile = async (): Promise<void> => {
-    const profile = await getKakaoProfile();
-    console.log('profile ======== ', profile);
-    await setDeviceId(profile.id);
+  const loginWithKakao = async () => {
+    const profile = await getProfile();
+    // await setDeviceId(profile.id);
+    console.log(profile.id);
+    await connectAPI_registDevice(profile.id);
   };
 
   // -------------- ② Apple --------------
-  // let user: string | null = null;
+  const LoginWithApple = async () => {
+    //
+  };
 
-  // async function fetchAndUpdateCredentialState(
-  //   updateCredentialStateForUser: any,
-  // ) {
-  //   if (user === null) {
-  //     updateCredentialStateForUser('N/A');
-  //   } else {
-  //     const credentialState = await appleAuth.getCredentialStateForUser(user);
-  //     if (credentialState === appleAuth.State.AUTHORIZED) {
-  //       updateCredentialStateForUser('AUTHORIZED');
-  //     } else {
-  //       updateCredentialStateForUser(credentialState);
-  //     }
-  //   }
-  // }
+  const connectAPI_registDevice = (deviceId: string) => {
+    // 로딩 추가
+    api_registDevice(deviceId)
+      .then(res => {
+        // 로딩 삭제
+        const userIdx = res.data.data.user_idx;
+        isLoginF();
+        saveLoginAsync(userIdx);
+        console.log('api_checkDeviceExist Success == !! ', res.data.data);
+      })
+      .catch(err => {
+        // 네트워크 에러 토스트 창
+        console.log('api_checkDeviceExist Err == !! ', err);
+      });
+  };
 
-  // // Login
-  // async function onAppleButtonPress(updateCredentialStateForUser: any) {
-  //   console.warn('Beginning Apple Authentication');
-
-  //   // start a login request
-  //   try {
-  //     const appleAuthRequestResponse = await appleAuth.performRequest({
-  //       requestedOperation: appleAuth.Operation.LOGIN,
-  //       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-  //     });
-
-  //     console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-
-  //     const {
-  //       user: newUser,
-  //       email,
-  //       nonce,
-  //       identityToken,
-  //       realUserStatus /* etc */,
-  //     } = appleAuthRequestResponse;
-
-  //     user = newUser;
-
-  //     fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-  //       updateCredentialStateForUser(`Error: ${error.code}`),
-  //     );
-
-  //     if (identityToken) {
-  //       // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-  //       console.log(nonce, identityToken);
-  //     } else {
-  //       // no token - failed sign-in?
-  //     }
-
-  //     if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-  //       console.log("I'm a real person!");
-  //     }
-
-  //     console.warn(`Apple Authentication Completed, ${user}, ${email}`);
-  //   } catch (error) {
-  //     if (error.code === appleAuth.Error.CANCELED) {
-  //       console.warn('User canceled Apple Sign in.');
-  //     } else {
-  //       console.error(error);
-  //     }
-  //   }
-  // }
-  // Get device_Id
-
-  // 로그인 성공 시 실행
-  useEffect(() => {
-    if (deviceId) {
-      setLoginAsync(); // 자동 로그인
-      isLoginF(); // 서버에 device_id 넘겨줌
-    }
-  }, [deviceId]);
-
-  // 로그인 성공 시 Async Storage에 저장 (* 자동 로그인)
-  const setLoginAsync = () => {
-    AsyncStorage.setItem('login', 'true');
+  const saveLoginAsync = (userIdx: number) => {
+    AsyncStorage.setItem(
+      'userInfo',
+      JSON.stringify({autoLogin: true, userNumber: String(userIdx)}),
+      () => console.log('[로그인] 유저정보 저장'),
+    );
   };
 
   return (
@@ -148,7 +93,7 @@ function SignInScreen({isLoginF}: Props) {
         {/*---------------- Kakao ----------------*/}
         <TouchableOpacity
           style={styles.kakaoLoginArea}
-          onPress={signInWithKakao}>
+          onPress={loginWithKakao}>
           <Image source={kakaoImg} style={styles.kakaoImg} />
           <Text style={styles.kakaoLogin}>카카오 계정으로 로그인</Text>
         </TouchableOpacity>
@@ -156,8 +101,7 @@ function SignInScreen({isLoginF}: Props) {
         {/*---------------- Apple ----------------*/}
         <TouchableOpacity
           style={styles.appleLoginArea}
-          // onPress={onAppleButtonPress}
-        >
+          onPress={LoginWithApple}>
           <Ionicons name="logo-apple" size={20} color="#fff" />
           <Text style={styles.appleLogin}>Sign in with Apple</Text>
         </TouchableOpacity>
@@ -230,3 +174,76 @@ const styles = StyleSheet.create({
     height: 16,
   },
 });
+
+// -------------- ① Kakao --------------
+// const signInWithKakao = async (): Promise<void> => {
+// const token: KakaoOAuthToken = await login();
+// console.log('token ==  ', token);
+// };
+
+// -------------- ② Apple --------------
+// let user: string | null = null;
+
+// async function fetchAndUpdateCredentialState(
+//   updateCredentialStateForUser: any,
+// ) {
+//   if (user === null) {
+//     updateCredentialStateForUser('N/A');
+//   } else {
+//     const credentialState = await appleAuth.getCredentialStateForUser(user);
+//     if (credentialState === appleAuth.State.AUTHORIZED) {
+//       updateCredentialStateForUser('AUTHORIZED');
+//     } else {
+//       updateCredentialStateForUser(credentialState);
+//     }
+//   }
+// }
+
+// // Login
+// async function onAppleButtonPress(updateCredentialStateForUser: any) {
+//   console.warn('Beginning Apple Authentication');
+
+//   // start a login request
+//   try {
+//     const appleAuthRequestResponse = await appleAuth.performRequest({
+//       requestedOperation: appleAuth.Operation.LOGIN,
+//       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+//     });
+
+//     console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+//     const {
+//       user: newUser,
+//       email,
+//       nonce,
+//       identityToken,
+//       realUserStatus /* etc */,
+//     } = appleAuthRequestResponse;
+
+//     user = newUser;
+
+//     fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+//       updateCredentialStateForUser(`Error: ${error.code}`),
+//     );
+
+//     if (identityToken) {
+//       // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+//       console.log(nonce, identityToken);
+//     } else {
+//       // no token - failed sign-in?
+//     }
+
+//     if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
+//       console.log("I'm a real person!");
+//     }
+
+//     console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+//   } catch (error) {
+//     if (error.code === appleAuth.Error.CANCELED) {
+//       console.warn('User canceled Apple Sign in.');
+//     } else {
+//       console.error(error);
+//     }
+//   }
+// }
+// Get device_Id

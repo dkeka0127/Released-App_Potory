@@ -20,42 +20,52 @@ import SignInScreen from './src/screens/intro/SignInScreen';
 
 // api
 import {api_checkDeviceExist} from './src/core/api/Module';
+import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
-import {userNum} from './src/core/UserInfo';
 const lottiePath = require('./src/assets/lottie/splash.json');
 
 function App() {
-  const [isLogin, setIsLogin] = useState(null);
+  /////////////////////////////////////////////////////////////////////////
+  // userIndex hook 사용 방법
 
-  // useEffect (splash / api / async)
+  // import {getAsyncStorage_userIdx} from 'core/UserInfo';
+  // const [userIdx, setUseIdx] = useState(null);
+  // getAsyncStorage_userIdx().then(res => setUseIdx(res));
+  // console.log('userIdx', userIdx);
+
+  /////////////////////////////////////////////////////////////////////////
+
+  const [autoLogin, setAutoLogin] = useState(null);
+
+  // useEffect
   useEffect(() => {
     SplashScreen.hide();
 
-    api_checkDeviceExist(userNum)
-      .then(res => {
-        console.log('api_checkDeviceExist Success == !! ', res.data.data);
-      })
-      .catch(err => {
-        console.log('api_checkDeviceExist Err == !! ', err);
-      });
-
     setTimeout(() => {
-      getLoginAsync();
+      getUserInfoAsync();
     }, 1800);
   }, []);
 
   // function
-  const getLoginAsync = () =>
-    AsyncStorage.getItem('login', (_err, value) => {
-      value === 'true' ? setIsLogin(true) : setIsLogin(false);
+  const getUserInfoAsync = () => {
+    AsyncStorage.getItem('userInfo', (err, result) => {
+      const UserInfo = JSON.parse(result);
+      if (UserInfo.autoLogin) {
+        console.log(' 자동 로그인 !');
+        setAutoLogin(UserInfo.autoLogin);
+      } else {
+        console.log(' 로그인 창으로 이동 ~~~~~~~~~~ !');
+        setAutoLogin(false);
+      }
     });
+  };
 
-  const isLoginF = () => setIsLogin(true);
+  const isLoginF = () => setAutoLogin(true);
 
   return (
     <NavigationContainer>
-      {isLogin === null ? (
+      {autoLogin === null ? (
         <LottieView
           autoPlay
           speed={1.2}
@@ -63,7 +73,7 @@ function App() {
           source={lottiePath}
           style={styles.lottieContainer}
         />
-      ) : isLogin ? (
+      ) : autoLogin ? (
         <RootScreen />
       ) : (
         <SignInScreen isLoginF={isLoginF} />
