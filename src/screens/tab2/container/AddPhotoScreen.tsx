@@ -31,7 +31,6 @@ import {api_registPhoto} from 'core/api/Module';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
-// import {userNum} from '../../../core/UserInfo';
 const galleryOption = {
   title: 'Select Image',
   type: 'library',
@@ -51,7 +50,6 @@ const galleryOption = {
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function AddPhotoScreen() {
-  const formdata = new FormData();
   const navigation = useNavigation();
   const [userIdx, setUseIdx] = useState(null);
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
@@ -101,7 +99,6 @@ function AddPhotoScreen() {
   // ************************************* Test Start *************************************
 
   const openGallery = async () => {
-    // const formdata = new FormData();
     launchImageLibrary(galleryOption, response => {
       setShownModal(false);
 
@@ -111,58 +108,38 @@ function AddPhotoScreen() {
         console.log('image picker error', response.errorMessage);
       } else {
         setImageUri(response.assets[0]);
-        console.log('response.assets[0]', response.assets[0]);
-        // formdata.append('image', {
-        //   uri: response.assets[0].uri,
-        //   type: response.assets[0].type,
-        //   name: response.assets[0].fileName,
-        // });
       }
     });
-
-    // {
-    //   fileName: '8AEFCF90-E1DF-4432-BE23-044A5B729635.jpg',
-    //   fileSize: 86952,
-    //   height: 827,
-    //   type: 'image/jpg',
-    //   uri: 'file:///Users/sol/Library/Developer/CoreSimulator/Devices/C3BEF4A8-BB56-464F-97EB-67897C85C9BE/data/Containers/Data/Application/FB6E1018-BFD2-451C-AA60-DCAAC7B1EF0C/tmp/8AEFCF90-E1DF-4432-BE23-044A5B729635.jpg',
-    //   width: 827,
-    // };
-
-    // let responseJson = await api_registPhoto(1, '', '', 'file', formdata);
-    // console.log('responseJson', responseJson);
   };
-  // ************************************** Test End **************************************
-
   const openQRScreen = () => {
     setShownModal(false);
     navigation.navigate('QRCodeScreen');
   };
 
-  // console.log('Date ---- ', date);
-  // console.log('Memo ----', memo);
-  // console.log('Img URI ----', imageUri.uri);
-
   const sendDataToAPI = async () => {
+    // 사진 미등록
     if (imageUri === null) {
       Toast.show('사진을 선택해주세요.');
-    } else {
-      await formdata.append('user_idx', userIdx);
-      await formdata.append('date', date);
-      await formdata.append('memo', memo);
-      await formdata.append('type', 'file');
-      await formdata.append('image', {
-        uri: imageUri.uri,
-        type: imageUri.type,
+    }
+    // 사진 저장
+    else {
+      const formdata = new FormData();
+
+      formdata.append('user_idx', userIdx);
+      formdata.append('date', date);
+      formdata.append('memo', memo);
+      formdata.append('type', 'file');
+      formdata.append('image', {
         name: imageUri.fileName,
+        type: imageUri.type,
+        uri: imageUri.uri,
       });
-      await connectAPI_regist();
+
+      connectAPI_regist(formdata);
     }
   };
 
-  const connectAPI_regist = () => {
-    console.log('formdata', formdata);
-    console.log('formdata', JSON.stringify(formdata));
+  const connectAPI_regist = async (formdata: FormData) => {
     api_registPhoto(formdata)
       .then(res => {
         Toast.show('저장이 완료되었습니다.');
@@ -174,8 +151,6 @@ function AddPhotoScreen() {
         );
         console.log('regist photo Err == ', err);
       });
-
-    return;
   };
 
   //

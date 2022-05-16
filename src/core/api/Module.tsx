@@ -114,31 +114,18 @@ export async function api_getPhotoList(userIdx: number) {
   return response;
 }
 
-export async function api_registPhoto(
-  // userIdx: number,
-  // date: string,
-  // memo: string,
-  // type: string,
-  // image: any,
-  formdata: any,
-) {
+export async function api_registPhoto(formdata: any) {
   DeviceEventEmitter.emit('photoIsChanged');
 
   const response = await axios.post(
-    '/photo',
-    // {
-    // user_idx: userIdx,
-    // date: date,
-    // memo: memo,
-    // type: type,
-    // image: '',
+    `${axiosConfigPhoto.baseURL}/photo`,
     formdata,
-    // },
-    // axiosConfig,
-    axiosConfigPhoto,
+    {
+      headers: axiosConfigPhoto.headers,
+      transformRequest: formData => formData,
+    },
   );
 
-  console.log('response', response);
   return response;
 }
 
@@ -324,3 +311,27 @@ export const api_registPhoto = (
 // }
 */
 }
+
+// const formData = new FormData();
+// formData.append('user_idx', '56');
+// formData.append('date', '2022-05-05');
+// formData.append('memo', '메모');
+// formData.append('type', 'file');
+// formData.append('image', {
+//   name: 'banner_sample.png',
+//   type: 'image/png',
+//   uri: 'file:///Users/seongyong/projects/AwesomeTSProject/src/banner_sample.png',
+// });
+
+// const res = await Axios.post(
+//   'http://bdg407.synology.me:12162/photo',
+//   formData,
+//   {
+//     headers: {
+//       'x-access-token':
+//         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoicGhvdG9seSJ9.zcAbn0TXYrHMu4DSTrd7MIuuulrcCBN22_N1jGidLbY',
+//       Accept: 'application/json',
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   },
+// );
