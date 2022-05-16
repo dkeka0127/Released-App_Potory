@@ -54,7 +54,7 @@ const potory_purple = require('../../../assets/images/potory/slide_potory_purple
 //
 
 function Content() {
-  const [userIdx, setUseIdx] = useState(null);
+  const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [newUserName, setNewUserName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -89,13 +89,14 @@ function Content() {
   // useEffect
   useFocusEffect(
     React.useCallback(() => {
-      connectAPI_getUserInfo();
-      console.log('********* UserInfo API will be ReLoading *********');
-    }, []),
+      if (userIdx) connectAPI_getUserInfo();
+    }, [userIdx]),
   );
 
   useEffect(() => {
-    if (userInfoData) initUserInfo();
+    if (userInfoData) {
+      initUserInfo();
+    }
   }, [userInfoData]);
 
   // api
@@ -103,7 +104,7 @@ function Content() {
     api_checkDeviceExist(userIdx)
       .then(res => {
         setUserInfoData(res.data.data);
-        console.log('connectAPI_getUserInfo Success == ');
+        console.log('connectAPI_getUserInfo Success == ', res.data.data);
       })
       .catch(err => {
         console.log('connectAPI_getUserInfo Err == ', err);
@@ -239,7 +240,9 @@ function Content() {
         {/*----------- user Name -----------*/}
         <View style={styles.userNameContainer}>
           <Text style={styles.userNameText}>
-            {userName === '' ? `user_410${deviceID}` : userName}
+            {userName === ''
+              ? `user_410${deviceID}`.substring(0, 10)
+              : userName}
           </Text>
 
           <TouchableOpacity

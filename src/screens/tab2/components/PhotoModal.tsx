@@ -19,6 +19,7 @@ import {api_deletePhoto} from '../../../core/api/Module';
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
+import Toast from 'components/Toast/Toast';
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
@@ -84,11 +85,15 @@ function PhotoModal({
   const connectAPI_Delete = () => {
     api_deletePhoto(ImgNum, userIdx)
       .then(res => {
+        Toast.show('사진이 삭제되었습니다.');
         setShownModal(false);
         imageDeletedFromModal();
         console.log('delete photo api Success == ');
       })
       .catch(err => {
+        Toast.show(
+          '사진 삭제 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
+        );
         console.log('delete photo api Err == ', err);
       });
   };

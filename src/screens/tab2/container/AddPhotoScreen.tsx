@@ -143,6 +143,7 @@ function AddPhotoScreen() {
     api_registPhoto(formdata)
       .then(res => {
         Toast.show('저장이 완료되었습니다.');
+        navigation.navigate('Tab2');
         console.log('regist photo Success == ', res);
       })
       .catch(err => {
