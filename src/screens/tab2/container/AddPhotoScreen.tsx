@@ -130,9 +130,9 @@ function AddPhotoScreen() {
       formdata.append('memo', memo);
       formdata.append('type', 'file');
       formdata.append('image', {
-        name: imageUri.fileName,
-        type: imageUri.type,
         uri: imageUri.uri,
+        type: imageUri.type,
+        name: imageUri.fileName,
       });
 
       connectAPI_regist(formdata);

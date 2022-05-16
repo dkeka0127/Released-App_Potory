@@ -12,7 +12,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
-  Keyboard,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
@@ -23,17 +22,19 @@ import Loading from 'components/Loading';
 // api
 import {
   api_checkDeviceExist,
-  api_editDevice,
   api_editDevice_name,
   api_editDevice_profile,
 } from 'core/api/Module';
+
+// variable
+const deviceHeight = Dimensions.get('window').height;
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 // icons
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 // images
 const baseProfile = '../../../assets/images/potory/profile_potory.png';
@@ -47,9 +48,6 @@ const potory_blue = require('../../../assets/images/potory/slide_potory_blue.png
 const potory_green = require('../../../assets/images/potory/slide_potory_green.png');
 const potory_orange = require('../../../assets/images/potory/slide_potory_orange.png');
 const potory_purple = require('../../../assets/images/potory/slide_potory_purple.png');
-
-// variable
-const deviceHeight = Dimensions.get('window').height;
 
 //
 //
@@ -129,25 +127,16 @@ function Content() {
     return;
   };
 
-  const formdata = new FormData();
-
   const connectAPI_editUserInfo_UserImg = async (imageResponse: Asset) => {
+    const formdata = new FormData();
+
     await formdata.append('profile_image', {
       uri: imageResponse.uri,
       type: imageResponse.type,
       name: imageResponse.fileName,
     });
 
-    // await api_editDevice(userNum, undefined, formdata)
-    //   .then(res => {
-    //     setUserInfoData(res.data.data);
-    //     console.log('connectAPI_editUserInfo_UserImg Success == ');
-    //   })
-    //   .catch(err => {
-    //     console.log('connectAPI_editUserInfo_UserImg Err == ', err);
-    //   });
-
-    await api_editDevice_profile(userIdx, JSON.stringify(formdata))
+    await api_editDevice_profile(userIdx, formdata)
       .then(res => {
         setUserInfoData(res.data.data);
         console.log('connectAPI_editUserInfo_UserImg Success == ');
@@ -161,6 +150,8 @@ function Content() {
 
   // function
   const initUserInfo = () => {
+    if (userInfoData === null) return;
+
     setUserName(userInfoData.nick_name);
     setDeviceID(userInfoData.device_id);
     setPhotoNum(userInfoData.photo_count);
@@ -199,13 +190,16 @@ function Content() {
         includeBase64: false,
       },
       response => {
-        connectAPI_editUserInfo_UserImg(response.assets[0]);
-        // setResponse(response.assets[0]);
+        if (response.didCancel) {
+          console.log('user cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('image picker error', response.errorMessage);
+        } else {
+          connectAPI_editUserInfo_UserImg(response.assets[0]);
+        }
       },
     );
   };
-
-  console.log(newUserName);
 
   const LevelAndPhotoComponent = ({title, value}: any) => {
     return (
@@ -226,8 +220,6 @@ function Content() {
       </View>
     );
   };
-
-  // if (userInfoData === null) return <Loading />;
 
   return (
     <View style={styles.container}>
