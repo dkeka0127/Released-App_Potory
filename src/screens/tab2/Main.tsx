@@ -7,7 +7,6 @@ import {
   Dimensions,
   TouchableOpacity,
   LayoutChangeEvent,
-  DeviceEventEmitter,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useFocusEffect} from '@react-navigation/native';
@@ -240,8 +239,6 @@ function Main() {
       </>
     );
   };
-
-  if (photoListData === []) return <Loading />;
 
   return (
     <View style={styles.container}>

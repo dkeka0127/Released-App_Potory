@@ -18,6 +18,7 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
 import Loading from 'components/Loading';
+import Toast from 'components/Toast/Toast';
 
 // api
 import {
@@ -57,9 +58,8 @@ function Content() {
   const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [newUserName, setNewUserName] = useState('');
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const [response, setResponse] = useState<any>(null); // 사진 uri
 
   // user info
   const [userInfoData, setUserInfoData] = useState(null);
@@ -114,14 +114,17 @@ function Content() {
   };
 
   const connectAPI_editUserInfo_UserName = () => {
+    setLoading(true);
     api_editDevice_name(userIdx, newUserName)
       .then(res => {
+        setLoading(false);
         setUserInfoData(res.data.data);
         setNewUserName('');
         setModalVisible(false);
         console.log('connectAPI_editUserInfo_UserName Success == ');
       })
       .catch(err => {
+        setLoading(false);
         console.log('connectAPI_editUserInfo_UserName Err == ', err);
       });
 
@@ -129,6 +132,8 @@ function Content() {
   };
 
   const connectAPI_editUserInfo_UserImg = async (imageResponse: Asset) => {
+    setLoading(true);
+
     const formdata = new FormData();
 
     await formdata.append('profile_image', {
@@ -139,10 +144,13 @@ function Content() {
 
     await api_editDevice_profile(userIdx, formdata)
       .then(res => {
+        setLoading(false);
         setUserInfoData(res.data.data);
         console.log('connectAPI_editUserInfo_UserImg Success == ');
       })
       .catch(err => {
+        setLoading(false);
+        Toast.show('프로필 변경 중 오류가 발생하였습니다.\n다시 시도해주세요.');
         console.log('connectAPI_editUserInfo_UserImg Err == ', err);
       });
 
@@ -221,6 +229,8 @@ function Content() {
       </View>
     );
   };
+
+  if (loading === true) return <Loading />;
 
   return (
     <View style={styles.container}>
@@ -303,14 +313,7 @@ function Content() {
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={modal.container}>
           <TouchableOpacity
-            style={{
-              zIndex: 1,
-              height: 20,
-              bottom: -33,
-              width: modalWidth,
-              paddingRight: 15,
-              alignItems: 'flex-end',
-            }}
+            style={modal.content}
             onPress={() => setModalVisible(false)}>
             <AntDesign name="close" size={22} color="white" />
           </TouchableOpacity>
@@ -567,12 +570,21 @@ const scale = StyleSheet.create({
 });
 
 const modalWidth = '80%';
+
 const modal = StyleSheet.create({
   container: {
     width: '100%',
     height: '70%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  content: {
+    zIndex: 1,
+    height: 20,
+    bottom: -33,
+    width: modalWidth,
+    paddingRight: 15,
+    alignItems: 'flex-end',
   },
   modalKeyboard: {
     width: modalWidth,

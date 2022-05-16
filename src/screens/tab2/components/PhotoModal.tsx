@@ -13,13 +13,15 @@ import Modal from 'react-native-modal';
 import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
+// custom components
+import Toast from 'components/Toast/Toast';
+
 // api
 import {api_deletePhoto} from '../../../core/api/Module';
 
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
-import Toast from 'components/Toast/Toast';
 
 // variable
 const deviceWidth = Dimensions.get('window').width;
@@ -46,7 +48,7 @@ function PhotoModal({
   imageDeletedFromModal,
 }: Props) {
   const navigation = useNavigation();
-  const [userIdx, setUseIdx] = useState(null);
+  const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   const date = modalImageInfo?.date;

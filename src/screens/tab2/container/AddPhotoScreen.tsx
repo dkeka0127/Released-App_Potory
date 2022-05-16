@@ -20,6 +20,7 @@ import {CameraScreen} from 'react-native-camera-kit';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
+import Loading from 'components/Loading';
 import Toast from '../../../components/Toast/Toast';
 import QRCodeScanner from './QRCodeScreen';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
@@ -53,6 +54,7 @@ function AddPhotoScreen() {
   const navigation = useNavigation();
   const [userIdx, setUseIdx] = useState(null);
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
+  const [loading, setLoading] = useState(false);
 
   const [memo, setMemo] = useState('');
   const [date, setDate] = useState(
@@ -81,22 +83,6 @@ function AddPhotoScreen() {
 
   // function
   const receiveAsyncDateFromHeader = (value: string) => setDate(value);
-
-  // const openGallery = async () => {
-  //   launchImageLibrary(galleryOption, response => {
-  //     setShownModal(false);
-
-  //     if (response.didCancel) {
-  //       console.log('user cancelled image picker');
-  //     } else if (response.errorCode) {
-  //       console.log('image picker error', response.errorMessage);
-  //     } else {
-  //       setImageUri(response.assets[0]);
-  //     }
-  //   });
-  // };
-
-  // ************************************* Test Start *************************************
 
   const openGallery = async () => {
     launchImageLibrary(galleryOption, response => {
@@ -140,13 +126,17 @@ function AddPhotoScreen() {
   };
 
   const connectAPI_regist = async (formdata: FormData) => {
+    setLoading(true);
+
     api_registPhoto(formdata)
       .then(res => {
+        setLoading(false);
         Toast.show('저장이 완료되었습니다.');
         navigation.navigate('Tab2');
         console.log('regist photo Success == ', res);
       })
       .catch(err => {
+        setLoading(false);
         Toast.show(
           '사진 저장 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
         );
@@ -157,6 +147,8 @@ function AddPhotoScreen() {
   //
   //
   //
+
+  if (loading === true) return <Loading />;
 
   return (
     <KeyboardAvoidingView

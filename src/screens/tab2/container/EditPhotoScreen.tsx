@@ -23,6 +23,7 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 // api
 import {api_editPhoto} from 'core/api/Module';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
+import Loading from 'components/Loading';
 
 // variable
 // import {userNum} from '../../../core/UserInfo';
@@ -32,8 +33,9 @@ const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function EditPhotoScreen({route}: any) {
   const navigation = useNavigation();
-  const [userIdx, setUseIdx] = useState(null);
+  const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
+  const [loading, setLoading] = useState(false);
 
   const ImgURL = route.params.modalImageInfo?.photo_url;
   const photoNum = route.params.modalImageInfo?.photo_idx;
@@ -69,13 +71,17 @@ function EditPhotoScreen({route}: any) {
   };
 
   const connectAPI_edit = () => {
+    setLoading(true);
+
     api_editPhoto(photoNum, date, memo, userIdx)
       .then(res => {
+        setLoading(false);
         Toast.show('편집이 완료되었습니다.');
         navigation.navigate('Tab2');
         console.log('edit photo Success == ');
       })
       .catch(err => {
+        setLoading(false);
         Toast.show(
           '사진 편집 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
         );
@@ -86,6 +92,8 @@ function EditPhotoScreen({route}: any) {
   const getChangedDate = (value: string) => {
     setDate(value);
   };
+
+  if (loading === true) return <Loading />;
 
   return (
     <>

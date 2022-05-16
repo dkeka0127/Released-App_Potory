@@ -8,7 +8,7 @@ const Loading = () => {
   return (
     <View style={styles.container}>
       <FastImage
-        resizeMode="contain"
+        resizeMode="cover"
         source={loadingImg}
         style={styles.content}
       />
@@ -21,7 +21,6 @@ export default Loading;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
