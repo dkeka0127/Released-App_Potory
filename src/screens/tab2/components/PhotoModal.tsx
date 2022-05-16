@@ -18,9 +18,9 @@ import {api_deletePhoto} from '../../../core/api/Module';
 
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
-import {userNum} from '../../../core/UserInfo';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const ModalWidth = deviceWidth * 0.85;
@@ -45,6 +45,8 @@ function PhotoModal({
   imageDeletedFromModal,
 }: Props) {
   const navigation = useNavigation();
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   const date = modalImageInfo?.date;
   const memo = modalImageInfo?.memo;
@@ -80,7 +82,7 @@ function PhotoModal({
   };
 
   const connectAPI_Delete = () => {
-    api_deletePhoto(ImgNum, userNum)
+    api_deletePhoto(ImgNum, userIdx)
       .then(res => {
         setShownModal(false);
         imageDeletedFromModal();

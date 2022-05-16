@@ -1,5 +1,5 @@
 // React & Package
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -24,9 +24,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 // api
 import {api_deleteDevice} from 'core/api/Module';
+import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
-import {userNum} from '../../../core/UserInfo';
 const IconSize = 17;
 const IconColor = '#111';
 
@@ -36,6 +36,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 // List Components
 const SettingContentList = ({iconName, title}) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={styles.listContent}
@@ -71,10 +72,9 @@ const SettingContectTitle = ({title}) => {
 //
 
 function SettingContent() {
-  const navigation = useNavigation();
-
-  // Kakao Login
-  const [result, setResult] = useState<string>('');
+  // const navigation = useNavigation();
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   // function
   const AlertText = (title: string) => {
@@ -99,7 +99,7 @@ function SettingContent() {
   };
 
   const logOut = () => {
-    signOutWithKakao();
+    // signOutWithKakao();
     saveAsyncSignOut('logout');
 
     Alert.alert('', '로그아웃 되었습니다.', [
@@ -112,7 +112,7 @@ function SettingContent() {
   };
 
   const signOut = () => {
-    unlinkKakao();
+    // unlinkKakao();
     connectAPI_deleteUser();
     saveAsyncSignOut('signOut');
 
@@ -130,7 +130,7 @@ function SettingContent() {
       'userInfo',
       JSON.stringify({
         autoLogin: false,
-        userNumber: value === 'logout' ? String(userNum) : null,
+        userNumber: value === 'logout' ? String(userIdx) : null,
       }),
       () => console.log('------ 유저정보 삭제 ------'),
     );
@@ -148,7 +148,9 @@ function SettingContent() {
   };
 
   const connectAPI_deleteUser = () => {
-    api_deleteDevice(userNum)
+    if (userIdx === null || userIdx === undefined) return;
+
+    api_deleteDevice(userIdx)
       .then(res => console.log('api_deleteDevice Success == ', res))
       .catch(err => console.log('api_deleteDevice Err == ', err));
   };

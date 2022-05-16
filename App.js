@@ -51,12 +51,15 @@ function App() {
   const getUserInfoAsync = () => {
     AsyncStorage.getItem('userInfo', (err, result) => {
       const UserInfo = JSON.parse(result);
-      if (UserInfo.autoLogin) {
-        console.log(' 자동 로그인 !');
-        setAutoLogin(UserInfo.autoLogin);
-      } else {
-        console.log(' 로그인 창으로 이동 ~~~~~~~~~~ !');
+      if (UserInfo === null) {
+        console.log('UserInfo == null 로그인 창으로 이동 ~~~~~~~~~~ !');
         setAutoLogin(false);
+      } else if (!UserInfo.autoLogin) {
+        console.log(' 로그인 창으로 이동 ~~~~~~~~~~ !', UserInfo);
+        setAutoLogin(false);
+      } else if (UserInfo.autoLogin) {
+        console.log(' 자동 로그인 !', UserInfo);
+        setAutoLogin(true);
       }
     });
   };

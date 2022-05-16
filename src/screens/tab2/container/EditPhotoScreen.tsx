@@ -22,15 +22,19 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 // api
 import {api_editPhoto} from 'core/api/Module';
+import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
-import {userNum} from '../../../core/UserInfo';
+// import {userNum} from '../../../core/UserInfo';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function EditPhotoScreen({route}: any) {
   const navigation = useNavigation();
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
+
   const ImgURL = route.params.modalImageInfo?.photo_url;
   const photoNum = route.params.modalImageInfo?.photo_idx;
   const [memo, setMemo] = useState(route.params.modalImageInfo?.memo);
@@ -65,7 +69,7 @@ function EditPhotoScreen({route}: any) {
   };
 
   const connectAPI_edit = () => {
-    api_editPhoto(photoNum, date, memo, userNum)
+    api_editPhoto(photoNum, date, memo, userIdx)
       .then(res => {
         Toast.show('편집이 완료되었습니다.');
         navigation.navigate('Tab2');

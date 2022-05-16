@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		310B1E5743CCB68961491166 /* libPods-lifeRecordProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E41770260BBFC0B8EBFB08D4 /* libPods-lifeRecordProject.a */; };
-		4589D40C8316254C159B0127 /* libPods-lifeRecordProject-lifeRecordProjectTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA867D80A2EE3864D8483B6 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		B5DC667F5C0C949F26CB1AEA /* libPods-lifeRecordProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D7AA785E35D3988AC13CB9 /* libPods-lifeRecordProject.a */; };
+		C0BE86473C44B2FC11A559B5 /* libPods-lifeRecordProject-lifeRecordProjectTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75492F78C130A3C271237C25 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */; };
 		FFCA814327DADD24008B6E5F /* SwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCA814227DADD24008B6E5F /* SwiftBridge.swift */; };
 		FFFF1B4B27992DBC00E5DAE7 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFF1B4A27992DBC00E5DAE7 /* File.swift */; };
 /* End PBXBuildFile section */
@@ -32,19 +32,19 @@
 		00E356EE1AD99517003FC87E /* lifeRecordProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = lifeRecordProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* lifeRecordProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = lifeRecordProjectTests.m; sourceTree = "<group>"; };
-		113214FB3FA40EF0CC0C34C3 /* Pods-lifeRecordProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject.debug.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject.debug.xcconfig"; sourceTree = "<group>"; };
+		08D7AA785E35D3988AC13CB9 /* libPods-lifeRecordProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lifeRecordProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1368A4CC3354F5AA40EE6A98 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* lifeRecordProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lifeRecordProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = lifeRecordProject/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = lifeRecordProject/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = lifeRecordProject/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = lifeRecordProject/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = lifeRecordProject/main.m; sourceTree = "<group>"; };
-		3B1492CCE08146866471AF42 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig"; sourceTree = "<group>"; };
-		6C6F2C35FF54A27F149DD5B3 /* Pods-lifeRecordProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject.release.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject.release.xcconfig"; sourceTree = "<group>"; };
-		6CA867D80A2EE3864D8483B6 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lifeRecordProject-lifeRecordProjectTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		252740AFB12A1468417ADD26 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig"; sourceTree = "<group>"; };
+		649CBC6446DE97C4D4A0456E /* Pods-lifeRecordProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject.release.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject.release.xcconfig"; sourceTree = "<group>"; };
+		75492F78C130A3C271237C25 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lifeRecordProject-lifeRecordProjectTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = lifeRecordProject/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		C991475E4C7E1F003FE3F8C9 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E41770260BBFC0B8EBFB08D4 /* libPods-lifeRecordProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lifeRecordProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1CDDB72BF927B2E84D94850 /* Pods-lifeRecordProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject.debug.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FF0588D3282C956200EB3E3C /* lifeRecordProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = lifeRecordProject.entitlements; path = lifeRecordProject/lifeRecordProject.entitlements; sourceTree = "<group>"; };
 		FFCA814227DADD24008B6E5F /* SwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBridge.swift; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4589D40C8316254C159B0127 /* libPods-lifeRecordProject-lifeRecordProjectTests.a in Frameworks */,
+				C0BE86473C44B2FC11A559B5 /* libPods-lifeRecordProject-lifeRecordProjectTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				310B1E5743CCB68961491166 /* libPods-lifeRecordProject.a in Frameworks */,
+				B5DC667F5C0C949F26CB1AEA /* libPods-lifeRecordProject.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,10 +92,10 @@
 		11482754DE3B801734873D0E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				113214FB3FA40EF0CC0C34C3 /* Pods-lifeRecordProject.debug.xcconfig */,
-				6C6F2C35FF54A27F149DD5B3 /* Pods-lifeRecordProject.release.xcconfig */,
-				C991475E4C7E1F003FE3F8C9 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */,
-				3B1492CCE08146866471AF42 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */,
+				C1CDDB72BF927B2E84D94850 /* Pods-lifeRecordProject.debug.xcconfig */,
+				649CBC6446DE97C4D4A0456E /* Pods-lifeRecordProject.release.xcconfig */,
+				252740AFB12A1468417ADD26 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */,
+				1368A4CC3354F5AA40EE6A98 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -119,8 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E41770260BBFC0B8EBFB08D4 /* libPods-lifeRecordProject.a */,
-				6CA867D80A2EE3864D8483B6 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */,
+				08D7AA785E35D3988AC13CB9 /* libPods-lifeRecordProject.a */,
+				75492F78C130A3C271237C25 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -165,12 +165,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "lifeRecordProjectTests" */;
 			buildPhases = (
-				E272A26CF8492756A0F5CDF4 /* [CP] Check Pods Manifest.lock */,
+				C6721AA05443840BD9EF408A /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				1D5085B731AC59827FC93D7E /* [CP] Copy Pods Resources */,
-				132ED509ADF12F25F69D08D8 /* [CP] Embed Pods Frameworks */,
+				F4B70CA9EFC7365E1732157D /* [CP] Embed Pods Frameworks */,
+				12FE4EC2492F9EBFA39659E0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -186,14 +186,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "lifeRecordProject" */;
 			buildPhases = (
-				C0528214111864EDE8233773 /* [CP] Check Pods Manifest.lock */,
+				5B293E300A01E652A3E72B19 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				1C2E254D17B8A70D0C057705 /* [CP] Copy Pods Resources */,
-				92023A38A8FBE225EA82ED56 /* [CP] Embed Pods Frameworks */,
+				771826F6505D042598D16FB4 /* [CP] Embed Pods Frameworks */,
+				E118F7A8120853B8B5604865 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -274,41 +274,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		132ED509ADF12F25F69D08D8 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1C2E254D17B8A70D0C057705 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1D5085B731AC59827FC93D7E /* [CP] Copy Pods Resources */ = {
+		12FE4EC2492F9EBFA39659E0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,24 +291,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		92023A38A8FBE225EA82ED56 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C0528214111864EDE8233773 /* [CP] Check Pods Manifest.lock */ = {
+		5B293E300A01E652A3E72B19 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -364,7 +313,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E272A26CF8492756A0F5CDF4 /* [CP] Check Pods Manifest.lock */ = {
+		771826F6505D042598D16FB4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6721AA05443840BD9EF408A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -384,6 +350,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E118F7A8120853B8B5604865 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F4B70CA9EFC7365E1732157D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -440,7 +440,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C991475E4C7E1F003FE3F8C9 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */;
+			baseConfigurationReference = 252740AFB12A1468417ADD26 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -468,7 +468,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B1492CCE08146866471AF42 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */;
+			baseConfigurationReference = 1368A4CC3354F5AA40EE6A98 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -493,19 +493,90 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 113214FB3FA40EF0CC0C34C3 /* Pods-lifeRecordProject.debug.xcconfig */;
+			baseConfigurationReference = C1CDDB72BF927B2E84D94850 /* Pods-lifeRecordProject.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = lifeRecordProject/lifeRecordProject.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2F557A6TGJ;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/FBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKLink\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKNavi\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKStory\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKTalk\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKTemplate\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKUser\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNAppleAuthentication\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNFastImage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
+					"\"${PODS_ROOT}/Headers/Public/RNReanimated\"",
+					"\"${PODS_ROOT}/Headers/Public/RNSVG\"",
+					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactNativeCameraKit\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"${PODS_ROOT}/Headers/Public/kakao-login\"",
+					"\"${PODS_ROOT}/Headers/Public/libevent\"",
+					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-react-native\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-date-picker\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-geolocation-service\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-image-picker\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-netinfo\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-nmap\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-splash-screen\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost-for-react-native\"",
+					"\"$(PODS_ROOT)/glog\"",
+					"\"$(PODS_ROOT)/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_TARGET_SRCROOT)/include/\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-splash-screen\"",
+				);
 				INFOPLIST_FILE = lifeRecordProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -522,18 +593,89 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C6F2C35FF54A27F149DD5B3 /* Pods-lifeRecordProject.release.xcconfig */;
+			baseConfigurationReference = 649CBC6446DE97C4D4A0456E /* Pods-lifeRecordProject.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = lifeRecordProject/lifeRecordProject.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2F557A6TGJ;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/FBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKAuth\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKLink\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKNavi\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKStory\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKTalk\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKTemplate\"",
+					"\"${PODS_ROOT}/Headers/Public/KakaoSDKUser\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/RNAppleAuthentication\"",
+					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNFastImage\"",
+					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
+					"\"${PODS_ROOT}/Headers/Public/RNReanimated\"",
+					"\"${PODS_ROOT}/Headers/Public/RNSVG\"",
+					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
+					"\"${PODS_ROOT}/Headers/Public/RNVectorIcons\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactNativeCameraKit\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"${PODS_ROOT}/Headers/Public/kakao-login\"",
+					"\"${PODS_ROOT}/Headers/Public/libevent\"",
+					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
+					"\"${PODS_ROOT}/Headers/Public/lottie-react-native\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-date-picker\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-geolocation-service\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-image-picker\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-netinfo\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-nmap\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-splash-screen\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/boost-for-react-native\"",
+					"\"$(PODS_ROOT)/glog\"",
+					"\"$(PODS_ROOT)/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_TARGET_SRCROOT)/include/\"",
+					"\"${PODS_ROOT}/Headers/Public/react-native-splash-screen\"",
+				);
 				INFOPLIST_FILE = lifeRecordProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

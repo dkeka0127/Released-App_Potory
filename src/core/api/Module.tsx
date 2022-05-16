@@ -12,6 +12,17 @@ export const axiosConfig = {
   // timeout: 3000,
 };
 
+export const axiosConfigPhoto = {
+  baseURL: 'http://bdg407.synology.me:12162',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'multipart/form-data',
+    'x-access-token':
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoicGhvdG9seSJ9.zcAbn0TXYrHMu4DSTrd7MIuuulrcCBN22_N1jGidLbY',
+  },
+  // timeout: 3000,
+};
+
 export const axiosConfigNoneToken = {
   baseURL: 'http://bdg407.synology.me:12162',
   headers: {
@@ -51,7 +62,35 @@ export async function api_editDevice(
       nick_name: userName !== undefined && userName,
       profile_image: profileImg !== undefined && profileImg,
     },
+    // axiosConfig,
+    axiosConfigPhoto,
+  );
+
+  return response;
+}
+
+export async function api_editDevice_name(userIdx: number, userName?: string) {
+  const response = await axios.post(
+    `/user/${userIdx}`,
+    {
+      nick_name: userName !== undefined && userName,
+    },
     axiosConfig,
+    // axiosConfigPhoto,
+  );
+
+  return response;
+}
+
+export async function api_editDevice_profile(
+  userIdx: number,
+  profileImg?: any,
+) {
+  const response = await axios.post(
+    `/user/${userIdx}`,
+    profileImg,
+    // axiosConfig,
+    axiosConfigPhoto,
   );
 
   return response;
@@ -76,26 +115,30 @@ export async function api_getPhotoList(userIdx: number) {
 }
 
 export async function api_registPhoto(
-  userIdx: number,
-  date: string,
-  memo: string,
-  type: string,
-  image: string,
+  // userIdx: number,
+  // date: string,
+  // memo: string,
+  // type: string,
+  // image: any,
+  formdata: any,
 ) {
   DeviceEventEmitter.emit('photoIsChanged');
 
   const response = await axios.post(
     '/photo',
-    {
-      user_idx: userIdx,
-      date: date,
-      memo: memo,
-      type: type,
-      image: image,
-    },
-    axiosConfig,
+    // {
+    // user_idx: userIdx,
+    // date: date,
+    // memo: memo,
+    // type: type,
+    // image: '',
+    formdata,
+    // },
+    // axiosConfig,
+    axiosConfigPhoto,
   );
 
+  console.log('response', response);
   return response;
 }
 
@@ -108,7 +151,8 @@ export async function api_registPhotoByQR(userIdx: number, photoURL: string) {
       photo_url: photoURL,
       user_idx: userIdx,
     },
-    axiosConfig,
+    // axiosConfig,
+    axiosConfigPhoto,
   );
 
   return response;

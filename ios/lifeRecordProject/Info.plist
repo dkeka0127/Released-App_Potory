@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDisplayName</key>
+	<string>lifeRecordProject</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>포토리</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -37,6 +37,7 @@
 	<string>cff9a8e0a7303367f3d6e7e7a417d6c4</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>kakaocff9a8e0a7303367f3d6e7e7a417d6c4</string>
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
 	</array>

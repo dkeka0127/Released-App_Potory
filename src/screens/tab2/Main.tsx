@@ -24,7 +24,7 @@ import AddContentButton from './components/AddContentButton';
 import {api_getPhotoList} from 'core/api/Module';
 
 // variable
-import {userNum} from '../../core/UserInfo';
+import {getAsyncStorage_userIdx} from '../../core/UserInfo';
 const HEADER_HEIGHT = 80;
 const deviceWidth = Dimensions.get('window').width;
 import {polaroid_gray, polaroid_black} from '../../core/Polaroid';
@@ -40,6 +40,8 @@ function Main() {
   const polaroidSortRandomly = photoListData.map(() => {
     return Math.floor(Math.random() * 12); // 폴라로이드 랜덤 배정
   });
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   // scroll header variable
   const flatListRef = useRef<any>(true);
@@ -77,9 +79,9 @@ function Main() {
   // useEffect
   useFocusEffect(
     React.useCallback(() => {
-      connectAPI();
+      if (userIdx) connectAPI();
       console.log('*********** connectAPI ReLoad useEffect ***********');
-    }, []),
+    }, [userIdx]),
   );
 
   useEffect(() => {
@@ -89,7 +91,8 @@ function Main() {
 
   // api
   const connectAPI = () => {
-    api_getPhotoList(userNum)
+    console.log('userIdx', userIdx);
+    api_getPhotoList(userIdx)
       .then(res => {
         setPhotoListData(res.data.data);
         console.log('get photo list Success == ', res.data.data);

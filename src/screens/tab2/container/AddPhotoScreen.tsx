@@ -28,15 +28,33 @@ import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {api_registPhoto} from 'core/api/Module';
+import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
-import {userNum} from '../../../core/UserInfo';
+// import {userNum} from '../../../core/UserInfo';
+const galleryOption = {
+  title: 'Select Image',
+  type: 'library',
+  options: {
+    mediaType: 'photo',
+    selectionLimit: 1,
+  },
+  // quality: 1,
+  // noData: true,
+  // maxWidth: 200,
+  // maxHeight: 200,
+  // selectionLimit: 1,
+  // includeBase64: false,
+};
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function AddPhotoScreen() {
+  const formdata = new FormData();
   const navigation = useNavigation();
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   const [memo, setMemo] = useState('');
   const [date, setDate] = useState(
@@ -66,13 +84,25 @@ function AddPhotoScreen() {
   // function
   const receiveAsyncDateFromHeader = (value: string) => setDate(value);
 
-  const openGallery = () => {
-    const option = {
-      // quality: 1, noData: true,
-      mediaType: 'photo' as const,
-    };
+  // const openGallery = async () => {
+  //   launchImageLibrary(galleryOption, response => {
+  //     setShownModal(false);
 
-    launchImageLibrary(option, response => {
+  //     if (response.didCancel) {
+  //       console.log('user cancelled image picker');
+  //     } else if (response.errorCode) {
+  //       console.log('image picker error', response.errorMessage);
+  //     } else {
+  //       setImageUri(response.assets[0]);
+  //     }
+  //   });
+  // };
+
+  // ************************************* Test Start *************************************
+
+  const openGallery = async () => {
+    // const formdata = new FormData();
+    launchImageLibrary(galleryOption, response => {
       setShownModal(false);
 
       if (response.didCancel) {
@@ -81,9 +111,28 @@ function AddPhotoScreen() {
         console.log('image picker error', response.errorMessage);
       } else {
         setImageUri(response.assets[0]);
+        console.log('response.assets[0]', response.assets[0]);
+        // formdata.append('image', {
+        //   uri: response.assets[0].uri,
+        //   type: response.assets[0].type,
+        //   name: response.assets[0].fileName,
+        // });
       }
     });
+
+    // {
+    //   fileName: '8AEFCF90-E1DF-4432-BE23-044A5B729635.jpg',
+    //   fileSize: 86952,
+    //   height: 827,
+    //   type: 'image/jpg',
+    //   uri: 'file:///Users/sol/Library/Developer/CoreSimulator/Devices/C3BEF4A8-BB56-464F-97EB-67897C85C9BE/data/Containers/Data/Application/FB6E1018-BFD2-451C-AA60-DCAAC7B1EF0C/tmp/8AEFCF90-E1DF-4432-BE23-044A5B729635.jpg',
+    //   width: 827,
+    // };
+
+    // let responseJson = await api_registPhoto(1, '', '', 'file', formdata);
+    // console.log('responseJson', responseJson);
   };
+  // ************************************** Test End **************************************
 
   const openQRScreen = () => {
     setShownModal(false);
@@ -94,23 +143,27 @@ function AddPhotoScreen() {
   // console.log('Memo ----', memo);
   // console.log('Img URI ----', imageUri.uri);
 
-  const sendDataToAPI = () => {
+  const sendDataToAPI = async () => {
     if (imageUri === null) {
-      Toast.show(`사진을 선택해주세요 '-'`);
+      Toast.show('사진을 선택해주세요.');
     } else {
-      console.log('imageUri.uri', imageUri.uri);
-      // connectAPI_regist();
+      await formdata.append('user_idx', userIdx);
+      await formdata.append('date', date);
+      await formdata.append('memo', memo);
+      await formdata.append('type', 'file');
+      await formdata.append('image', {
+        uri: imageUri.uri,
+        type: imageUri.type,
+        name: imageUri.fileName,
+      });
+      await connectAPI_regist();
     }
   };
 
   const connectAPI_regist = () => {
-    api_registPhoto(
-      userNum,
-      date,
-      memo,
-      'file',
-      '/Users/sol/Desktop/codepush.png',
-    )
+    console.log('formdata', formdata);
+    console.log('formdata', JSON.stringify(formdata));
+    api_registPhoto(formdata)
       .then(res => {
         Toast.show('저장이 완료되었습니다.');
         console.log('regist photo Success == ', res);

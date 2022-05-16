@@ -15,19 +15,25 @@ import {
   Keyboard,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
 import Loading from 'components/Loading';
 
 // api
-import {api_checkDeviceExist, api_editDevice} from 'core/api/Module';
+import {
+  api_checkDeviceExist,
+  api_editDevice,
+  api_editDevice_name,
+  api_editDevice_profile,
+} from 'core/api/Module';
 
 // icons
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 // images
 const baseProfile = '../../../assets/images/potory/profile_potory.png';
@@ -43,9 +49,15 @@ const potory_orange = require('../../../assets/images/potory/slide_potory_orange
 const potory_purple = require('../../../assets/images/potory/slide_potory_purple.png');
 
 // variable
-import {userNum} from '../../../core/UserInfo';
 const deviceHeight = Dimensions.get('window').height;
+
+//
+//
+//
+
 function Content() {
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [newUserName, setNewUserName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -90,7 +102,7 @@ function Content() {
 
   // api
   const connectAPI_getUserInfo = () => {
-    api_checkDeviceExist(userNum)
+    api_checkDeviceExist(userIdx)
       .then(res => {
         setUserInfoData(res.data.data);
         console.log('connectAPI_getUserInfo Success == ');
@@ -103,7 +115,7 @@ function Content() {
   };
 
   const connectAPI_editUserInfo_UserName = () => {
-    api_editDevice(userNum, newUserName, undefined)
+    api_editDevice_name(userIdx, newUserName)
       .then(res => {
         setUserInfoData(res.data.data);
         setNewUserName('');
@@ -117,8 +129,25 @@ function Content() {
     return;
   };
 
-  const connectAPI_editUserInfo_UserImg = () => {
-    api_editDevice(userNum, undefined, profileImg)
+  const formdata = new FormData();
+
+  const connectAPI_editUserInfo_UserImg = async (imageResponse: Asset) => {
+    await formdata.append('profile_image', {
+      uri: imageResponse.uri,
+      type: imageResponse.type,
+      name: imageResponse.fileName,
+    });
+
+    // await api_editDevice(userNum, undefined, formdata)
+    //   .then(res => {
+    //     setUserInfoData(res.data.data);
+    //     console.log('connectAPI_editUserInfo_UserImg Success == ');
+    //   })
+    //   .catch(err => {
+    //     console.log('connectAPI_editUserInfo_UserImg Err == ', err);
+    //   });
+
+    await api_editDevice_profile(userIdx, JSON.stringify(formdata))
       .then(res => {
         setUserInfoData(res.data.data);
         console.log('connectAPI_editUserInfo_UserImg Success == ');
@@ -169,9 +198,14 @@ function Content() {
         mediaType: 'photo',
         includeBase64: false,
       },
-      setResponse,
+      response => {
+        connectAPI_editUserInfo_UserImg(response.assets[0]);
+        // setResponse(response.assets[0]);
+      },
     );
   };
+
+  console.log(newUserName);
 
   const LevelAndPhotoComponent = ({title, value}: any) => {
     return (

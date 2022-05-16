@@ -12,6 +12,7 @@ import {
   View,
   Text,
   Image,
+  Platform,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
@@ -19,7 +20,13 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 
 // kakao
-import {getProfile} from '@react-native-seoul/kakao-login';
+import {
+  KakaoOAuthToken,
+  getProfile as getKakaoProfile,
+  login,
+  getProfile,
+  KakaoProfile,
+} from '@react-native-seoul/kakao-login';
 
 // apple
 import {
@@ -43,31 +50,75 @@ function SignInScreen({isLoginF}: Props) {
   // variable
 
   // -------------- ① Kakao --------------
-  const loginWithKakao = async () => {
-    const profile = await getProfile();
-    // await setDeviceId(profile.id);
-    console.log(profile.id);
+  const loginWithKakao = async (): Promise<void> => {
+    const token: KakaoOAuthToken = await login();
+    console.log('token ==  ', token);
+    loginWithKakao_();
+  };
+
+  const loginWithKakao_ = async () => {
+    // const profile = await getProfile();
+    const profile = await getKakaoProfile();
     await connectAPI_registDevice(profile.id);
   };
 
   // -------------- ② Apple --------------
   const LoginWithApple = async () => {
-    //
+    console.warn('Beginning Apple Authentication');
+
+    // start a login request
+    try {
+      const a = await appleAuth.UserStatus;
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+      console.log('a ======================', a); // { UNSUPPORTED: 0, UNKNOWN: 1, LIKELY_REAL: 2 }
+      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
+
+      await connectAPI_registDevice(appleAuthRequestResponse.user);
+
+      const {
+        user: newUser,
+        email,
+        nonce,
+        identityToken,
+        realUserStatus /* etc */,
+      } = appleAuthRequestResponse;
+      // user = newUser;
+      // fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+      //   updateCredentialStateForUser(`Error: ${error.code}`),
+      // );
+      if (identityToken) {
+        // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+        console.log(nonce, identityToken);
+      } else {
+        // no token - failed sign-in?
+      }
+      if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
+        console.log("I'm a real person!");
+      }
+      // console.warn(`Apple Authentication Completed, ${user}, ${email}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const connectAPI_registDevice = (deviceId: string) => {
+    console.log('api 호출은 하니 ??', deviceId);
     // 로딩 추가
     api_registDevice(deviceId)
-      .then(res => {
+      .then(async res => {
         // 로딩 삭제
-        const userIdx = res.data.data.user_idx;
-        isLoginF();
-        saveLoginAsync(userIdx);
-        console.log('api_checkDeviceExist Success == !! ', res.data.data);
+        const userIdx = await res.data.data.user_idx;
+        await saveLoginAsync(userIdx);
+        await isLoginF();
+        console.log('userIdx == ', userIdx);
+        console.log('api_registDevice Success == !! ', res.data.data);
       })
       .catch(err => {
         // 네트워크 에러 토스트 창
-        console.log('api_checkDeviceExist Err == !! ', err);
+        console.log('api_registDevice Err == !! ', err);
       });
   };
 
@@ -75,7 +126,7 @@ function SignInScreen({isLoginF}: Props) {
     AsyncStorage.setItem(
       'userInfo',
       JSON.stringify({autoLogin: true, userNumber: String(userIdx)}),
-      () => console.log('[로그인] 유저정보 저장'),
+      () => console.log('[로그인] 유저정보 저장', userIdx),
     );
   };
 
@@ -99,12 +150,14 @@ function SignInScreen({isLoginF}: Props) {
         </TouchableOpacity>
 
         {/*---------------- Apple ----------------*/}
-        <TouchableOpacity
-          style={styles.appleLoginArea}
-          onPress={LoginWithApple}>
-          <Ionicons name="logo-apple" size={20} color="#fff" />
-          <Text style={styles.appleLogin}>Sign in with Apple</Text>
-        </TouchableOpacity>
+        {Platform.OS === 'ios' && (
+          <TouchableOpacity
+            style={styles.appleLoginArea}
+            onPress={LoginWithApple}>
+            <Ionicons name="logo-apple" size={20} color="#fff" />
+            <Text style={styles.appleLogin}>Sign in with Apple</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.content} />
     </SafeAreaView>
@@ -174,76 +227,3 @@ const styles = StyleSheet.create({
     height: 16,
   },
 });
-
-// -------------- ① Kakao --------------
-// const signInWithKakao = async (): Promise<void> => {
-// const token: KakaoOAuthToken = await login();
-// console.log('token ==  ', token);
-// };
-
-// -------------- ② Apple --------------
-// let user: string | null = null;
-
-// async function fetchAndUpdateCredentialState(
-//   updateCredentialStateForUser: any,
-// ) {
-//   if (user === null) {
-//     updateCredentialStateForUser('N/A');
-//   } else {
-//     const credentialState = await appleAuth.getCredentialStateForUser(user);
-//     if (credentialState === appleAuth.State.AUTHORIZED) {
-//       updateCredentialStateForUser('AUTHORIZED');
-//     } else {
-//       updateCredentialStateForUser(credentialState);
-//     }
-//   }
-// }
-
-// // Login
-// async function onAppleButtonPress(updateCredentialStateForUser: any) {
-//   console.warn('Beginning Apple Authentication');
-
-//   // start a login request
-//   try {
-//     const appleAuthRequestResponse = await appleAuth.performRequest({
-//       requestedOperation: appleAuth.Operation.LOGIN,
-//       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-//     });
-
-//     console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-
-//     const {
-//       user: newUser,
-//       email,
-//       nonce,
-//       identityToken,
-//       realUserStatus /* etc */,
-//     } = appleAuthRequestResponse;
-
-//     user = newUser;
-
-//     fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-//       updateCredentialStateForUser(`Error: ${error.code}`),
-//     );
-
-//     if (identityToken) {
-//       // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-//       console.log(nonce, identityToken);
-//     } else {
-//       // no token - failed sign-in?
-//     }
-
-//     if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-//       console.log("I'm a real person!");
-//     }
-
-//     console.warn(`Apple Authentication Completed, ${user}, ${email}`);
-//   } catch (error) {
-//     if (error.code === appleAuth.Error.CANCELED) {
-//       console.warn('User canceled Apple Sign in.');
-//     } else {
-//       console.error(error);
-//     }
-//   }
-// }
-// Get device_Id
