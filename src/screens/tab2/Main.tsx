@@ -90,7 +90,6 @@ function Main() {
 
   // api
   const connectAPI = () => {
-    console.log('userIdx', userIdx);
     api_getPhotoList(userIdx)
       .then(res => {
         setPhotoListData(res.data.data);

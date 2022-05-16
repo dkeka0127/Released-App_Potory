@@ -101,6 +101,7 @@ function SignInScreen({isLoginF}: Props) {
       // console.warn(`Apple Authentication Completed, ${user}, ${email}`);
     } catch (error) {
       console.error(error);
+      // return;
     }
   };
 

@@ -44,7 +44,7 @@ function App() {
 
     setTimeout(() => {
       getUserInfoAsync();
-    }, 1800);
+    }, 2000);
   }, []);
 
   // function
@@ -71,7 +71,7 @@ function App() {
       {autoLogin === null ? (
         <LottieView
           autoPlay
-          speed={1.2}
+          speed={1}
           resizeMode="cover"
           source={lottiePath}
           style={styles.lottieContainer}
