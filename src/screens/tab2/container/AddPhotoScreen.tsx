@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
+  Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import FastImage from 'react-native-fast-image';
@@ -34,6 +35,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 // variable
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 const galleryOption = {
   title: 'Select Image',
   type: 'library',
@@ -178,97 +181,110 @@ function AddPhotoScreen() {
   //
   //
 
-  if (loading === true) return <Loading />;
-
   return qrScreenIsOpen ? (
     <QRCodeScanner QRLink={getQRLink} />
   ) : (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingView}>
-      <FastImage source={require(bgImg)} style={styles.bgImg}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <SafeAreaView style={styles.SafeAreaView}>
-            {/*================== header ==================*/}
-            <CustomDateHeader
-              date={''}
-              getChangedDate={receiveAsyncDateFromHeader}
-            />
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}>
+        <FastImage source={require(bgImg)} style={styles.bgImg}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.SafeAreaView}>
+              {/*================== header ==================*/}
+              <CustomDateHeader
+                date={''}
+                getChangedDate={receiveAsyncDateFromHeader}
+              />
 
-            {/*================ select modal ================*/}
-            <Modal
-              style={styles.modalContainer}
-              isVisible={shownModal}
-              hasBackdrop={true}
-              backdropColor="black"
-              backdropOpacity={0.8}
-              onBackdropPress={() => setShownModal(false)}>
-              <View style={styles.modalContent}>
-                <TouchableOpacity
-                  style={[styles.modalTextCon, styles.modalDivideLine]}
-                  onPress={openGallery}>
-                  <Text>갤러리에서 사진 선택</Text>
-                </TouchableOpacity>
+              {/*================ select modal ================*/}
+              <Modal
+                style={styles.modalContainer}
+                isVisible={shownModal}
+                hasBackdrop={true}
+                backdropColor="black"
+                backdropOpacity={0.8}
+                onBackdropPress={() => setShownModal(false)}>
+                <View style={styles.modalContent}>
+                  <TouchableOpacity
+                    style={[styles.modalTextCon, styles.modalDivideLine]}
+                    onPress={openGallery}>
+                    <Text>갤러리에서 사진 선택</Text>
+                  </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.modalTextCon}
-                  onPress={openQRScreen}>
-                  <Text>QR 코드로 사진 저장</Text>
-                  <Text>초점을 맞춘 후 3초간 기다려주세요 :)</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.modalTextCon}
+                    onPress={openQRScreen}>
+                    <Text>QR 코드로 사진 저장</Text>
+                    <Text>초점을 맞춘 후 3초간 기다려주세요 :)</Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
+
+              {/*==================== photo ====================*/}
+              <View
+                style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
+                <Text style={area.title}>Photo</Text>
+                {!isKeyboardVisible && (
+                  <TouchableOpacity
+                    style={area.photoSection}
+                    onPress={() => setShownModal(true)}>
+                    {imageUri === null ? (
+                      <Ionicons
+                        name="camera-outline"
+                        size={42}
+                        color="#3a2e23"
+                      />
+                    ) : photoOrQR === 'photo' ? (
+                      <Image source={{uri: imageUri.uri}} style={area.image} />
+                    ) : (
+                      <Image source={{uri: imageUri}} style={area.image} />
+                    )}
+                  </TouchableOpacity>
+                )}
               </View>
-            </Modal>
 
-            {/*==================== photo ====================*/}
-            <View style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
-              <Text style={area.title}>Photo</Text>
-              {!isKeyboardVisible && (
-                <TouchableOpacity
-                  style={area.photoSection}
-                  onPress={() => setShownModal(true)}>
-                  {imageUri === null ? (
-                    <Ionicons name="camera-outline" size={42} color="#3a2e23" />
-                  ) : photoOrQR === 'photo' ? (
-                    <Image source={{uri: imageUri.uri}} style={area.image} />
-                  ) : (
-                    <Image source={{uri: imageUri}} style={area.image} />
-                  )}
-                </TouchableOpacity>
+              {/*===================== memo =====================*/}
+              <View
+                style={[
+                  area.container,
+                  {
+                    flex: isKeyboardVisible ? 7 : 3.2,
+                  },
+                ]}>
+                <Text style={area.title}>Memo</Text>
+                <View style={area.memoSection}>
+                  <TextInput
+                    value={memo}
+                    multiline={true}
+                    editable={true}
+                    maxLength={500}
+                    style={area.memoText}
+                    onChangeText={text => setMemo(text)}
+                  />
+                </View>
+              </View>
+
+              {/*================= bottom btn =================*/}
+              {isKeyboardVisible === false && (
+                <>
+                  <View style={area.bottomSection} />
+                  <CustomFooterButton
+                    title="작성 완료"
+                    action={sendDataToAPI}
+                  />
+                </>
               )}
-            </View>
-
-            {/*===================== memo =====================*/}
-            <View
-              style={[
-                area.container,
-                {
-                  flex: isKeyboardVisible ? 7 : 3.2,
-                },
-              ]}>
-              <Text style={area.title}>Memo</Text>
-              <View style={area.memoSection}>
-                <TextInput
-                  value={memo}
-                  multiline={true}
-                  editable={true}
-                  maxLength={500}
-                  style={area.memoText}
-                  onChangeText={text => setMemo(text)}
-                />
-              </View>
-            </View>
-
-            {/*================= bottom btn =================*/}
-            {isKeyboardVisible === false && (
-              <>
-                <View style={area.bottomSection} />
-                <CustomFooterButton title="작성 완료" action={sendDataToAPI} />
-              </>
-            )}
-          </SafeAreaView>
-        </TouchableWithoutFeedback>
-      </FastImage>
-    </KeyboardAvoidingView>
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </FastImage>
+      </KeyboardAvoidingView>
+      {loading && (
+        <View style={styles.loadingPotory}>
+          <Loading />
+        </View>
+      )}
+    </>
   );
 }
 
@@ -310,6 +326,12 @@ const styles = StyleSheet.create({
   modalDivideLine: {
     borderBottomColor: '#aaa',
     borderBottomWidth: 1,
+  },
+  loadingPotory: {
+    position: 'absolute',
+    top: deviceHeight / 2 - 80,
+    left: deviceWidth / 2 - 80,
+    zIndex: 1,
   },
 });
 
