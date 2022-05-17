@@ -16,8 +16,7 @@ import Modal from 'react-native-modal';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {CameraScreen} from 'react-native-camera-kit';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 // custom components
 import Loading from 'components/Loading';
@@ -26,10 +25,13 @@ import QRCodeScanner from './QRCodeScreen';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
-// icons
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {api_registPhoto} from 'core/api/Module';
+//api
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
+import {api_registPhoto, api_registPhotoByQR} from 'core/api/Module';
+
+// image & icons
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 // variable
 const galleryOption = {
@@ -39,22 +41,21 @@ const galleryOption = {
     mediaType: 'photo',
     selectionLimit: 1,
   },
-  // quality: 1,
+  quality: 1,
   // noData: true,
   // maxWidth: 200,
   // maxHeight: 200,
-  // selectionLimit: 1,
+  selectionLimit: 1,
   // includeBase64: false,
 };
 
-// image
-const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
-
 function AddPhotoScreen() {
   const navigation = useNavigation();
-  const [userIdx, setUseIdx] = useState(null);
+  const [userIdx, setUseIdx] = useState<any>();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [loading, setLoading] = useState(false);
+  const [photoOrQR, setPhotoOrQr] = useState('');
+  const [qrScreenIsOpen, setQRScreenIsOpen] = useState(false);
 
   const [memo, setMemo] = useState('');
   const [date, setDate] = useState(
@@ -85,6 +86,7 @@ function AddPhotoScreen() {
   const receiveAsyncDateFromHeader = (value: string) => setDate(value);
 
   const openGallery = async () => {
+    setPhotoOrQr('photo');
     launchImageLibrary(galleryOption, response => {
       setShownModal(false);
 
@@ -98,8 +100,24 @@ function AddPhotoScreen() {
     });
   };
   const openQRScreen = () => {
+    setPhotoOrQr('qr');
     setShownModal(false);
-    navigation.navigate('QRCodeScreen');
+    setQRScreenIsOpen(true);
+  };
+  const getQRLink = (value: string) => {
+    setQRScreenIsOpen(false);
+
+    api_registPhotoByQR(userIdx, value)
+      .then(res => {
+        setImageUri(res.data.data.image);
+        console.log('api_registPhotoByQR Success == ', res.data.data);
+      })
+      .catch(err => {
+        Toast.show(
+          '사진을 불러오는 도중 오류가 발생하였습니다.\n다시 시도해주세요.',
+        );
+        console.log('api_registPhotoByQR Err == ', err);
+      });
   };
 
   const sendDataToAPI = async () => {
@@ -115,11 +133,19 @@ function AddPhotoScreen() {
       formdata.append('date', date);
       formdata.append('memo', memo);
       formdata.append('type', 'file');
-      formdata.append('image', {
-        uri: imageUri.uri,
-        type: imageUri.type,
-        name: imageUri.fileName,
-      });
+      if (photoOrQR === 'photo') {
+        formdata.append('image', {
+          uri: imageUri.uri,
+          type: imageUri.type,
+          name: imageUri.fileName,
+        });
+      } else if (photoOrQR === 'qr') {
+        formdata.append('image', {
+          uri: imageUri,
+          type: 'image/png',
+          name: 'photo.jpg',
+        });
+      }
 
       connectAPI_regist(formdata);
     }
@@ -142,6 +168,10 @@ function AddPhotoScreen() {
         );
         console.log('regist photo Err == ', err);
       });
+    // navigate로 페이지 이동 후에 실행되기 때문에 메모리 누수 일어나는 warning 나옴
+    // .finally(() => {
+    //   setLoading(false);
+    // });
   };
 
   //
@@ -150,7 +180,9 @@ function AddPhotoScreen() {
 
   if (loading === true) return <Loading />;
 
-  return (
+  return qrScreenIsOpen ? (
+    <QRCodeScanner QRLink={getQRLink} />
+  ) : (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.keyboardAvoidingView}>
@@ -182,6 +214,7 @@ function AddPhotoScreen() {
                   style={styles.modalTextCon}
                   onPress={openQRScreen}>
                   <Text>QR 코드로 사진 저장</Text>
+                  <Text>초점을 맞춘 후 3초간 기다려주세요 :)</Text>
                 </TouchableOpacity>
               </View>
             </Modal>
@@ -195,8 +228,10 @@ function AddPhotoScreen() {
                   onPress={() => setShownModal(true)}>
                   {imageUri === null ? (
                     <Ionicons name="camera-outline" size={42} color="#3a2e23" />
-                  ) : (
+                  ) : photoOrQR === 'photo' ? (
                     <Image source={{uri: imageUri.uri}} style={area.image} />
+                  ) : (
+                    <Image source={{uri: imageUri}} style={area.image} />
                   )}
                 </TouchableOpacity>
               )}

@@ -16,12 +16,14 @@ import {useNavigation} from '@react-navigation/native';
 // custom components
 import Toast from 'components/Toast/Toast';
 
+// hooks
+import {getAsyncStorage_userIdx} from 'core/UserInfo';
+
 // api
 import {api_deletePhoto} from '../../../core/api/Module';
 
 // icons
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
 // variable
 const deviceWidth = Dimensions.get('window').width;

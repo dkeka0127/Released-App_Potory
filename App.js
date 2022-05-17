@@ -18,24 +18,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
 
-// api
-import {api_checkDeviceExist} from './src/core/api/Module';
-import {getAsyncStorage_userIdx} from 'core/UserInfo';
-
 // variable
 const lottiePath = require('./src/assets/lottie/splash.json');
 
+/////////////////////////////////////////////////////////////////////////
+// userIndex hook 사용 방법
+
+// import {getAsyncStorage_userIdx} from 'core/UserInfo';
+// const [userIdx, setUseIdx] = useState(null);
+// getAsyncStorage_userIdx().then(res => setUseIdx(res));
+// console.log('userIdx', userIdx);
+
+/////////////////////////////////////////////////////////////////////////
+
 function App() {
-  /////////////////////////////////////////////////////////////////////////
-  // userIndex hook 사용 방법
-
-  // import {getAsyncStorage_userIdx} from 'core/UserInfo';
-  // const [userIdx, setUseIdx] = useState(null);
-  // getAsyncStorage_userIdx().then(res => setUseIdx(res));
-  // console.log('userIdx', userIdx);
-
-  /////////////////////////////////////////////////////////////////////////
-
   const [autoLogin, setAutoLogin] = useState(null);
 
   // useEffect

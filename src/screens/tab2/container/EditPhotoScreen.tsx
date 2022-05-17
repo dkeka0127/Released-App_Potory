@@ -25,9 +25,6 @@ import {api_editPhoto} from 'core/api/Module';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
 import Loading from 'components/Loading';
 
-// variable
-// import {userNum} from '../../../core/UserInfo';
-
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
@@ -135,8 +132,6 @@ function EditPhotoScreen({route}: any) {
                     maxLength={300}
                     style={area.memoText}
                     onChangeText={text => setMemo(text)}
-                    // onEndEditing={() => console.log('memo is Done ~~~~~')}
-                    // onSubmitEditing={() => console.log('memo is ')}
                   />
                 </View>
               </View>

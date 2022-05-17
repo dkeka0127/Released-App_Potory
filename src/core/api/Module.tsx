@@ -115,7 +115,7 @@ export async function api_registPhotoByQR(userIdx: number, photoURL: string) {
       photo_url: photoURL,
       user_idx: userIdx,
     },
-    axiosConfigPhoto,
+    axiosConfig,
   );
   return response;
 }

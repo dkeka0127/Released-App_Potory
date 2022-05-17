@@ -39,7 +39,7 @@ function Main() {
   const polaroidSortRandomly = photoListData.map(() => {
     return Math.floor(Math.random() * 12); // 폴라로이드 랜덤 배정
   });
-  const [userIdx, setUseIdx] = useState(null);
+  const [userIdx, setUseIdx] = useState<any>();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   // scroll header variable
@@ -79,7 +79,6 @@ function Main() {
   useFocusEffect(
     React.useCallback(() => {
       if (userIdx) connectAPI();
-      console.log('*********** connectAPI ReLoad useEffect ***********');
     }, [userIdx]),
   );
 
@@ -141,55 +140,7 @@ function Main() {
     console.log('-- imageDeleted --');
   };
 
-  const _keyExtractor = useCallback(item => item.photo_idx, []);
-
-  const _renderItem = useCallback(({item, index}) => {
-    return (
-      <>
-        <FastImage
-          resizeMode="contain"
-          source={
-            bgColor === '#111'
-              ? polaroid_black[polaroidSortRandomly[index]].uri
-              : polaroid_gray[polaroidSortRandomly[index]].uri
-          }
-          style={[
-            renderItem.container,
-            {
-              width: polaroidWidth,
-              height: polaroidWidth * 1.18,
-            },
-          ]}>
-          <TouchableOpacity
-            style={{
-              marginTop: -(polaroidWidth * 0.14),
-              marginLeft: -3,
-              width: polaroidWidth * 0.55,
-              height: polaroidWidth * 0.5,
-            }}
-            onPress={() => {
-              setIsModalShown(true);
-              setModalImageInfo(item);
-            }}>
-            <FastImage
-              resizeMode="contain"
-              source={{uri: item.photo_url}}
-              style={renderItem.photo}
-            />
-          </TouchableOpacity>
-        </FastImage>
-        {index === photoListData.length - 1 && (
-          <View
-            style={{
-              width: polaroidWidth,
-              height: grid !== 1 ? polaroidWidth * 1.18 : 0,
-              marginBottom: 100,
-            }}
-          />
-        )}
-      </>
-    );
-  }, []);
+  const keyExtractor = useCallback(item => item.photo_idx, []);
 
   const RenderItem = ({item, index}: any) => {
     return (
@@ -265,7 +216,7 @@ function Main() {
         windowSize={12} // 추가 렌더링 개수
         initialNumToRender={15} // 초기 랜더링 개수
         // maxToRenderPerBatch={15} // 스크롤 시 렌더링 할 항목 (기본값 10)
-        keyExtractor={item => item.photo_idx}
+        keyExtractor={keyExtractor}
         data={sequence === 'new' ? photoListData : photoListData.reverse()}
         ListEmptyComponent={EmptyDataScreen}
         onScroll={Animated.event(
@@ -331,3 +282,53 @@ const renderItem = StyleSheet.create({
     flex: 1,
   },
 });
+
+// useCallback 이 추가된 renderItem
+
+// const _renderItem = useCallback(({item, index}) => {
+//   return (
+//     <>
+//       <FastImage
+//         resizeMode="contain"
+//         source={
+//           bgColor === '#111'
+//             ? polaroid_black[polaroidSortRandomly[index]].uri
+//             : polaroid_gray[polaroidSortRandomly[index]].uri
+//         }
+//         style={[
+//           renderItem.container,
+//           {
+//             width: polaroidWidth,
+//             height: polaroidWidth * 1.18,
+//           },
+//         ]}>
+//         <TouchableOpacity
+//           style={{
+//             marginTop: -(polaroidWidth * 0.14),
+//             marginLeft: -3,
+//             width: polaroidWidth * 0.55,
+//             height: polaroidWidth * 0.5,
+//           }}
+//           onPress={() => {
+//             setIsModalShown(true);
+//             setModalImageInfo(item);
+//           }}>
+//           <FastImage
+//             resizeMode="contain"
+//             source={{uri: item.photo_url}}
+//             style={renderItem.photo}
+//           />
+//         </TouchableOpacity>
+//       </FastImage>
+//       {index === photoListData.length - 1 && (
+//         <View
+//           style={{
+//             width: polaroidWidth,
+//             height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+//             marginBottom: 100,
+//           }}
+//         />
+//       )}
+//     </>
+//   );
+// }, []);
