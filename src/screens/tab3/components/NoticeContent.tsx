@@ -1,14 +1,14 @@
-// React & package
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 
-// custom component
+/* custom components */
 import Loading from 'components/Loading';
 
-// api
+/* api */
 import {api_noticeList} from '../../../../src/core/api/Module';
 
-// icons
+/* icons */
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
@@ -41,7 +41,7 @@ function NoticeContent() {
     connectAPI();
   }, []);
 
-  // api
+  /* api */
   const connectAPI = () => {
     api_noticeList()
       .then(res => {
@@ -58,7 +58,7 @@ function NoticeContent() {
   if (noticeListData === []) return <Loading />;
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsHorizontalScrollIndicator={false}>
       {/* noticeListData.reverse().map */}
       {noticeListData.map((item: any) => {
         return (

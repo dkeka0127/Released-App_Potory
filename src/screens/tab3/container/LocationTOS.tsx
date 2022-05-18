@@ -1,8 +1,8 @@
-// React & Package
+/* React & Package */
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
-// custom components
+/* custom components */
 import CustomHeader from '../../../components/header/CustomHeader';
 import LocationTOSContent from '../components/LocationTOSContent';
 

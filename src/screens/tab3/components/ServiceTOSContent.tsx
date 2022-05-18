@@ -1,10 +1,10 @@
-// React & Package
+/* React & Package */
 import React from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
 
 function ServiceTOSContent() {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsHorizontalScrollIndicator={false}>
       <Text style={[styles.boldText, {fontSize: 16, paddingBottom: 0}]}>
         서비스 이용약관{'\n'}
       </Text>

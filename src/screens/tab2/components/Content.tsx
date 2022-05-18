@@ -1,4 +1,4 @@
-// React & Package
+/* React & Package */
 import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// custom component
+/* custom components */
 import PhotoModal from './PhotoModal';
 
 // variale

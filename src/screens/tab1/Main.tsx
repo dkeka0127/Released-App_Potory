@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import NaverMapView, {
@@ -8,94 +9,80 @@ import NaverMapView, {
   Polyline,
   Polygon,
 } from 'react-native-nmap';
-import Geocode from 'react-geocode';
+// import Geocode from 'react-geocode';
 // Page
-import DropDown from './components/DropDown';
+import DropBox from './components/DropBox';
 
-Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-Geocode.setLanguage('en');
-Geocode.setRegion('es');
-Geocode.enableDebug();
+// Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+// Geocode.setLanguage('en');
+// Geocode.setRegion('es');
+// Geocode.enableDebug();
+
+const dataList = ['전체', '인생네컷', '하루필름', '포토이즘', '포토시그니처'];
 
 function MainHome() {
+  const [selectedStore, setSelectedStore] = useState('전체');
+
   const P0 = {latitude: 37.564362, longitude: 126.977011};
   const P1 = {latitude: 37.565051, longitude: 126.978567};
   const P2 = {latitude: 37.565383, longitude: 126.976292};
 
-  const BoxComponent = () => {
-    return (
-      <TouchableOpacity onPress={() => {}}>
-        <Text style={{}}>hihi</Text>
-      </TouchableOpacity>
-    );
+  // api
+  const x = 35.1638268;
+  const y = 129.1314613;
+  const storeName = '인생네컷';
+
+  axios
+    .get(
+      `https://dapi.kakao.com/v2/local/search/keyword.json?y=${y}&x=${x}&radius=20000&query=${storeName}&size=10&sort=distance`,
+      {
+        headers: {
+          Authorization: 'KakaoAK d5060c5e465b9767dfc59ff7924c961c',
+        },
+      },
+    )
+    .then(res => {
+      console.log('res ......', res.data.documents);
+    })
+    .catch(err => {
+      console.log('err ......', err);
+    });
+
+  // function
+  const getSelectStore = (value: string) => {
+    setSelectedStore(value);
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <NaverMapView
-        style={{flex: 1}}
+        style={styles.mapContainer}
         showsMyLocationButton={true}
         center={{...P0, zoom: 16}}>
+        {/* DropBox */}
+        <DropBox dataList={dataList} getSelectData={getSelectStore} />
+
+        {/* Marker */}
         <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')} />
 
-        <View style={styles.vocaSetting}>
-          {BoxComponent('전체보기')}
-          {BoxComponent('오답 단어만')}
-          {BoxComponent('정답 단어만')}
-        </View>
+        {/* map으로 스토어 marker 렌더링 */}
+        {/* {data.map((val, id) => {
+          return (
+            <Marker
+              coordinate={{latitude: val.lat, longitude: val.lng}}
+              pinColor="blue"
+              key={id + '_' + Date.now()}
+              onClick={() => {}}
+            />
+          );
+        })} */}
 
-        <Marker
-          coordinate={P1}
-          pinColor="blue"
-          onClick={() => console.warn('onClick! p1')}
-        />
-        <Marker
-          coordinate={P2}
-          pinColor="red"
-          onClick={() => console.warn('onClick! p2')}
-        />
+        {/* Path */}
         <Path
           coordinates={[P0, P1]}
           onClick={() => console.warn('onClick! path')}
-          width={10}
+          width={5}
         />
-        {/* <DropDown /> */}
-        {/* <NaverMapView
-        onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-        onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
-        onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}>
-        <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')} />
-        <Marker
-          coordinate={P1}
-          pinColor="blue"
-          onClick={() => console.warn('onClick! p1')}
-        />
-        <Marker
-          coordinate={P2}
-          pinColor="red"
-          onClick={() => console.warn('onClick! p2')}
-        />
-        <Path
-          coordinates={[P0, P1]}
-          onClick={() => console.warn('onClick! path')}
-          width={10}
-        />
-        <Polyline
-          coordinates={[P1, P2]}
-          onClick={() => console.warn('onClick! polyline')}
-        />
-        <Circle
-          coordinate={P0}
-          color={'rgba(255,0,0,0.3)'}
-          radius={200}
-          onClick={() => console.warn('onClick! circle')}
-        />
-        <Polygon
-          coordinates={[P0, P1, P2]}
-          color={`rgba(0, 0, 0, 0.5)`}
-          onClick={() => console.warn('onClick! polygon')}
-        />
-      </NaverMapView> */}
       </NaverMapView>
     </View>
   );
@@ -107,27 +94,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  vocaSetting: {
-    width: 116,
-    height: 144,
-    paddingTop: 15,
-    paddingBottom: 15,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
-    borderColor: '#d2d2d2',
-    borderWidth: 0.5,
-    shadowColor: '#222222',
-    shadowOpacity: 0.2,
-    shadowOffset: {width: 0, height: 5},
-    elevation: 3,
-    position: 'absolute',
-    top: 40,
-    left: 15,
-    zIndex: 999,
-  },
-  emptyVocaSetting: {
-    position: 'absolute',
+  mapContainer: {
+    flex: 1,
   },
 });

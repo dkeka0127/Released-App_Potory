@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-// React & Package
-import React, {useEffect, useState} from 'react';
+/* React & Package */
+import React from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,13 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-// kakao
+/* custom components */
+import Toast from 'components/Toast/Toast';
+
+/* api */
+import {api_registDevice} from '../../core/api/Module';
+
+/* kakao */
 import {
   KakaoOAuthToken,
   getProfile as getKakaoProfile,
@@ -28,19 +34,19 @@ import {
   KakaoProfile,
 } from '@react-native-seoul/kakao-login';
 
-// apple
+/* apple */
 import {
   appleAuth,
   AppleButton,
   AppleCredentialState,
 } from '@invertase/react-native-apple-authentication';
 
-// icons & images
+/* icons & images */
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {api_registDevice} from '../../core/api/Module';
 const potoryImg = require('../../assets/images/potory/login.png');
 const kakaoImg = require('../../assets/images/icons/kakaoLogin.png');
 
+/* interface */
 interface Props {
   userNum: number;
   isLoginF: () => void;
@@ -49,64 +55,8 @@ interface Props {
 function SignInScreen({isLoginF}: Props) {
   // variable
 
-  // -------------- ① Kakao --------------
-  const loginWithKakao = async (): Promise<void> => {
-    const token: KakaoOAuthToken = await login();
-    console.log('token ==  ', token);
-    loginWithKakao_();
-  };
-
-  const loginWithKakao_ = async () => {
-    // const profile = await getProfile();
-    const profile = await getKakaoProfile();
-    await connectAPI_registDevice(profile.id);
-  };
-
-  // -------------- ② Apple --------------
-  const LoginWithApple = async () => {
-    console.warn('Beginning Apple Authentication');
-
-    // start a login request
-    try {
-      const a = await appleAuth.UserStatus;
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
-      console.log('a ======================', a); // { UNSUPPORTED: 0, UNKNOWN: 1, LIKELY_REAL: 2 }
-      console.log('appleAuthRequestResponse', appleAuthRequestResponse);
-
-      await connectAPI_registDevice(appleAuthRequestResponse.user);
-
-      const {
-        user: newUser,
-        email,
-        nonce,
-        identityToken,
-        realUserStatus /* etc */,
-      } = appleAuthRequestResponse;
-      // user = newUser;
-      // fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
-      //   updateCredentialStateForUser(`Error: ${error.code}`),
-      // );
-      if (identityToken) {
-        // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
-        console.log(nonce, identityToken);
-      } else {
-        // no token - failed sign-in?
-      }
-      if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
-        console.log("I'm a real person!");
-      }
-      // console.warn(`Apple Authentication Completed, ${user}, ${email}`);
-    } catch (error) {
-      console.error(error);
-      // return;
-    }
-  };
-
+  // api
   const connectAPI_registDevice = (deviceId: string) => {
-    console.log('api 호출은 하니 ??', deviceId);
     // 로딩 추가
     api_registDevice(deviceId)
       .then(async res => {
@@ -123,12 +73,43 @@ function SignInScreen({isLoginF}: Props) {
       });
   };
 
+  // function
   const saveLoginAsync = (userIdx: number) => {
     AsyncStorage.setItem(
       'userInfo',
       JSON.stringify({autoLogin: true, userNumber: String(userIdx)}),
-      () => console.log('[로그인] 유저정보 저장', userIdx),
+      () => console.log('[로그인] 유저정보 저장 == ', userIdx),
     );
+  };
+
+  // -------------------- ① Kakao --------------------
+  const loginWithKakao = async (): Promise<void> => {
+    const token: KakaoOAuthToken = await login();
+    console.log('kakao token ==  ', token);
+    getUserProfileOfKakao();
+  };
+
+  const getUserProfileOfKakao = async () => {
+    // const profile = await getProfile();
+    const profile = await getKakaoProfile();
+    await connectAPI_registDevice(profile.id);
+  };
+
+  // -------------------- ② Apple --------------------
+  const LoginWithApple = async () => {
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      await connectAPI_registDevice(appleAuthRequestResponse.user);
+      console.log('apple login - user ID', appleAuthRequestResponse.user);
+    } catch (error) {
+      console.error(error);
+      Toast.show('로그인에 실피하였습니다.\n다시 시도해주세요.');
+      // return;
+    }
   };
 
   return (
@@ -228,3 +209,27 @@ const styles = StyleSheet.create({
     height: 16,
   },
 });
+
+// [Apple Login] try / catch 문의 try
+
+// const {
+//   user: newUser,
+//   email,
+//   nonce,
+//   identityToken,
+//   realUserStatus /* etc */,
+// } = appleAuthRequestResponse;
+// // user = newUser;
+// // fetchAndUpdateCredentialState(updateCredentialStateForUser).catch(error =>
+// //   updateCredentialStateForUser(`Error: ${error.code}`),
+// // );
+// if (identityToken) {
+//   // e.g. sign in with Firebase Auth using `nonce` & `identityToken`
+//   console.log(nonce, identityToken);
+// } else {
+//   // no token - failed sign-in?
+// }
+// if (realUserStatus === appleAuth.UserStatus.LIKELY_REAL) {
+//   console.log("I'm a real person!");
+// }
+// // console.warn(`Apple Authentication Completed, ${user}, ${email}`);

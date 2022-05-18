@@ -28,7 +28,9 @@ const GameResultHeader = () => {
       </TouchableOpacity>
 
       {isShown ? (
-        <ScrollView style={styles.vocaSetting}>
+        <ScrollView
+          style={styles.vocaSetting}
+          showsHorizontalScrollIndicator={false}>
           {boxComponent('1')}
           {boxComponent('2')}
           {boxComponent('3')}

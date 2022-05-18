@@ -1,9 +1,9 @@
-// React & Package
+/* React & Package */
 import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-// custom components
+/* custom components */
 import CustomHeader from '../../../components/header/CustomHeader';
 import NoticeContent from '../components/NoticeContent';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';

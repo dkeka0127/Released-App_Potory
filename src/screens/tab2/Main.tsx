@@ -1,4 +1,4 @@
-// React & Package
+/* React & Package */
 import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
 import {
   View,
@@ -11,14 +11,14 @@ import {
 import FastImage from 'react-native-fast-image';
 import {useFocusEffect} from '@react-navigation/native';
 
-// custom component
+/* custom components */
 import Loading from '../../components/Loading';
 import PhotoModal from './components/PhotoModal';
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
 import AddContentButton from './components/AddContentButton';
 
-// api
+/* api */
 
 import {api_getPhotoList} from 'core/api/Module';
 
@@ -87,7 +87,7 @@ function Main() {
     else return;
   }, [isModalShown]);
 
-  // api
+  /* api */
   const connectAPI = () => {
     api_getPhotoList(userIdx)
       .then(res => {
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 10,
     height: HEADER_HEIGHT,
-    zIndex: 999,
+    zIndex: 1,
   },
   flatList: {
     paddingTop: HEADER_HEIGHT,

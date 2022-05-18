@@ -1,4 +1,4 @@
-// React & packages
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -14,22 +14,24 @@ import {
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-// custom components
+/* custom components */
+import Loading from 'components/Loading';
 import Toast from 'components/Toast/Toast';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
-// api
+/* api */
 import {api_editPhoto} from 'core/api/Module';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
-import Loading from 'components/Loading';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
 function EditPhotoScreen({route}: any) {
   const navigation = useNavigation();
+  const [touchable, setTouchable] = useState(false);
   const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [loading, setLoading] = useState(false);
@@ -67,18 +69,22 @@ function EditPhotoScreen({route}: any) {
     connectAPI_edit();
   };
 
+  // api
   const connectAPI_edit = () => {
     setLoading(true);
+    setTouchable(true);
 
     api_editPhoto(photoNum, date, memo, userIdx)
       .then(res => {
         setLoading(false);
+        setTouchable(false);
         Toast.show('편집이 완료되었습니다.');
         navigation.navigate('Tab2');
         console.log('edit photo Success == ');
       })
       .catch(err => {
         setLoading(false);
+        setTouchable(false);
         Toast.show(
           '사진 편집 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
         );
@@ -86,11 +92,9 @@ function EditPhotoScreen({route}: any) {
       });
   };
 
-  const getChangedDate = (value: string) => {
-    setDate(value);
-  };
+  const getChangedDate = (value: string) => setDate(value);
 
-  if (loading === true) return <Loading />;
+  // if (loading === true) return <Loading />;
 
   return (
     <>
@@ -100,13 +104,17 @@ function EditPhotoScreen({route}: any) {
         <FastImage source={require(bgImg)} style={styles.bgImg}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.SafeAreaView}>
-              {/*================== header ==================*/}
-              <CustomDateHeader
-                date={preDate}
-                getChangedDate={getChangedDate}
-              />
+              {/*========================= header =========================*/}
 
-              {/*================== photo ==================*/}
+              <TouchableOpacity disabled={touchable}>
+                <CustomDateHeader
+                  date={preDate}
+                  getChangedDate={getChangedDate}
+                />
+              </TouchableOpacity>
+
+              {/*========================= photo =========================*/}
+
               <View
                 style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
                 <Text style={area.title}>Photo</Text>
@@ -115,7 +123,8 @@ function EditPhotoScreen({route}: any) {
                 </View>
               </View>
 
-              {/*=================== memo ===================*/}
+              {/*========================== memo ==========================*/}
+
               <View
                 style={[
                   area.container,
@@ -128,7 +137,7 @@ function EditPhotoScreen({route}: any) {
                   <TextInput
                     value={memo}
                     multiline={true}
-                    editable={true}
+                    editable={!touchable}
                     maxLength={300}
                     style={area.memoText}
                     onChangeText={text => setMemo(text)}
@@ -136,7 +145,8 @@ function EditPhotoScreen({route}: any) {
                 </View>
               </View>
 
-              {/*================ bottom btn ================*/}
+              {/*======================= bottom btn =======================*/}
+
               {isKeyboardVisible === false && (
                 <>
                   <View style={area.bottomSection} />
@@ -150,6 +160,14 @@ function EditPhotoScreen({route}: any) {
           </TouchableWithoutFeedback>
         </FastImage>
       </KeyboardAvoidingView>
+
+      {/*======================= loading =======================*/}
+
+      {loading && (
+        // <View style={styles.loadingPotory}>
+        <Loading />
+        // </View>
+      )}
     </>
   );
 }

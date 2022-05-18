@@ -1,4 +1,4 @@
-// React & packages
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -19,10 +19,10 @@ import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 
-// custom components
+/* custom components */
 import Loading from 'components/Loading';
-import Toast from '../../../components/Toast/Toast';
 import QRCodeScanner from './QRCodeScreen';
+import Toast from '../../../components/Toast/Toast';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
@@ -54,6 +54,7 @@ const galleryOption = {
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
+  const [touchable, setTouchable] = useState(false);
   const [userIdx, setUseIdx] = useState<any>();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [loading, setLoading] = useState(false);
@@ -156,16 +157,19 @@ function AddPhotoScreen() {
 
   const connectAPI_regist = async (formdata: FormData) => {
     setLoading(true);
+    setTouchable(true);
 
     api_registPhoto(formdata)
       .then(res => {
         setLoading(false);
+        setTouchable(false);
         Toast.show('저장이 완료되었습니다.');
         navigation.navigate('Tab2');
         console.log('regist photo Success == ', res);
       })
       .catch(err => {
         setLoading(false);
+        setTouchable(false);
         Toast.show(
           '사진 저장 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
         );
@@ -191,13 +195,15 @@ function AddPhotoScreen() {
         <FastImage source={require(bgImg)} style={styles.bgImg}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.SafeAreaView}>
-              {/*================== header ==================*/}
+              {/*========================= header =========================*/}
+
               <CustomDateHeader
                 date={''}
                 getChangedDate={receiveAsyncDateFromHeader}
               />
 
-              {/*================ select modal ================*/}
+              {/*====================== select modal ======================*/}
+
               <Modal
                 style={styles.modalContainer}
                 isVisible={shownModal}
@@ -221,12 +227,14 @@ function AddPhotoScreen() {
                 </View>
               </Modal>
 
-              {/*==================== photo ====================*/}
+              {/*========================== photo ==========================*/}
+
               <View
                 style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
                 <Text style={area.title}>Photo</Text>
                 {!isKeyboardVisible && (
                   <TouchableOpacity
+                    disabled={touchable}
                     style={area.photoSection}
                     onPress={() => setShownModal(true)}>
                     {imageUri === null ? (
@@ -244,7 +252,8 @@ function AddPhotoScreen() {
                 )}
               </View>
 
-              {/*===================== memo =====================*/}
+              {/*========================== memo ==========================*/}
+
               <View
                 style={[
                   area.container,
@@ -257,7 +266,7 @@ function AddPhotoScreen() {
                   <TextInput
                     value={memo}
                     multiline={true}
-                    editable={true}
+                    editable={!touchable}
                     maxLength={500}
                     style={area.memoText}
                     onChangeText={text => setMemo(text)}
@@ -265,7 +274,8 @@ function AddPhotoScreen() {
                 </View>
               </View>
 
-              {/*================= bottom btn =================*/}
+              {/*======================= bottom btn =======================*/}
+
               {isKeyboardVisible === false && (
                 <>
                   <View style={area.bottomSection} />
@@ -279,11 +289,10 @@ function AddPhotoScreen() {
           </TouchableWithoutFeedback>
         </FastImage>
       </KeyboardAvoidingView>
-      {loading && (
-        <View style={styles.loadingPotory}>
-          <Loading />
-        </View>
-      )}
+
+      {/*======================= loading =======================*/}
+
+      {loading && <Loading />}
     </>
   );
 }
@@ -326,12 +335,6 @@ const styles = StyleSheet.create({
   modalDivideLine: {
     borderBottomColor: '#aaa',
     borderBottomWidth: 1,
-  },
-  loadingPotory: {
-    position: 'absolute',
-    top: deviceHeight / 2 - 80,
-    left: deviceWidth / 2 - 80,
-    zIndex: 1,
   },
 });
 

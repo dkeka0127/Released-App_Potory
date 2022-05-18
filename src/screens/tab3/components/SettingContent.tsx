@@ -1,4 +1,4 @@
-// React & Package
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -22,7 +22,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 //   unlink,
 // } from '@react-native-seoul/kakao-login';
 
-// api
+/* api */
 import {api_deleteDevice} from 'core/api/Module';
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
@@ -30,7 +30,7 @@ import {getAsyncStorage_userIdx} from 'core/UserInfo';
 const IconSize = 17;
 const IconColor = '#111';
 
-// icons
+/* icons */
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 // List Components
@@ -173,7 +173,7 @@ function SettingContent() {
   };
 
   return (
-    <ScrollView style={styles.content}>
+    <ScrollView style={styles.content} showsHorizontalScrollIndicator={false}>
       {/*------------------------ 게시판 ------------------------*/}
       <SettingContectTitle title={'게시판'} />
       <SettingContentList iconName={'notification'} title={'공지사항'} />

@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -12,12 +13,12 @@ import AddPhotoScreen from '../screens/tab2/container/AddPhotoScreen';
 import EditPhotoScreen from '../screens/tab2/container/EditPhotoScreen';
 
 // Info
-import SettingScreen from '../screens/tab3/container/SettingScreen';
 import Notice from '../screens/tab3/container/Notice';
-import FrequecyQuestion from '../screens/tab3/container/FrequecyQuestion';
 import ServiceTOS from '../screens/tab3/container/ServiceTOS';
 import LocationTOS from '../screens/tab3/container/LocationTOS';
 import PrivacyPolicy from '../screens/tab3/container/PrivacyPolicy';
+import SettingScreen from '../screens/tab3/container/SettingScreen';
+import FrequecyQuestion from '../screens/tab3/container/FrequecyQuestion';
 
 // Ect
 import Login from '../screens/intro/SignInScreen';
@@ -36,6 +37,7 @@ function RootScreen() {
       {/*--------------------- Home ---------------------*/}
 
       {/*--------------------- Photo ---------------------*/}
+
       <Stack.Screen
         name="AddPhotoScreen"
         component={AddPhotoScreen}
@@ -53,6 +55,7 @@ function RootScreen() {
       />
 
       {/*--------------------- MyPage ---------------------*/}
+
       <Stack.Screen
         name="설정"
         component={SettingScreen}

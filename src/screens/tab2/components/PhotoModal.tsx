@@ -1,4 +1,4 @@
-// React & package
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -13,16 +13,16 @@ import Modal from 'react-native-modal';
 import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
-// custom components
+/* custom components */
 import Toast from 'components/Toast/Toast';
 
 // hooks
 import {getAsyncStorage_userIdx} from 'core/UserInfo';
 
-// api
+/* api */
 import {api_deletePhoto} from '../../../core/api/Module';
 
-// icons
+/* icons */
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // variable
@@ -141,7 +141,9 @@ function PhotoModal({
 
       {/*====================== text ======================*/}
       <View style={styles.text}>
-        <ScrollView style={styles.textScrollView}>
+        <ScrollView
+          style={styles.textScrollView}
+          showsHorizontalScrollIndicator={false}>
           <Text style={styles.textStyle}>{memo}</Text>
         </ScrollView>
       </View>

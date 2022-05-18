@@ -1,13 +1,24 @@
+/* React & packages */
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 // const loadingImg = require('../assets/images/potory/loading.gif');
 const loadingImg = require('../assets/images/potory/loading1.gif');
 
+/* variable */
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
+
 const Loading = () => {
   return (
-    <FastImage resizeMode="cover" source={loadingImg} style={styles.content} />
+    <View style={styles.container}>
+      <FastImage
+        resizeMode="cover"
+        source={loadingImg}
+        style={styles.content}
+      />
+    </View>
   );
 };
 
@@ -15,11 +26,13 @@ export default Loading;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    top: deviceHeight / 2 - 80,
+    left: deviceWidth / 2 - 80,
+    zIndex: 999,
   },
   content: {
-    // flex: 1,
-    width: 160,
-    height: 160,
+    width: 145,
+    height: 145,
   },
 });

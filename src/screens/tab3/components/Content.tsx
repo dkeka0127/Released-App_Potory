@@ -1,4 +1,4 @@
-// React & packages
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -16,28 +16,28 @@ import {
 import {useFocusEffect} from '@react-navigation/native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 
-// custom components
+/* custom components */
 import Loading from 'components/Loading';
 import Toast from 'components/Toast/Toast';
 
-// api
+/* api */
 import {
   api_checkDeviceExist,
   api_editDevice_name,
   api_editDevice_profile,
 } from 'core/api/Module';
 
-// variable
+/* variable */
 const deviceHeight = Dimensions.get('window').height;
 import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
-// icons
+/* icons */
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// images
+/* images */
 const baseProfile = '../../../assets/images/potory/profile_potory.png';
 const scale0 = require('../../../assets/images/icons/scale_0.png');
 const scale1 = require('../../../assets/images/icons/scale_1.png');
@@ -53,12 +53,15 @@ const potory_purple = require('../../../assets/images/potory/slide_potory_purple
 //
 //
 //
+//
+//
 
 function Content() {
   const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
   const [newUserName, setNewUserName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [touchable, setTouchable] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   // user info
@@ -79,6 +82,7 @@ function Content() {
   const percentage = Math.round((percent / 100) * 95) + '%';
   const PercentageString = String(percentage);
 
+  // 다음 단계까지 남은 사진의 수
   let leftPhotoForNextLevel =
     reminder === 0 && quotient === 0
       ? 51
@@ -114,25 +118,26 @@ function Content() {
   };
 
   const connectAPI_editUserInfo_UserName = () => {
-    setLoading(true);
+    setTouchable(true);
+
     api_editDevice_name(userIdx, newUserName)
       .then(res => {
-        setLoading(false);
         setUserInfoData(res.data.data);
         setNewUserName('');
         setModalVisible(false);
         console.log('connectAPI_editUserInfo_UserName Success == ');
       })
       .catch(err => {
-        setLoading(false);
         console.log('connectAPI_editUserInfo_UserName Err == ', err);
-      });
+      })
+      .finally(() => setTouchable(false));
 
     return;
   };
 
   const connectAPI_editUserInfo_UserImg = async (imageResponse: Asset) => {
     setLoading(true);
+    setTouchable(true);
 
     const formdata = new FormData();
 
@@ -152,7 +157,8 @@ function Content() {
         setLoading(false);
         Toast.show('프로필 변경 중 오류가 발생하였습니다.\n다시 시도해주세요.');
         console.log('connectAPI_editUserInfo_UserImg Err == ', err);
-      });
+      })
+      .finally(() => setTouchable(false));
 
     return;
   };
@@ -230,114 +236,136 @@ function Content() {
     );
   };
 
-  if (loading === true) return <Loading />;
+  // if (loading === true) return <Loading />;
 
   return (
-    <View style={styles.container}>
-      {/*======================================== Nav ========================================*/}
-      <View style={styles.nav}>
-        {/*---------- profile Img ----------*/}
-        <TouchableOpacity
-          onPress={moveToGallery}
-          style={styles.userImgContainer}>
-          {!profileImg ? (
-            <Image source={require(baseProfile)} style={styles.userImg} />
-          ) : (
-            <Image source={{uri: profileImg}} style={styles.userImg} />
-          )}
-        </TouchableOpacity>
+    <>
+      <View style={styles.container}>
+        {/*======================================== Nav ========================================*/}
 
-        {/*----------- user Name -----------*/}
-        <View style={styles.userNameContainer}>
-          <Text style={styles.userNameText}>
-            {userName === ''
-              ? `user_410${deviceID}`.substring(0, 10)
-              : userName}
-          </Text>
+        <View style={styles.nav}>
+          {/*---------- profile Img ----------*/}
 
           <TouchableOpacity
-            hitSlop={styles.hitslop}
-            onPress={() => setModalVisible(true)}>
-            <MaterialIcons name="pencil-outline" size={18} color="#666" />
+            disabled={touchable}
+            onPress={moveToGallery}
+            style={styles.userImgContainer}>
+            {!profileImg ? (
+              <Image source={require(baseProfile)} style={styles.userImg} />
+            ) : (
+              <Image source={{uri: profileImg}} style={styles.userImg} />
+            )}
           </TouchableOpacity>
+
+          {/*----------- user Name -----------*/}
+
+          <View style={styles.userNameContainer}>
+            <Text style={styles.userNameText}>
+              {userName === ''
+                ? `user_410${deviceID}`.substring(0, 10)
+                : userName}
+            </Text>
+
+            <TouchableOpacity
+              disabled={touchable}
+              hitSlop={styles.hitslop}
+              onPress={() => setModalVisible(true)}>
+              <MaterialIcons name="pencil-outline" size={18} color="#666" />
+            </TouchableOpacity>
+          </View>
+
+          {/*----------- menu box -----------*/}
+
+          <View style={styles.memuArea}>
+            <LevelAndPhotoComponent title="Level" value={userLevel} />
+            <View style={styles.centerLine} />
+            <LevelAndPhotoComponent title="Photos" value={photoNum} />
+          </View>
         </View>
 
-        {/*----------- menu box -----------*/}
-        <View style={styles.memuArea}>
-          <LevelAndPhotoComponent title="Level" value={userLevel} />
-          <View style={styles.centerLine} />
-          <LevelAndPhotoComponent title="Photos" value={photoNum} />
-        </View>
-      </View>
+        {/*====================================== Content ======================================*/}
 
-      {/*====================================== Content ======================================*/}
-      <View style={styles.content}>
-        <ScrollView style={styles.scrollView}>
-          {/*----------- text -----------*/}
-          <View style={styles.textContainer}>
-            {/* <Text style={styles.mainText}>
+        <View style={styles.content}>
+          <ScrollView style={styles.scrollView}>
+            {/*----------- text -----------*/}
+
+            <View style={styles.textContainer}>
+              {/* <Text style={styles.mainText}>
               오늘도 행복한 {'\n'}하루 보내세요 !
             </Text> */}
-            <Text style={styles.mainText}>
-              포토리 성장까지{'\n'}
-              <Text style={styles.designText}>{leftPhotoForNextLevel}장 </Text>
-              남았어요 !
-            </Text>
-            {/* <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text> */}
-            <Text style={styles.subText}>
-              {userName === '' ? `user_410${deviceID}` : userName}랑 포토리는{' '}
-              {userLevel} ❤︎
-            </Text>
-          </View>
+              <Text style={styles.mainText}>
+                포토리 성장까지{'\n'}
+                <Text style={styles.designText}>
+                  {leftPhotoForNextLevel}장{' '}
+                </Text>
+                남았어요 !
+              </Text>
+              {/* <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text> */}
+              <Text style={styles.subText}>
+                {userName === '' ? `user_410${deviceID}` : userName}랑 포토리는{' '}
+                {userLevel} ❤︎
+              </Text>
+            </View>
 
-          {/*----------- rating -----------*/}
-          <View style={scale.container}>
-            <View style={scale.bubbleContainer}>
-              <View style={[scale.bubbleContent, {width: PercentageString}]}>
-                <Image source={setPotory} style={scale.bubbleImg} />
+            {/*----------- rating -----------*/}
+
+            <View style={scale.container}>
+              <View style={scale.bubbleContainer}>
+                <View style={[scale.bubbleContent, {width: PercentageString}]}>
+                  <Image source={setPotory} style={scale.bubbleImg} />
+                </View>
+              </View>
+
+              <View style={scale.barContainer}>
+                <View style={[scale.barContent, {width: PercentageString}]} />
+              </View>
+
+              <View style={scale.scaleContainer}>
+                <Image source={setScale} style={scale.scaleImg} />
               </View>
             </View>
+          </ScrollView>
+        </View>
 
-            <View style={scale.barContainer}>
-              <View style={[scale.barContent, {width: PercentageString}]} />
-            </View>
+        {/*================================ edit userName modal ================================*/}
 
-            <View style={scale.scaleContainer}>
-              <Image source={setScale} style={scale.scaleImg} />
-            </View>
+        <Modal animationType="fade" transparent={true} visible={modalVisible}>
+          <View style={modal.container}>
+            <TouchableOpacity
+              style={modal.content}
+              onPress={() => setModalVisible(false)}>
+              <AntDesign name="close" size={22} color="white" />
+            </TouchableOpacity>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              style={modal.modalKeyboard}>
+              <View style={modal.inputContainer}>
+                <TextInput
+                  value={newUserName}
+                  multiline={false}
+                  maxLength={10}
+                  style={modal.input}
+                  onChangeText={text => setNewUserName(text)}
+                />
+              </View>
+              <TouchableOpacity
+                style={modal.modalArrow}
+                onPress={connectAPI_editUserInfo_UserName}>
+                <AntDesign name="arrowright" size={20} color="#5b526d" />
+              </TouchableOpacity>
+            </KeyboardAvoidingView>
           </View>
-        </ScrollView>
+        </Modal>
       </View>
 
-      {/*================================= edit userName modal =================================*/}
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View style={modal.container}>
-          <TouchableOpacity
-            style={modal.content}
-            onPress={() => setModalVisible(false)}>
-            <AntDesign name="close" size={22} color="white" />
-          </TouchableOpacity>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={modal.modalKeyboard}>
-            <View style={modal.inputContainer}>
-              <TextInput
-                value={newUserName}
-                multiline={false}
-                maxLength={10}
-                style={modal.input}
-                onChangeText={text => setNewUserName(text)}
-              />
-            </View>
-            <TouchableOpacity
-              style={modal.modalArrow}
-              onPress={connectAPI_editUserInfo_UserName}>
-              <AntDesign name="arrowright" size={20} color="#5b526d" />
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </View>
-      </Modal>
-    </View>
+      {/*================================= loading =================================*/}
+
+      {loading && (
+        // <View style={styles.loadingPotory}>
+        <Loading />
+        // </View>
+      )}
+    </>
   );
 }
 export default React.memo(Content);

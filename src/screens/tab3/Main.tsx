@@ -1,8 +1,8 @@
-// React & Package
+/* React & Package */
 import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
 
-// custom component
+/* custom components */
 import Header from './components/Header';
 import Content from './components/Content';
 

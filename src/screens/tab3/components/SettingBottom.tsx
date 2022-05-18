@@ -1,4 +1,4 @@
-// React & Package
+/* React & Package */
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {ifIphoneX, getBottomSpace} from 'react-native-iphone-x-helper';
