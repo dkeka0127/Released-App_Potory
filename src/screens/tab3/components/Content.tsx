@@ -17,15 +17,15 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 
 /* custom components */
-import Loading from 'components/Loading';
-import Toast from 'components/Toast/Toast';
+import Loading from '../../../components/Loading';
+import Toast from '../../../components/Toast/Toast';
 
 /* api */
 import {
   api_checkDeviceExist,
   api_editDevice_name,
   api_editDevice_profile,
-} from 'core/api/Module';
+} from '../../../core/api/Module';
 
 /* variable */
 const deviceHeight = Dimensions.get('window').height;
@@ -294,7 +294,7 @@ function Content() {
               오늘도 행복한 {'\n'}하루 보내세요 !
             </Text> */}
               <Text style={styles.mainText}>
-                포토리 성장까지{'\n'}
+                포토리 완주까지{'\n'}
                 <Text style={styles.designText}>
                   {leftPhotoForNextLevel}장{' '}
                 </Text>

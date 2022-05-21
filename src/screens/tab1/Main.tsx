@@ -12,10 +12,10 @@ import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /* custom components */
 import Dropdown from './components/DropDown';
+import Toast from '../../components/Toast/Toast';
 
 /* api */
-import {api_storeList, api_localKakao_storeList} from 'core/api/Module';
-import Toast from 'components/Toast/Toast';
+import {api_storeList, api_localKakao_storeList} from '../../core/api/Module';
 
 function MainHome() {
   const [x, setX] = useState<any>();
@@ -82,8 +82,8 @@ function MainHome() {
   };
 
   const researchStore = () => {
-    setTouchDisable(true);
     geoLocation();
+    setTouchDisable(true);
     Toast.show(`현 위치에서 ${storeName} 이(가) 재검색 되었습니다.`);
     setTimeout(() => {
       setTouchDisable(false);

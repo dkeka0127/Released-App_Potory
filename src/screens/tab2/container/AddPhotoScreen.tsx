@@ -215,14 +215,16 @@ function AddPhotoScreen() {
                   <TouchableOpacity
                     style={[styles.modalTextCon, styles.modalDivideLine]}
                     onPress={openGallery}>
-                    <Text>갤러리에서 사진 선택</Text>
+                    <Text style={styles.modalText}>갤러리</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     style={styles.modalTextCon}
                     onPress={openQRScreen}>
-                    <Text>QR 코드로 사진 저장</Text>
-                    <Text>초점을 맞춘 후 3초간 기다려주세요 :)</Text>
+                    <Text style={styles.modalText}>QR</Text>
+                    <Text style={styles.modalSubText}>
+                      초점을 맞춘 후 3초간 기다려주세요 :)
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </Modal>
@@ -318,11 +320,11 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: 250,
-    height: 150,
+    height: 170,
     paddingTop: 5,
     paddingBottom: 5,
     backgroundColor: '#fff',
-    borderRadius: 20,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -335,6 +337,15 @@ const styles = StyleSheet.create({
   modalDivideLine: {
     borderBottomColor: '#aaa',
     borderBottomWidth: 1,
+  },
+  modalText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  modalSubText: {
+    marginTop: 7,
+    color: '#555',
+    fontSize: 13,
   },
 });
 

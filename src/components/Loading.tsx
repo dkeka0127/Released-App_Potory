@@ -3,8 +3,7 @@ import React from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-// const loadingImg = require('../assets/images/potory/loading.gif');
-const loadingImg = require('../assets/images/potory/loading1.gif');
+const loadingImg = require('../assets/images/potory/loading_opacity.gif');
 
 /* variable */
 const deviceWidth = Dimensions.get('window').width;
