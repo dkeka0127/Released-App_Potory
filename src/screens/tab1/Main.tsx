@@ -1,96 +1,151 @@
+/* React & packages */
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import NaverMapView, {
-  Circle,
-  Marker,
-  Path,
-  Polyline,
-  Polygon,
-} from 'react-native-nmap';
-// import Geocode from 'react-geocode';
-// Page
-import DropBox from './components/DropBox';
+import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import NaverMapView, {Marker} from 'react-native-nmap';
+import Geolocation from 'react-native-geolocation-service';
+
+/* icons */
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+/* custom components */
 import Dropdown from './components/DropDown';
 
-// Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-// Geocode.setLanguage('en');
-// Geocode.setRegion('es');
-// Geocode.enableDebug();
-
-const data = ['전체', '인생네컷', '포토이즘', '포토시그니처'];
+/* api */
+import {api_storeList, api_localKakao_storeList} from 'core/api/Module';
+import Toast from 'components/Toast/Toast';
 
 function MainHome() {
-  const [storeName, setStoreName] = useState(data[0]);
+  const [x, setX] = useState<any>();
+  const [y, setY] = useState<any>();
 
-  const P0 = {latitude: 37.564362, longitude: 126.977011};
-  const P1 = {latitude: 37.565051, longitude: 126.978567};
-  const P2 = {latitude: 37.565383, longitude: 126.976292};
+  const [storeName, setStoreName] = useState('전체');
+  const [storeNameList, setStoreNameList] = useState([]);
+  const [storeLocationList, setStoreLocationList] = useState([]);
 
-  // api
-  const x = 35.1638268;
-  const y = 129.1314613;
+  const [touchDisable, setTouchDisable] = useState(false);
+  const [isPopupShown, setIsPopupShown] = useState(false);
+  const [clickedStoreInfo, setClickedStoreInfo] = useState<any>();
+
+  // useEffect
+  useEffect(() => {
+    geoLocation();
+    getStoreNameList();
+  }, []);
 
   useEffect(() => {
-    if (storeName === '전체') {
-      setStoreName('사진관');
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization('always');
     }
-  }, [storeName]);
+  }, []);
 
-  // axios
-  //   .get(
-  //     `https://dapi.kakao.com/v2/local/search/keyword.json?y=${y}&x=${x}&radius=20000&query=${storeName}&size=10&sort=distance`,
-  //     {
-  //       headers: {
-  //         Authorization: 'KakaoAK d5060c5e465b9767dfc59ff7924c961c',
-  //       },
-  //     },
-  //   )
-  //   .then(res => {
-  //     console.log('res ......', res.data.documents);
-  //   })
-  //   .catch(err => {
-  //     console.log('err ......', err);
-  //   });
+  useEffect(() => {
+    setIsPopupShown(false);
+    getLocationFromKakaoAPI();
+  }, [storeName, x, y]);
+
+  // api
+  const getStoreNameList = () => {
+    api_storeList()
+      .then(res => setStoreNameList(res.data.data))
+      .catch(err => console.log('api_storeList Err', err));
+  };
+
+  const getLocationFromKakaoAPI = () => {
+    const _storeName = storeName === '전체' ? '사진' : storeName;
+
+    api_localKakao_storeList(x, y, _storeName)
+      .then(res => {
+        setStoreLocationList(res.data.documents);
+        console.log('res.data.documents.length', res.data.documents.length);
+      })
+      .catch(err => console.log('api_localKakao_storeList Err == ', err));
+  };
 
   // function
   const getDropDownItem = (value: string) => setStoreName(value);
 
+  const geoLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        setX(latitude);
+        setY(longitude);
+      },
+      error => console.log(error.code, error.message),
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+
+  const researchStore = () => {
+    setTouchDisable(true);
+    geoLocation();
+    Toast.show(`현 위치에서 ${storeName} 이(가) 재검색 되었습니다.`);
+    setTimeout(() => {
+      setTouchDisable(false);
+    }, 2000);
+  };
+
+  console.log(clickedStoreInfo);
+
   return (
     <View style={styles.container}>
+      {/* DropBox */}
+
+      <Dropdown data={storeNameList} getDropDownItem={getDropDownItem} />
+
+      {/* ReSearch */}
+
+      <TouchableOpacity
+        disabled={touchDisable}
+        style={styles.reSearchContainer}
+        onPress={researchStore}>
+        <CommunityIcons name={'replay'} size={23} color="#black" />
+      </TouchableOpacity>
+
+      {/* Popup */}
+
+      {isPopupShown && (
+        <View style={styles.popup}>
+          <View style={styles.popupContent1}>
+            <MaterialIcons name={'storefront'} size={23} color="#black" />
+            <Text style={styles.popupText1}>{clickedStoreInfo.place_name}</Text>
+          </View>
+          <View style={styles.popupContent2}>
+            <Feather name={'flag'} size={22} color="#black" />
+            <Text style={styles.popupText2}>{clickedStoreInfo.distance} m</Text>
+          </View>
+        </View>
+      )}
+
+      {/* MapView */}
+
       <NaverMapView
         style={styles.mapContainer}
         showsMyLocationButton={true}
-        center={{...P0, zoom: 16}}>
-        {/* DropBox */}
-
-        <Dropdown data={data} getDropDownItem={getDropDownItem} />
-
+        onMapClick={() => setIsPopupShown(false)}
+        center={{...{latitude: x, longitude: y}, zoom: 16}}>
         {/* Marker */}
 
-        <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')} />
-
-        {/* map으로 스토어 marker 렌더링 */}
-
-        {/* {data.map((val, id) => {
+        {storeLocationList.map((val, id) => {
           return (
             <Marker
-              coordinate={{latitude: val.lat, longitude: val.lng}}
-              pinColor="blue"
-              key={id + '_' + Date.now()}
-              onClick={() => {}}
+              coordinate={{latitude: Number(val.y), longitude: Number(val.x)}}
+              pinColor="purple"
+              key={val.id}
+              onClick={() => {
+                setClickedStoreInfo(val);
+                setIsPopupShown(true);
+              }}
+              width={30}
+              height={40}
             />
           );
-        })} */}
-
-        {/* Path */}
-
-        <Path
-          coordinates={[P0, P1]}
-          onClick={() => console.warn('onClick! path')}
-          width={5}
-        />
+        })}
       </NaverMapView>
     </View>
   );
@@ -104,6 +159,64 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
+    paddingTop: 70,
+    paddingLeft: 15,
+  },
+  reSearchContainer: {
+    position: 'absolute',
+    bottom: 110,
+    left: 12,
+    width: 47,
+    height: 47,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    zIndex: 1000,
+
+    // 그림자
+    elevation: 3,
+    shadowOpacity: 0.4,
+    shadowColor: '#666',
+    shadowOffset: {width: 0, height: 0},
+  },
+  popup: {
+    position: 'absolute',
+    bottom: 40,
+    right: 15,
+    width: 200,
+    height: 100,
+    borderRadius: 12,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    backgroundColor: '#fff',
+    zIndex: 1000,
+
+    // 그림자
+    elevation: 3,
+    shadowOpacity: 0.6,
+    shadowColor: '#888',
+    shadowOffset: {width: 0, height: 0},
+  },
+  popupContent1: {
+    padding: 13,
+    paddingTop: 16,
+    paddingBottom: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  popupContent2: {
+    padding: 13,
+    paddingTop: 8,
+    paddingBottom: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  popupText1: {
+    width: 145,
+    marginLeft: 7,
+  },
+  popupText2: {
+    marginLeft: 7,
   },
 });
 

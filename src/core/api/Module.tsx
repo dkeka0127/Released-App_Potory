@@ -164,6 +164,23 @@ export async function api_noticeList() {
 // ****************************************** 스토어 ******************************************
 
 export async function api_storeList() {
-  const response = await axios.get('/store', axiosConfig);
+  const response = await axios.get('/map/category', axiosConfig);
+  return response;
+}
+
+export async function api_localKakao_storeList(
+  x: number,
+  y: number,
+  storeName: string,
+) {
+  const response = await axios.get(
+    `https://dapi.kakao.com/v2/local/search/keyword.json?y=${x}&x=${y}&radius=20000&query=${storeName}&size=15&sort=distance`,
+    {
+      headers: {
+        Authorization: 'KakaoAK d5060c5e465b9767dfc59ff7924c961c',
+      },
+    },
+  );
+
   return response;
 }

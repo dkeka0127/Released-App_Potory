@@ -23,9 +23,9 @@ import AddContentButton from './components/AddContentButton';
 import {api_getPhotoList} from 'core/api/Module';
 
 // variable
-import {getAsyncStorage_userIdx} from '../../core/UserInfo';
 const HEADER_HEIGHT = 80;
 const deviceWidth = Dimensions.get('window').width;
+import {getAsyncStorage_userIdx} from '../../core/UserInfo';
 import {polaroid_gray, polaroid_black} from '../../core/Polaroid';
 
 interface AsyncProps {
@@ -92,7 +92,7 @@ function Main() {
     api_getPhotoList(userIdx)
       .then(res => {
         setPhotoListData(res.data.data);
-        console.log('get photo list Success == ', res.data.data);
+        console.log('get photo list Success == ');
       })
       .catch(err => {
         console.log('get photo list Err == ', err);
