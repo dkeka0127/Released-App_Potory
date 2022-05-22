@@ -17,14 +17,14 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 /* custom components */
-import Loading from 'components/Loading';
-import Toast from 'components/Toast/Toast';
+import Loading from '../../../components/Loading';
+import Toast from '../../../components/Toast/Toast';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 /* api */
-import {api_editPhoto} from 'core/api/Module';
-import {getAsyncStorage_userIdx} from 'core/UserInfo';
+import {api_editPhoto} from '../../../core/api/Module';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 // image
 const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
@@ -106,12 +106,10 @@ function EditPhotoScreen({route}: any) {
             <SafeAreaView style={styles.SafeAreaView}>
               {/*========================= header =========================*/}
 
-              <TouchableOpacity disabled={touchable}>
-                <CustomDateHeader
-                  date={preDate}
-                  getChangedDate={getChangedDate}
-                />
-              </TouchableOpacity>
+              <CustomDateHeader
+                date={preDate}
+                getChangedDate={getChangedDate}
+              />
 
               {/*========================= photo =========================*/}
 

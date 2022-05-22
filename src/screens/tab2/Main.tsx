@@ -20,7 +20,7 @@ import AddContentButton from './components/AddContentButton';
 
 /* api */
 
-import {api_getPhotoList} from 'core/api/Module';
+import {api_getPhotoList} from '../../core/api/Module';
 
 // variable
 const HEADER_HEIGHT = 80;

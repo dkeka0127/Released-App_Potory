@@ -23,8 +23,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 // } from '@react-native-seoul/kakao-login';
 
 /* api */
-import {api_deleteDevice} from 'core/api/Module';
-import {getAsyncStorage_userIdx} from 'core/UserInfo';
+import {api_deleteDevice} from '../../../core/api/Module';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 // variable
 const IconSize = 17;

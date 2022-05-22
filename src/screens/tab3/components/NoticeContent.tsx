@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 
 /* custom components */
-import Loading from 'components/Loading';
+import Loading from '../../../components/Loading';
 
 /* api */
 import {api_noticeList} from '../../../../src/core/api/Module';

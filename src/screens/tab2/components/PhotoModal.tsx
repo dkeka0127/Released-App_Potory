@@ -14,10 +14,10 @@ import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
 
 /* custom components */
-import Toast from 'components/Toast/Toast';
+import Toast from '../../../components/Toast/Toast';
 
 // hooks
-import {getAsyncStorage_userIdx} from 'core/UserInfo';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 /* api */
 import {api_deletePhoto} from '../../../core/api/Module';

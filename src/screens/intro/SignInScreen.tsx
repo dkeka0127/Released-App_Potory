@@ -20,7 +20,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 
 /* custom components */
-import Toast from 'components/Toast/Toast';
+import Toast from '../../components/Toast/Toast';
 
 /* api */
 import {api_registDevice} from '../../core/api/Module';

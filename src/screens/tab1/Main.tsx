@@ -135,7 +135,7 @@ function MainHome() {
           return (
             <Marker
               coordinate={{latitude: Number(val.y), longitude: Number(val.x)}}
-              pinColor="purple"
+              pinColor="#68616d"
               key={val.id}
               onClick={() => {
                 setClickedStoreInfo(val);
@@ -143,6 +143,7 @@ function MainHome() {
               }}
               width={30}
               height={40}
+              image={require('../../assets/images/icons/location_pin.png')}
             />
           );
         })}
