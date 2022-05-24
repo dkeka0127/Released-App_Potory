@@ -20,15 +20,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 /* custom components */
-import Loading from 'components/Loading';
+import Loading from '../../../components/Loading';
 import QRCodeScanner from './QRCodeScreen';
 import Toast from '../../../components/Toast/Toast';
 import CustomDateHeader from '../../../components/header/CustomDateHeader';
 import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 //api
-import {getAsyncStorage_userIdx} from 'core/UserInfo';
-import {api_registPhoto, api_registPhotoByQR} from 'core/api/Module';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
+import {api_registPhoto, api_registPhotoByQR} from '../../../core/api/Module';
 
 // image & icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -45,20 +45,17 @@ const galleryOption = {
     selectionLimit: 1,
   },
   quality: 1,
-  // noData: true,
-  // maxWidth: 200,
-  // maxHeight: 200,
   selectionLimit: 1,
-  // includeBase64: false,
 };
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
-  const [touchable, setTouchable] = useState(false);
   const [userIdx, setUseIdx] = useState<any>();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
+
   const [loading, setLoading] = useState(false);
   const [photoOrQR, setPhotoOrQr] = useState('');
+  const [touchable, setTouchable] = useState(false);
   const [qrScreenIsOpen, setQRScreenIsOpen] = useState(false);
 
   const [memo, setMemo] = useState('');
@@ -70,6 +67,7 @@ function AddPhotoScreen() {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   // useEffect (* keyboard)
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -87,6 +85,7 @@ function AddPhotoScreen() {
   }, []);
 
   // function
+
   const receiveAsyncDateFromHeader = (value: string) => setDate(value);
 
   const openGallery = async () => {
@@ -103,11 +102,13 @@ function AddPhotoScreen() {
       }
     });
   };
+
   const openQRScreen = () => {
     setPhotoOrQr('qr');
     setShownModal(false);
     setQRScreenIsOpen(true);
   };
+
   const getQRLink = (value: string) => {
     setQRScreenIsOpen(false);
 
@@ -117,12 +118,18 @@ function AddPhotoScreen() {
         console.log('api_registPhotoByQR Success == ', res.data.data);
       })
       .catch(err => {
-        Toast.show(
-          '사진을 불러오는 도중 오류가 발생하였습니다.\n다시 시도해주세요.',
-        );
+        if (err.code === 404) {
+          Toast.show('QR코드의 기간이 만료되었습니다.');
+        } else {
+          Toast.show(
+            '사진을 불러오는 도중 오류가 발생하였습니다.\n네트워크 연결을 확인해주세요.',
+          );
+        }
         console.log('api_registPhotoByQR Err == ', err);
       });
   };
+
+  // api
 
   const sendDataToAPI = async () => {
     // 사진 미등록
@@ -427,13 +434,15 @@ const area = StyleSheet.create({
     flex: 1,
     color: 'black',
     fontSize: 15,
-    // fontWeight: '600',
     lineHeight: 20,
-    // letterSpacing: -0.7,
     paddingLeft: '5%',
     paddingRight: '5%',
     paddingBottom: 10,
     borderRadius: 10,
+    // letterSpacing: -0.7,
+
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
   bottomSection: {
     flex: 1.8,

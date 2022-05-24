@@ -248,13 +248,15 @@ const area = StyleSheet.create({
     flex: 1,
     color: 'black',
     fontSize: 15,
-    // fontWeight: '600',
     lineHeight: 20,
-    // letterSpacing: -0.7,
     paddingLeft: '5%',
     paddingRight: '5%',
     paddingBottom: 10,
     borderRadius: 10,
+    // letterSpacing: -0.7,
+
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
   bottomSection: {
     flex: 1.8,

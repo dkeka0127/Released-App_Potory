@@ -46,7 +46,7 @@ function NoticeContent() {
     api_noticeList()
       .then(res => {
         setNoticeListData(res.data.data);
-        console.log('Notice List Success == ', res.data.data);
+        console.log('Notice List Success == ');
       })
       .catch(err => {
         console.log('Notice List Err == ', err);

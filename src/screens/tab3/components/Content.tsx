@@ -30,6 +30,13 @@ import {
 /* variable */
 const deviceHeight = Dimensions.get('window').height;
 import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
+const fightingMessage = [
+  {message: '포토리가 응원해요 🤍'},
+  {message: '영차영차 💨'},
+  {message: '가보자고 🚀'},
+  {message: '아자아자 🙌🏻'},
+  {message: '화이팅 💪🏻'},
+];
 
 /* icons */
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -290,9 +297,6 @@ function Content() {
             {/*----------- text -----------*/}
 
             <View style={styles.textContainer}>
-              {/* <Text style={styles.mainText}>
-              오늘도 행복한 {'\n'}하루 보내세요 !
-            </Text> */}
               <Text style={styles.mainText}>
                 포토리 완주까지{'\n'}
                 <Text style={styles.designText}>
@@ -300,10 +304,9 @@ function Content() {
                 </Text>
                 남았어요 !
               </Text>
-              {/* <Text style={styles.subText}>포토리가 {userName} 응원해 💛</Text> */}
+
               <Text style={styles.subText}>
-                {userName === '' ? `user_410${deviceID}` : userName}랑 포토리는{' '}
-                {userLevel} ❤︎
+                {fightingMessage[Math.floor(Math.random() * 5)].message}
               </Text>
             </View>
 
@@ -372,7 +375,7 @@ export default React.memo(Content);
 
 const navFlex = 3.2;
 const contentFlex = 5.5;
-const fontColor = '#362f44';
+const fontColor = '#41345b';
 const barPointColor = '#fdfcff';
 const barBackgroundColor = '#8273a0';
 const backgroundColor = '#fdfcff';
@@ -431,6 +434,9 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     paddingLeft: 17,
     paddingRight: 7,
+
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
   memuArea: {
     width: '80%',
@@ -517,6 +523,9 @@ const styles = StyleSheet.create({
     lineHeight: 37,
     // letterSpacing: -0.74,
     textAlign: 'center',
+
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
   designText: {
     color: fontColor,
@@ -527,6 +536,10 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     fontWeight: '300',
     letterSpacing: -0.64,
+
+    fontFamily: 'Octicons',
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
 });
 

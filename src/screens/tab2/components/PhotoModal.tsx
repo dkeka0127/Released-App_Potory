@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 /* custom components */
 import Toast from '../../../components/Toast/Toast';
 
-// hooks
+/* hooks */
 import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
 /* api */
@@ -25,7 +25,7 @@ import {api_deletePhoto} from '../../../core/api/Module';
 /* icons */
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// variable
+/* variable */
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const ModalWidth = deviceWidth * 0.85;
@@ -111,6 +111,7 @@ function PhotoModal({
       backdropOpacity={0.7}
       onBackdropPress={() => setShownModal(false)}>
       {/*===================== header =====================*/}
+
       <View style={styles.header}>
         <View style={styles.haederTextCon}>
           {/* <View style={styles.headerCircleShape} /> */}
@@ -129,6 +130,7 @@ function PhotoModal({
       </View>
 
       {/*====================== image ======================*/}
+
       <View style={styles.image}>
         <ImageModal
           style={styles.imageModal}
@@ -140,6 +142,7 @@ function PhotoModal({
       </View>
 
       {/*====================== text ======================*/}
+
       <View style={styles.text}>
         <ScrollView
           style={styles.textScrollView}
@@ -189,8 +192,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   headerText: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '500',
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
   headerIcon: {
     flexDirection: 'row',
@@ -245,5 +250,8 @@ const styles = StyleSheet.create({
   textStyle: {
     paddingTop: 0,
     paddingBottom: 20,
+    letterSpacing: 0.2,
+    // fontFamily: '강원교육새음',
+    // fontFamily: 'PoorStory-Regular',
   },
 });

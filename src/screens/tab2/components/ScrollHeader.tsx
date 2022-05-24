@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import Toast from 'components/Toast/Toast';
+
 /* icons */
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -71,6 +73,7 @@ function Header({
   // 편집 || 저장 동작 함수
   const EditOrSaveF = () => {
     setIsEdit(!isEdit);
+    !isEdit && Toast.show('수정 완료 후 저장 버튼을 눌러주세요.');
     isEdit && setColorAsync();
   };
 
@@ -175,9 +178,11 @@ const styles = StyleSheet.create({
   appNameFont: {
     paddingLeft: 5,
     paddingRight: 10,
-    fontStyle: 'italic',
     fontSize: 17,
     fontWeight: '300',
+    letterSpacing: 0.45,
+
+    // fontFamily: 'Baloo2-VariableFont_wght',
   },
   toolCon: {
     height: '100%',

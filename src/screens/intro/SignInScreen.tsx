@@ -117,11 +117,13 @@ function SignInScreen({isLoginF}: Props) {
       <View style={styles.content} />
 
       {/*============================= Image =============================*/}
+
       <View style={styles.logoContent}>
         <Image source={potoryImg} style={styles.logoImg} />
       </View>
 
       {/*============================= Login =============================*/}
+
       <View style={styles.loginContent}>
         {/*---------------- Kakao ----------------*/}
         <TouchableOpacity
@@ -141,6 +143,7 @@ function SignInScreen({isLoginF}: Props) {
           </TouchableOpacity>
         )}
       </View>
+
       <View style={styles.content} />
     </SafeAreaView>
   );
@@ -210,7 +213,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// [Apple Login] try / catch 문의 try
+// [Apple Login] try / catch 문 : try
 
 // const {
 //   user: newUser,

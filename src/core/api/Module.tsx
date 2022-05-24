@@ -174,7 +174,7 @@ export async function api_localKakao_storeList(
   storeName: string,
 ) {
   const response = await axios.get(
-    `https://dapi.kakao.com/v2/local/search/keyword.json?y=${x}&x=${y}&radius=20000&query=${storeName}&size=15&sort=distance`,
+    `https://dapi.kakao.com/v2/local/search/keyword.json?y=${x}&x=${y}&radius=20000&query=${storeName}&size=10&sort=distance`,
     {
       headers: {
         Authorization: 'KakaoAK d5060c5e465b9767dfc59ff7924c961c',

@@ -18,8 +18,8 @@ import Toast from '../../components/Toast/Toast';
 import {api_storeList, api_localKakao_storeList} from '../../core/api/Module';
 
 function MainHome() {
-  const [x, setX] = useState<any>();
-  const [y, setY] = useState<any>();
+  const [x, setX] = useState<any>(37.564214);
+  const [y, setY] = useState<any>(127.0016985);
 
   const [storeName, setStoreName] = useState('전체');
   const [storeNameList, setStoreNameList] = useState([]);
@@ -90,7 +90,7 @@ function MainHome() {
     }, 2000);
   };
 
-  console.log(clickedStoreInfo);
+  console.log(x, y, clickedStoreInfo, storeName);
 
   return (
     <View style={styles.container}>
@@ -104,7 +104,7 @@ function MainHome() {
         disabled={touchDisable}
         style={styles.reSearchContainer}
         onPress={researchStore}>
-        <CommunityIcons name={'replay'} size={23} color="#black" />
+        <CommunityIcons name={'replay'} size={23} color="#000" />
       </TouchableOpacity>
 
       {/* Popup */}
@@ -112,11 +112,11 @@ function MainHome() {
       {isPopupShown && (
         <View style={styles.popup}>
           <View style={styles.popupContent1}>
-            <MaterialIcons name={'storefront'} size={23} color="#black" />
+            <MaterialIcons name={'storefront'} size={23} color="#000" />
             <Text style={styles.popupText1}>{clickedStoreInfo.place_name}</Text>
           </View>
           <View style={styles.popupContent2}>
-            <Feather name={'flag'} size={22} color="#black" />
+            <Feather name={'flag'} size={22} color="#000" />
             <Text style={styles.popupText2}>{clickedStoreInfo.distance} m</Text>
           </View>
         </View>
@@ -135,14 +135,13 @@ function MainHome() {
           return (
             <Marker
               coordinate={{latitude: Number(val.y), longitude: Number(val.x)}}
-              pinColor="#68616d"
               key={val.id}
               onClick={() => {
                 setClickedStoreInfo(val);
                 setIsPopupShown(true);
               }}
               width={30}
-              height={40}
+              height={42}
               image={require('../../assets/images/icons/location_pin.png')}
             />
           );

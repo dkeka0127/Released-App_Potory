@@ -12,6 +12,7 @@ import FastImage from 'react-native-fast-image';
 import {useFocusEffect} from '@react-navigation/native';
 
 /* custom components */
+import Toast from 'components/Toast/Toast';
 import Loading from '../../components/Loading';
 import PhotoModal from './components/PhotoModal';
 import ScrollHeader from './components/ScrollHeader';
@@ -19,7 +20,6 @@ import EmptyDataScreen from './container/EmptyDataScreen';
 import AddContentButton from './components/AddContentButton';
 
 /* api */
-
 import {api_getPhotoList} from '../../core/api/Module';
 
 // variable
@@ -36,9 +36,11 @@ interface AsyncProps {
 
 function Main() {
   const [photoListData, setPhotoListData] = useState<any>([]);
-  const polaroidSortRandomly = photoListData.map(() => {
-    return Math.floor(Math.random() * 12); // 폴라로이드 랜덤 배정
-  });
+  let [photoListArr, setPhotoListArr] = useState([]);
+  // const polaroidSortRandomly = photoListData.map(() => {
+  //   return Math.floor(Math.random() * 12); // 폴라로이드 랜덤 배정
+  // });
+
   const [userIdx, setUseIdx] = useState<any>();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
@@ -76,6 +78,7 @@ function Main() {
   const polaroidWidth = (deviceWidth - flatListPadding * 2) / grid;
 
   // useEffect
+
   useFocusEffect(
     React.useCallback(() => {
       if (userIdx) connectAPI();
@@ -83,11 +86,22 @@ function Main() {
   );
 
   useEffect(() => {
+    let a: any = [];
+    if (photoListData.length !== 0) {
+      photoListData.map(() => {
+        a.push(Math.floor(Math.random() * 12));
+      });
+      setPhotoListArr(a);
+    }
+  }, [photoListData]);
+
+  useEffect(() => {
     if (isModalShown) setIsModalShown(false);
     else return;
   }, [isModalShown]);
 
-  /* api */
+  // api
+
   const connectAPI = () => {
     api_getPhotoList(userIdx)
       .then(res => {
@@ -96,12 +110,16 @@ function Main() {
       })
       .catch(err => {
         console.log('get photo list Err == ', err);
+        Toast.show(
+          '사진을 불러오는데 실패하였습니다.\n앱 종료 후 재시도해주세요.',
+        );
       });
 
     return;
   };
 
   // function
+
   const gridPress = (value: number) => setGrid(value);
 
   const sequencePress = (value: string) => setSequence(value);
@@ -149,8 +167,8 @@ function Main() {
           resizeMode="contain"
           source={
             bgColor === '#111'
-              ? polaroid_black[polaroidSortRandomly[index]].uri
-              : polaroid_gray[polaroidSortRandomly[index]].uri
+              ? polaroid_black[photoListArr[index]].uri
+              : polaroid_gray[photoListArr[index]].uri
           }
           style={[
             renderItem.container,
@@ -190,9 +208,61 @@ function Main() {
     );
   };
 
+  const useCallbackRenderItem = useCallback(
+    ({item, index}) => {
+      return (
+        <>
+          <FastImage
+            resizeMode="contain"
+            source={
+              bgColor === '#111'
+                ? polaroid_black[photoListArr[index]].uri
+                : polaroid_gray[photoListArr[index]].uri
+            }
+            style={[
+              renderItem.container,
+              {
+                width: polaroidWidth,
+                height: polaroidWidth * 1.18,
+              },
+            ]}>
+            <TouchableOpacity
+              style={{
+                marginTop: -(polaroidWidth * 0.14),
+                marginLeft: -3,
+                width: polaroidWidth * 0.55,
+                height: polaroidWidth * 0.5,
+              }}
+              onPress={() => {
+                setIsModalShown(true);
+                setModalImageInfo(item);
+              }}>
+              <FastImage
+                resizeMode="contain"
+                source={{uri: item.photo_url}}
+                style={renderItem.photo}
+              />
+            </TouchableOpacity>
+          </FastImage>
+          {index === photoListData.length - 1 && (
+            <View
+              style={{
+                width: polaroidWidth,
+                height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+                marginBottom: 100,
+              }}
+            />
+          )}
+        </>
+      );
+    },
+    [photoListArr],
+  );
+
   return (
     <View style={styles.container}>
       {/*======================= header =======================*/}
+
       <Animated.View
         style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
         onLayout={event => headerScrollEvent(event)}>
@@ -206,30 +276,36 @@ function Main() {
       </Animated.View>
 
       {/*======================= content =======================*/}
-      <Animated.FlatList
-        key={grid}
-        ref={flatListRef}
-        renderItem={RenderItem}
-        style={styles.flatList}
-        bounces={false}
-        numColumns={grid} // grid 개수
-        windowSize={12} // 추가 렌더링 개수
-        initialNumToRender={15} // 초기 랜더링 개수
-        // maxToRenderPerBatch={15} // 스크롤 시 렌더링 할 항목 (기본값 10)
-        keyExtractor={keyExtractor}
-        data={sequence === 'new' ? photoListData : photoListData.reverse()}
-        ListEmptyComponent={EmptyDataScreen}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {y: scrollAnim},
+
+      {photoListArr.length === photoListData.length && (
+        <Animated.FlatList
+          key={grid}
+          ref={flatListRef}
+          renderItem={useCallbackRenderItem}
+          style={styles.flatList}
+          bounces={false}
+          numColumns={grid} // grid 개수
+          windowSize={12} // 추가 렌더링 개수
+          initialNumToRender={15} // 초기 랜더링 개수
+          // maxToRenderPerBatch={15} // 스크롤 시 렌더링 할 항목 (기본값 10)
+          keyExtractor={keyExtractor}
+          data={sequence === 'new' ? photoListData : photoListData.reverse()}
+          ListEmptyComponent={EmptyDataScreen}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {y: scrollAnim},
+                },
               },
-            },
-          ],
-          {useNativeDriver: true},
-        )}
-      />
+            ],
+            {useNativeDriver: true},
+          )}
+        />
+      )}
+
+      {/*======================== modal ========================*/}
+
       <PhotoModal
         isModalShown={isModalShown}
         modalImageInfo={modalImageInfo}
@@ -237,6 +313,7 @@ function Main() {
       />
 
       {/*======================= Footer =======================*/}
+
       <AddContentButton />
     </View>
   );
@@ -282,53 +359,3 @@ const renderItem = StyleSheet.create({
     flex: 1,
   },
 });
-
-// useCallback 이 추가된 renderItem
-
-// const _renderItem = useCallback(({item, index}) => {
-//   return (
-//     <>
-//       <FastImage
-//         resizeMode="contain"
-//         source={
-//           bgColor === '#111'
-//             ? polaroid_black[polaroidSortRandomly[index]].uri
-//             : polaroid_gray[polaroidSortRandomly[index]].uri
-//         }
-//         style={[
-//           renderItem.container,
-//           {
-//             width: polaroidWidth,
-//             height: polaroidWidth * 1.18,
-//           },
-//         ]}>
-//         <TouchableOpacity
-//           style={{
-//             marginTop: -(polaroidWidth * 0.14),
-//             marginLeft: -3,
-//             width: polaroidWidth * 0.55,
-//             height: polaroidWidth * 0.5,
-//           }}
-//           onPress={() => {
-//             setIsModalShown(true);
-//             setModalImageInfo(item);
-//           }}>
-//           <FastImage
-//             resizeMode="contain"
-//             source={{uri: item.photo_url}}
-//             style={renderItem.photo}
-//           />
-//         </TouchableOpacity>
-//       </FastImage>
-//       {index === photoListData.length - 1 && (
-//         <View
-//           style={{
-//             width: polaroidWidth,
-//             height: grid !== 1 ? polaroidWidth * 1.18 : 0,
-//             marginBottom: 100,
-//           }}
-//         />
-//       )}
-//     </>
-//   );
-// }, []);
