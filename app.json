@@ -1,4 +1,8 @@
 {
   "name": "lifeRecordProject",
-  "displayName": "lifeRecordProject"
+  "displayName": "lifeRecordProject",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-7203856140151966~4229702044",
+    "ios_app_id": "ca-app-pub-7203856140151966~4229702044"
+  }
 }

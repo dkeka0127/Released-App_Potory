@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 /* custom components */
 import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
+import mobileAds from 'react-native-google-mobile-ads';
 
 // variable
 const lottiePath = require('./src/assets/lottie/splash.json');
@@ -27,6 +28,12 @@ function App() {
   // useEffect
   useEffect(() => {
     SplashScreen.hide();
+
+    // 광고 sdk 초기화
+    mobileAds()
+      .initialize()
+      .then(res => console.log('AdMob initialize complete == '))
+      .catch(err => console.log('AdMob initialize err!', err));
 
     setTimeout(() => {
       getUserInfoAsync();
@@ -40,13 +47,13 @@ function App() {
 
       if (UserInfo === null) {
         setAutoLogin(false);
-        console.log('UserInfo == null 로그인 창으로 !');
+        console.log('UserInfo == null & 로그인');
       } else if (!UserInfo.autoLogin) {
         setAutoLogin(false);
-        console.log(' 로그인 창으로 이동 !', UserInfo);
+        console.log('UserInfo == true & 로그인', UserInfo);
       } else if (UserInfo.autoLogin) {
         setAutoLogin(true);
-        console.log(' 자동 로그인 !', UserInfo);
+        console.log('자동 로그인', UserInfo);
       }
     });
   };
@@ -57,6 +64,7 @@ function App() {
     <NavigationContainer>
       {autoLogin === null ? (
         // Splash Image
+
         <LottieView
           autoPlay
           speed={1}
@@ -66,9 +74,11 @@ function App() {
         />
       ) : autoLogin ? (
         // Home Screen
+
         <RootScreen />
       ) : (
         // Login Screen
+
         <SignInScreen isLoginF={isLoginCheck} />
       )}
     </NavigationContainer>

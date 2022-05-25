@@ -33,6 +33,19 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+
+	<!-- Sample AdMob App ID: ca-app-pub-3940256099942544~1458002511 -->
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-7203856140151966~4229702044</string>
+	<!-- <string>ca-app-pub-7203856140151966/4393353573</string> -->
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
+
 	<key>KAKAO_APP_KEY</key>
 	<string>cff9a8e0a7303367f3d6e7e7a417d6c4</string>
 	<key>LSApplicationQueriesSchemes</key>
