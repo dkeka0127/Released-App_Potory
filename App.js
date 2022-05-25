@@ -11,13 +11,13 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import LottieView from 'lottie-react-native';
 import SplashScreen from 'react-native-splash-screen';
+import mobileAds from 'react-native-google-mobile-ads';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 /* custom components */
 import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
-import mobileAds from 'react-native-google-mobile-ads';
 
 // variable
 const lottiePath = require('./src/assets/lottie/splash.json');

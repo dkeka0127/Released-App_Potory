@@ -19,6 +19,16 @@ import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {launchImageLibrary} from 'react-native-image-picker';
 
+/* AdMob */
+import mobileAds, {
+  MaxAdContentRating,
+  AppOpenAd,
+  InterstitialAd,
+  RewardedAd,
+  TestIds,
+  AdEventType,
+} from 'react-native-google-mobile-ads';
+
 /* custom components */
 import Loading from '../../../components/Loading';
 import QRCodeScanner from './QRCodeScreen';
@@ -47,6 +57,18 @@ const galleryOption = {
   quality: 1,
   selectionLimit: 1,
 };
+// 광고 단위 ID
+const adUnitId = __DEV__
+  ? TestIds.INTERSTITIAL
+  : 'ca-app-pub-7203856140151966/4393353573';
+
+const AdMob_interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+});
+
+//
+//
+//
 
 function AddPhotoScreen() {
   const navigation = useNavigation();
@@ -54,6 +76,7 @@ function AddPhotoScreen() {
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   const [loading, setLoading] = useState(false);
+  const [adMobOpen, setAdMobOpen] = useState(true);
   const [photoOrQR, setPhotoOrQr] = useState('');
   const [touchable, setTouchable] = useState(false);
   const [qrScreenIsOpen, setQRScreenIsOpen] = useState(false);
@@ -66,9 +89,11 @@ function AddPhotoScreen() {
   const [shownModal, setShownModal] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  // useEffect (* keyboard)
+  // useEffect (* admob & keyboard)
 
   useEffect(() => {
+    AdMob_interstitial.load();
+
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => setKeyboardVisible(true),
@@ -133,38 +158,45 @@ function AddPhotoScreen() {
 
   const sendDataToAPI = async () => {
     // 사진 미등록
-    if (imageUri === null) {
-      Toast.show('사진을 선택해주세요.');
-    }
-    // 사진 저장
+    if (imageUri === null) Toast.show('사진을 선택해주세요.');
+    // 사진 등록
     else {
-      const formdata = new FormData();
+      AdMob_interstitial.show();
 
-      formdata.append('user_idx', userIdx);
-      formdata.append('date', date);
-      formdata.append('memo', memo);
-      formdata.append('type', 'file');
-      if (photoOrQR === 'photo') {
-        formdata.append('image', {
-          uri: imageUri.uri,
-          type: imageUri.type,
-          name: imageUri.fileName,
-        });
-      } else if (photoOrQR === 'qr') {
-        formdata.append('image', {
-          uri: imageUri,
-          type: 'image/png',
-          name: 'photo.jpg',
-        });
-      }
-
-      connectAPI_regist(formdata);
+      AdMob_interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+        callRegistPhotoAPI();
+      });
     }
+  };
+
+  const callRegistPhotoAPI = () => {
+    const formdata = new FormData();
+
+    formdata.append('user_idx', userIdx);
+    formdata.append('date', date);
+    formdata.append('memo', memo);
+    formdata.append('type', 'file');
+    if (photoOrQR === 'photo') {
+      formdata.append('image', {
+        uri: imageUri.uri,
+        type: imageUri.type,
+        name: imageUri.fileName,
+      });
+    } else if (photoOrQR === 'qr') {
+      formdata.append('image', {
+        uri: imageUri,
+        type: 'image/png',
+        name: 'photo.jpg',
+      });
+    }
+
+    connectAPI_regist(formdata);
   };
 
   const connectAPI_regist = async (formdata: FormData) => {
     setLoading(true);
     setTouchable(true);
+    AdMob_interstitial.removeAllListeners();
 
     api_registPhoto(formdata)
       .then(res => {
@@ -172,7 +204,7 @@ function AddPhotoScreen() {
         setTouchable(false);
         Toast.show('저장이 완료되었습니다.');
         navigation.navigate('Tab2');
-        console.log('regist photo Success == ', res);
+        console.log('regist photo Success == ');
       })
       .catch(err => {
         setLoading(false);

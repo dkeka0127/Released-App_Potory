@@ -93,7 +93,7 @@ function Main() {
       });
       setPhotoListArr(a);
     }
-  }, [photoListData]);
+  }, [photoListData, grid, bgColor]);
 
   useEffect(() => {
     if (isModalShown) setIsModalShown(false);
