@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   NativeModules,
 } from 'react-native';
+import RNRestart from 'react-native-restart';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -93,7 +94,7 @@ function SettingContent() {
     Alert.alert('', '로그아웃 되었습니다.', [
       {
         text: '확인',
-        onPress: () => NativeModules.DevSettings.reload(),
+        onPress: () => RNRestart.Restart(),
         style: 'default',
       },
     ]);
@@ -106,7 +107,7 @@ function SettingContent() {
     Alert.alert('', '회원탈퇴 되었습니다.', [
       {
         text: '확인',
-        onPress: () => NativeModules.DevSettings.reload(),
+        onPress: () => RNRestart.Restart(),
         style: 'default',
       },
     ]);

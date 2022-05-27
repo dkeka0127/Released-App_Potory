@@ -17,6 +17,8 @@ const QRCodeScanner = ({QRLink}: any) => {
     getStoreNameList();
   }, []);
 
+  useEffect(() => {}, [storeNameList]);
+
   // function
   const onBarCodeRead = async (event: any) => {
     if (!scaned) return;

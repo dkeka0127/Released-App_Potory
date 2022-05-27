@@ -8,7 +8,7 @@ export const axiosConfig = {
     'x-access-token':
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoicGhvdG9seSJ9.zcAbn0TXYrHMu4DSTrd7MIuuulrcCBN22_N1jGidLbY',
   },
-  // timeout: 3000,
+  timeout: 10000,
 };
 
 export const axiosConfigPhoto = {

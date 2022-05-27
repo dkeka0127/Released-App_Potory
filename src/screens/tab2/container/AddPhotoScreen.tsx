@@ -57,6 +57,7 @@ const galleryOption = {
   quality: 1,
   selectionLimit: 1,
 };
+
 // 광고 단위 ID
 const adUnitId = __DEV__
   ? TestIds.INTERSTITIAL
@@ -165,11 +166,13 @@ function AddPhotoScreen() {
     if (imageUri === null) Toast.show('사진을 선택해주세요.');
     // 사진 등록
     else {
-      AdMob_interstitial.show();
+      // AdMob_interstitial.show();
 
-      AdMob_interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-        callRegistPhotoAPI();
-      });
+      // AdMob_interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+      //   callRegistPhotoAPI();
+      // });
+
+      callRegistPhotoAPI();
     }
   };
 

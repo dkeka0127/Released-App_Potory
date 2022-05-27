@@ -270,7 +270,9 @@ function Content() {
             <Text style={styles.userNameText}>
               {userName === ''
                 ? `user_410${deviceID}`.substring(0, 10)
-                : userName}
+                : userName.length < 11
+                ? userName
+                : userName.substring(0, 10) + '...'}
             </Text>
 
             <TouchableOpacity

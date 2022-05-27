@@ -38,6 +38,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-nmap": "^0.0.66",
     "react-native-reanimated": "^2.4.1",
+    "react-native-restart": "^0.0.24",
     "react-native-root-siblings": "^4.1.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",

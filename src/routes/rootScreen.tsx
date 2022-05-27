@@ -43,17 +43,17 @@ function RootScreen() {
       <Stack.Screen
         name="AddPhotoScreen"
         component={AddPhotoScreen}
-        options={{headerShown: false}}
+        options={{headerShown: false, gestureEnabled: false}}
       />
       <Stack.Screen
         name="EditPhotoScreen"
         component={EditPhotoScreen}
-        options={{headerShown: false}}
+        options={{headerShown: false, gestureEnabled: false}}
       />
       <Stack.Screen
         name="QRCodeScreen"
         component={QRCodeScanner}
-        options={{headerShown: false}}
+        options={{headerShown: false, gestureEnabled: false}}
       />
 
       {/*--------------------- MyPage ---------------------*/}

@@ -1,3 +1,5 @@
+// This data is used
+
 export const polaroid_gray = [
   {
     uri: require('../assets/images/polaroid/gray_1_1.png'),
