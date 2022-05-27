@@ -136,13 +136,16 @@ function AddPhotoScreen() {
 
   const getQRLink = (value: string) => {
     setQRScreenIsOpen(false);
+    setLoading(true);
 
     api_registPhotoByQR(userIdx, value)
       .then(res => {
+        setLoading(false);
         setImageUri(res.data.data.image);
         console.log('api_registPhotoByQR Success == ', res.data.data);
       })
       .catch(err => {
+        setLoading(false);
         if (err.code === 404) {
           Toast.show('QR코드의 기간이 만료되었습니다.');
         } else {
@@ -151,6 +154,7 @@ function AddPhotoScreen() {
           );
         }
         console.log('api_registPhotoByQR Err == ', err);
+        return;
       });
   };
 

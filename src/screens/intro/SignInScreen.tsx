@@ -53,6 +53,7 @@ interface Props {
 }
 
 function SignInScreen({isLoginF}: Props) {
+  console.log('came to login');
   // variable
 
   // api

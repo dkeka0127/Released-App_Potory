@@ -1,5 +1,5 @@
 /* React & Package */
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,16 +11,6 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-
-// kakao_login
-// import {
-//   KakaoOAuthToken,
-//   KakaoProfile,
-//   getProfile as getKakaoProfile,
-//   login,
-//   logout,
-//   unlink,
-// } from '@react-native-seoul/kakao-login';
 
 /* api */
 import {api_deleteDevice} from '../../../core/api/Module';
@@ -72,7 +62,6 @@ const SettingContectTitle = ({title}) => {
 //
 
 function SettingContent() {
-  // const navigation = useNavigation();
   const [userIdx, setUseIdx] = useState(null);
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
@@ -99,7 +88,6 @@ function SettingContent() {
   };
 
   const logOut = () => {
-    // signOutWithKakao();
     saveAsyncSignOut('logout');
 
     Alert.alert('', '로그아웃 되었습니다.', [
@@ -112,7 +100,6 @@ function SettingContent() {
   };
 
   const signOut = () => {
-    // unlinkKakao();
     connectAPI_deleteUser();
     saveAsyncSignOut('signOut');
 
@@ -134,17 +121,6 @@ function SettingContent() {
       }),
       () => console.log('------ 유저정보 삭제 ------'),
     );
-  };
-
-  // 로그아웃
-  const signOutWithKakao = async (): Promise<void> => {
-    // const message = await logout();
-    // setResult(message);
-  };
-  // 회원탈퇴
-  const unlinkKakao = async (): Promise<void> => {
-    // const message = await unlink();
-    // setResult(message);
   };
 
   const connectAPI_deleteUser = () => {
@@ -175,6 +151,7 @@ function SettingContent() {
   return (
     <ScrollView style={styles.content} showsHorizontalScrollIndicator={false}>
       {/*------------------------ 게시판 ------------------------*/}
+
       <SettingContectTitle title={'게시판'} />
       <SettingContentList iconName={'notification'} title={'공지사항'} />
       <SettingContentList
@@ -184,6 +161,7 @@ function SettingContent() {
       <View style={styles.devideLine} />
 
       {/*---------------------- 약관 및 정책 ----------------------*/}
+
       <SettingContectTitle title={'약관 및 정책'} />
       {/* <SettingContentList iconName={'infocirlceo'} title={'서비스 이용약관'} /> */}
       <SettingContentList
@@ -194,6 +172,7 @@ function SettingContent() {
       <View style={styles.devideLine} />
 
       {/*--------------------- 로그아웃/회원탈퇴 ---------------------*/}
+
       <View style={styles.accountContainer}>
         <SettingAccount iconName={'logout'} title={'로그아웃'} />
         <SettingAccount iconName={'warning'} title={'회원탈퇴'} />

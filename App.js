@@ -10,10 +10,10 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import LottieView from 'lottie-react-native';
-import SplashScreen from 'react-native-splash-screen';
 import mobileAds from 'react-native-google-mobile-ads';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 /* custom components */
 import RootScreen from './src/routes/rootScreen';
