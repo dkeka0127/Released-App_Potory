@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>12</string>
+	<string>13</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-7203856140151966~4229702044</string>
 	<key>KAKAO_APP_KEY</key>
@@ -61,7 +61,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>카테고리별 스토어 검색 서비스 이용을 위해 사용됩니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사진 저장 화면의 사진 첨부 가능한 서비스를 위해 사용됩니다.</string>
+	<string>사진 저장 화면의 사진 첨부 기능과 사진을 갤러리에 저장하는 서비스를 위해 사용됩니다.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

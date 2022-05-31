@@ -436,9 +436,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     paddingLeft: 17,
     paddingRight: 7,
-
-    // fontFamily: '강원교육새음',
-    // fontFamily: 'PoorStory-Regular',
   },
   memuArea: {
     width: '80%',
@@ -525,9 +522,6 @@ const styles = StyleSheet.create({
     lineHeight: 37,
     // letterSpacing: -0.74,
     textAlign: 'center',
-
-    // fontFamily: '강원교육새음',
-    // fontFamily: 'PoorStory-Regular',
   },
   designText: {
     color: fontColor,
@@ -540,8 +534,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64,
 
     fontFamily: 'Octicons',
-    // fontFamily: '강원교육새음',
-    // fontFamily: 'PoorStory-Regular',
   },
 });
 

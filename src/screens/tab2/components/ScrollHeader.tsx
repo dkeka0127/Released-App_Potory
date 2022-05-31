@@ -181,8 +181,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '300',
     letterSpacing: 0.45,
-
-    // fontFamily: 'Baloo2-VariableFont_wght',
   },
   toolCon: {
     height: '100%',

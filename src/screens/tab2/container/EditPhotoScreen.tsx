@@ -254,9 +254,6 @@ const area = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 10,
     // letterSpacing: -0.7,
-
-    // fontFamily: '강원교육새음',
-    // fontFamily: 'PoorStory-Regular',
   },
   bottomSection: {
     flex: 1.8,

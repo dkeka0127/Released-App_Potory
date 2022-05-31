@@ -1,5 +1,5 @@
 /* React & Package */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,13 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import ImageModal from 'react-native-image-modal';
 import {useNavigation} from '@react-navigation/native';
+import CameraRoll from '@react-native-community/cameraroll';
+import ViewShot, {captureScreen} from 'react-native-view-shot';
 
 /* custom components */
 import Toast from '../../../components/Toast/Toast';
@@ -23,7 +26,8 @@ import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 import {api_deletePhoto} from '../../../core/api/Module';
 
 /* icons */
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /* variable */
 const deviceWidth = Dimensions.get('window').width;
@@ -50,6 +54,7 @@ function PhotoModal({
   imageDeletedFromModal,
 }: Props) {
   const navigation = useNavigation();
+  const viewShotRef = useRef<any>();
   const [userIdx, setUseIdx] = useState();
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
@@ -72,6 +77,11 @@ function PhotoModal({
     navigation.navigate('EditPhotoScreen', {modalImageInfo: modalImageInfo});
   };
 
+  function captureScreenShot() {
+    Toast.show('사진이 갤러리에 저장되었습니다.');
+    viewShotRef.current.capture().then(async uri => CameraRoll.save(uri));
+  }
+
   const alertBeforeDelete = () => {
     Alert.alert('', '삭제 하시겠습니까 ?', [
       {
@@ -86,6 +96,7 @@ function PhotoModal({
     ]);
   };
 
+  // api
   const connectAPI_Delete = () => {
     api_deletePhoto(ImgNum, userIdx)
       .then(res => {
@@ -119,8 +130,13 @@ function PhotoModal({
         </View>
         <View style={styles.headerIcon}>
           <TouchableOpacity style={styles.editIcon} onPress={moveToEditScreen}>
-            <MaterialIcons name="pencil-outline" size={22} color="#5d5963" />
+            <MaterialCIcons name="pencil-outline" size={22} color="#5d5963" />
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.editIcon} onPress={captureScreenShot}>
+            <MaterialIcons name="save-alt" size={22} color="#5d5963" />
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.deleteIcon}
             onPress={alertBeforeDelete}>
@@ -132,13 +148,18 @@ function PhotoModal({
       {/*====================== image ======================*/}
 
       <View style={styles.image}>
-        <ImageModal
-          style={styles.imageModal}
-          resizeMode="contain"
-          hideCloseButton={true}
-          overlayBackgroundColor="#000000"
-          source={{uri: ImgURL}}
-        />
+        <ViewShot
+          ref={viewShotRef}
+          style={styles.imageModalMargin}
+          options={{format: 'jpg', quality: 1.0}}>
+          <ImageModal
+            style={styles.imageModal}
+            resizeMode="contain"
+            hideCloseButton={true}
+            overlayBackgroundColor="#000000"
+            source={{uri: ImgURL}}
+          />
+        </ViewShot>
       </View>
 
       {/*====================== text ======================*/}
@@ -194,8 +215,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 15,
     fontWeight: '500',
-    // fontFamily: '강원교육새음',
-    // fontFamily: 'PoorStory-Regular',
   },
   headerIcon: {
     flexDirection: 'row',
@@ -203,7 +222,7 @@ const styles = StyleSheet.create({
   editIcon: {
     width: 30,
     height: 30,
-    marginRight: 5,
+    marginRight: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -221,16 +240,16 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     backgroundColor: '#fff',
   },
-  imageModal: {
-    width: ModalWidth * 0.9,
+  imageModalMargin: {
     marginLeft: ModalWidth * 0.05,
     marginRight: ModalWidth * 0.05,
-
-    height: ModalHeight * (ImageHeight - ImageHeightMargin * 2), // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
     marginTop: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
     marginBottom: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
   },
-
+  imageModal: {
+    width: ModalWidth * 0.9,
+    height: ModalHeight * (ImageHeight - ImageHeightMargin * 2), // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+  },
   text: {
     width: ModalWidth,
     height: ModalHeight * TextHeight, // ModalHeight 7:3
@@ -251,7 +270,5 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingBottom: 20,
     letterSpacing: 0.2,
-    // fontFamily: '강원교육새음',
-    // fontFamily: 'PoorStory-Regular',
   },
 });
