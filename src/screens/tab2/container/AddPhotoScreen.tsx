@@ -147,11 +147,14 @@ function AddPhotoScreen() {
       })
       .catch(err => {
         setLoading(false);
-        if (err.code === 404) {
-          Toast.show('QR코드의 기간이 만료되었습니다.');
+
+        if (err.message.slice(-3) === 500) {
+          Toast.show(
+            '사진의 유효기간이 만료되었거나\n지원되지 않는 링크입니다.',
+          );
         } else {
           Toast.show(
-            '사진을 불러오는 도중 오류가 발생하였습니다.\n네트워크 연결을 확인해주세요.',
+            '사진을 불러오는 도중 오류가 발생하였습니다.\n다시 시도해주세요.',
           );
         }
         console.log('api_registPhotoByQR Err == ', err);
@@ -217,7 +220,7 @@ function AddPhotoScreen() {
         setLoading(false);
         setTouchable(false);
         Toast.show(
-          '사진 저장 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
+          '사진 저장 중 오류가 발생하였습니다.\n다시 시도해주시기 바랍니다.',
         );
         console.log('regist photo Err == ', err);
       });

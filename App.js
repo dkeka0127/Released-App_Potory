@@ -8,7 +8,7 @@
 
 /* React & Package */
 import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text, TextInput} from 'react-native';
 import LottieView from 'lottie-react-native';
 import mobileAds from 'react-native-google-mobile-ads';
 import {NavigationContainer} from '@react-navigation/native';
@@ -21,6 +21,17 @@ import SignInScreen from './src/screens/intro/SignInScreen';
 
 // variable
 const lottiePath = require('./src/assets/lottie/splash.json');
+
+// 디바이스 내애서 설정한 글자 크기 영향을 받지 않음
+if (Text.defaultProps == null) {
+  Text.defaultProps = {};
+  Text.defaultProps.allowFontScaling = false;
+}
+
+if (TextInput.defaultProps == null) {
+  TextInput.defaultProps = {};
+  TextInput.defaultProps.allowFontScaling = false;
+}
 
 function App() {
   const [autoLogin, setAutoLogin] = useState(null);

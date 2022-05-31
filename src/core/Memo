@@ -1,3 +1,21 @@
+# how to build
+
+1. 빌드 버전 업데이트 (ex : 11 -> 12)
+    info.plist
+    project.pbxproj
+
+2. cd ios && pod install
+
+3. Xcode > Pods > i386 <-> arm64 로 변경
+
+4. archive
+
+5. Organizer
+
+--
+
+# used
+
 ▶︎ 기술스택
   dev : ReactNaitve, TypeScript, StyleSheet,
   tool : github, githubDesktop, SourceTree
