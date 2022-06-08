@@ -1,9 +1,19 @@
 /* React & packages */
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Alert,
+  BackHandler,
+  Linking,
+} from 'react-native';
 import NaverMapView, {Marker} from 'react-native-nmap';
 import Geolocation from 'react-native-geolocation-service';
+import VersionCheck from 'react-native-version-check';
 
 /* icons */
 import Feather from 'react-native-vector-icons/Feather';
@@ -15,7 +25,12 @@ import Dropdown from './components/DropDown';
 import Toast from '../../components/Toast/Toast';
 
 /* api */
-import {api_storeList, api_localKakao_storeList} from '../../core/api/Module';
+import {
+  api_popup,
+  api_storeList,
+  api_localKakao_storeList,
+} from '../../core/api/Module';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function MainHome() {
   const [x, setX] = useState<any>(37.564214);
@@ -31,6 +46,11 @@ function MainHome() {
 
   // useEffect
   useEffect(() => {
+    const functions = async () => {
+      await checkVersion();
+      await checkPopup();
+    };
+    functions();
     geoLocation();
     getStoreNameList();
   }, []);
@@ -59,7 +79,7 @@ function MainHome() {
     api_localKakao_storeList(x, y, _storeName)
       .then(res => {
         setStoreLocationList(res.data.documents);
-        console.log('res.data.documents.length', res.data.documents.length);
+        console.log('api_localKakao_storeList success');
       })
       .catch(err => console.log('api_localKakao_storeList Err == ', err));
   };
@@ -90,7 +110,83 @@ function MainHome() {
     }, 2000);
   };
 
-  console.log(x, y, clickedStoreInfo, storeName);
+  const checkPopup = async () => {
+    let popupNum: any;
+
+    await AsyncStorage.getItem('popupNum', (err, value) => {
+      console.log('popupNum ?????????/', value);
+      popupNum = value === null ? 0 : value;
+    });
+
+    const setPopupNum = () => {
+      api_popup()
+        .then(res => {
+          const popupData = res.data.data;
+
+          if (popupData.length <= popupNum) return;
+
+          if (popupData.length > popupNum) {
+            Alert.alert(
+              popupData[popupNum].title,
+              popupData[popupNum].content,
+              [
+                {
+                  text: '확인',
+                  onPress: () => {
+                    AsyncStorage.setItem(
+                      'popupNum',
+                      String(Number(popupNum) + 1),
+                    );
+                    popupNum = popupNum + 1;
+                    setPopupNum();
+                  },
+                },
+              ],
+              {cancelable: false},
+            );
+          }
+        })
+        .catch(() => {});
+    };
+
+    await setPopupNum();
+  };
+
+  const checkVersion = () => {
+    VersionCheck.getLatestVersion({
+      provider: 'appStore', // for iOS
+    }).then(async latestVersion => {
+      let currentVersion = await VersionCheck.getCurrentVersion();
+
+      if (latestVersion.slice(0, 1) < currentVersion.slice(0, 1))
+        updateVersion();
+    });
+  };
+
+  const updateVersion = async () => {
+    try {
+      let updateNeeded = await VersionCheck.needUpdate();
+
+      if (updateNeeded && updateNeeded.isNeeded) {
+        Alert.alert(
+          '',
+          '원활한 앱 사용을 위해\n업데이트를 진행해주세요.',
+          [
+            {
+              text: '업데이트',
+              onPress: () => {
+                BackHandler.exitApp();
+                Linking.openURL(updateNeeded.storeUrl);
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+    } catch (error) {}
+  };
+
+  // console.log(x, y, clickedStoreInfo, storeName);
 
   return (
     <View style={styles.container}>
@@ -219,30 +315,3 @@ const styles = StyleSheet.create({
     marginLeft: 7,
   },
 });
-
-// 1.
-
-// function fetchAndUpdatePosts() {
-//   fetchPosts()
-//     .then(posts => {
-//       updatePosts(posts).catch(err => {
-//         console.log('error in updating posts');
-//       });
-//     })
-//     .catch(() => {
-//       console.log('error in fetching posts');
-//     });
-// }
-
-//
-
-// 2.
-
-// async function fetchAndUpdatePosts() {
-//   const posts = await fetchPosts().catch(() => {
-//     console.log('error in fetching posts');
-//   });
-//   if (posts) {
-//     doSomethingWithPosts(posts);
-//   }
-// }

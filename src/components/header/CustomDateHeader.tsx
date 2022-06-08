@@ -1,6 +1,6 @@
 /* React & Package */
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
 
@@ -30,6 +30,21 @@ const CustomDateHeader = (props: Props) => {
     setDatePickerOpen(!datePickerOpen);
   };
 
+  const closeAlert = () => {
+    Alert.alert('', '페이지를 종료하시겠습니까 ?', [
+      {
+        text: '취소',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'default',
+      },
+      {
+        text: '확인',
+        onPress: () => navigation.goBack(),
+        style: 'default',
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       {/*------------- date -------------*/}
@@ -57,7 +72,7 @@ const CustomDateHeader = (props: Props) => {
       {/*------------- close -------------*/}
       <TouchableOpacity
         style={styles.closeIcon}
-        onPress={() => navigation.goBack()}
+        onPress={closeAlert}
         hitSlop={styles.hitslop}>
         <Ionicons name="close" size={28} />
       </TouchableOpacity>

@@ -63,6 +63,7 @@ function SignInScreen({isLoginF}: Props) {
       .then(async res => {
         // 로딩 삭제
         const userIdx = await res.data.data.user_idx;
+        await savePopupAsync();
         await saveLoginAsync(userIdx);
         await isLoginF();
         console.log('userIdx == ', userIdx);
@@ -81,6 +82,13 @@ function SignInScreen({isLoginF}: Props) {
       JSON.stringify({autoLogin: true, userNumber: String(userIdx)}),
       () => console.log('[로그인] 유저정보 저장 == ', userIdx),
     );
+  };
+
+  const savePopupAsync = () => {
+    AsyncStorage.getItem('popupNum', (err, value) => {
+      console.log('popupNum async == ', value);
+      if (value === null) AsyncStorage.setItem('popupNum', '0');
+    });
   };
 
   // -------------------- ① Kakao --------------------

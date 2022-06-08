@@ -83,16 +83,18 @@ const styles = StyleSheet.create({
     marginRight: 20,
     paddingTop: 10,
     marginBottom: 90,
+    // backgroundColor: 'pink',
   },
   noticeContainer: {
-    height: 80,
+    width: '100%',
+    // height: 80,
     borderBottomWidth: 0.5,
     borderBottomColor: '#ccc',
     flexDirection: 'row',
     alignItems: 'center',
   },
   noticeListSide: {
-    height: '100%',
+    width: '20%',
     paddingLeft: 10,
     paddingRight: 20,
     justifyContent: 'center',
@@ -104,7 +106,9 @@ const styles = StyleSheet.create({
     color: '#dd5f49',
   },
   noticeCotent: {
-    padding: 8,
+    width: '80%',
+    paddingTop: 25,
+    paddingBottom: 25,
   },
   cotentMainText: {
     fontSize: 15,

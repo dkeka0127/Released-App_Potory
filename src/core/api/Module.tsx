@@ -184,3 +184,10 @@ export async function api_localKakao_storeList(
 
   return response;
 }
+
+// ****************************************** ECT ******************************************
+
+export async function api_popup() {
+  const response = await axios.get('/main/popup', axiosConfig);
+  return response;
+}

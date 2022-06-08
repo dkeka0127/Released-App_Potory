@@ -117,7 +117,7 @@ function Header({
             {/*--------- Sequence ---------*/}
             <TouchableOpacity
               style={styles.rowOptions}
-              hitSlop={styles.hitslop}
+              hitSlop={styles.hitslop10}
               onPress={setSequenceF}>
               <AntDesign name={'calendar'} size={21} color={optionColor} />
               <Awesome5Icons
@@ -224,6 +224,12 @@ const styles = StyleSheet.create({
   arrowsAltV: {
     paddingTop: 2,
     paddingLeft: 2,
+  },
+  hitslop10: {
+    top: 20,
+    left: 10,
+    right: 10,
+    bottom: 20,
   },
   hitslop: {
     top: 20,

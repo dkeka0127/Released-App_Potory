@@ -149,16 +149,16 @@ function AddPhotoScreen() {
         setLoading(false);
 
         if (err.message.slice(-3) === 500) {
-          Toast.show(
-            '사진의 유효기간이 만료되었거나\n지원되지 않는 링크입니다.',
-          );
+          Toast.show('지원 예정인 지점 / 브랜드입니다.');
+        } else if (err.message.slice(-3) === 404) {
+          Toast.show('사진의 유효기간이 만료되었습니다.');
         } else {
           Toast.show(
-            '사진을 불러오는 도중 오류가 발생하였습니다.\n다시 시도해주세요.',
+            // '사진을 불러오는 도중 오류가 발생하였습니다.\n다시 시도해주세요.',
+            '사진의 유효기간이 만료되었거나\n지원 예정인 지점입니다.',
           );
         }
         console.log('api_registPhotoByQR Err == ', err);
-        return;
       });
   };
 
@@ -169,13 +169,13 @@ function AddPhotoScreen() {
     if (imageUri === null) Toast.show('사진을 선택해주세요.');
     // 사진 등록
     else {
-      // AdMob_interstitial.show();
+      AdMob_interstitial.show();
 
-      // AdMob_interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-      //   callRegistPhotoAPI();
-      // });
+      AdMob_interstitial.addAdEventListener(AdEventType.CLOSED, () => {
+        callRegistPhotoAPI();
+      });
 
-      callRegistPhotoAPI();
+      // callRegistPhotoAPI();
     }
   };
 
@@ -185,14 +185,15 @@ function AddPhotoScreen() {
     formdata.append('user_idx', userIdx);
     formdata.append('date', date);
     formdata.append('memo', memo);
-    formdata.append('type', 'file');
     if (photoOrQR === 'photo') {
+      formdata.append('type', 'file');
       formdata.append('image', {
         uri: imageUri.uri,
         type: imageUri.type,
         name: imageUri.fileName,
       });
     } else if (photoOrQR === 'qr') {
+      formdata.append('type', 'url');
       formdata.append('image', {
         uri: imageUri,
         type: 'image/png',

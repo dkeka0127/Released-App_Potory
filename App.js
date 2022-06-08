@@ -18,11 +18,19 @@ import SplashScreen from 'react-native-splash-screen';
 /* custom components */
 import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
+import codePush from 'react-native-code-push';
 
-// variable
+/* variable */
 const lottiePath = require('./src/assets/lottie/splash.json');
 
-// 디바이스 내애서 설정한 글자 크기 영향을 받지 않음
+/* codepush */
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  // installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
+  // minimumBackgroundDuration: 60,
+};
+
+/* 디바이스 내애서 설정한 글자 크기 영향을 받지 않음 */
 if (Text.defaultProps == null) {
   Text.defaultProps = {};
   Text.defaultProps.allowFontScaling = false;
@@ -38,6 +46,14 @@ function App() {
 
   // useEffect
   useEffect(() => {
+    // codepush
+    codePush.sync({
+      // installMode: codePush.InstallMode.ON_NEXT_RESTART,
+      installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
+      minimumBackgroundDuration: 60,
+    });
+
+    // splashImage
     SplashScreen.hide();
 
     // 광고 sdk 초기화
@@ -96,7 +112,7 @@ function App() {
   );
 }
 
-export default App;
+export default codePush(codePushOptions)(App);
 
 const styles = StyleSheet.create({
   lottieContainer: {

@@ -6,6 +6,7 @@ platform :ios, '11.0'
 target 'lifeRecordProject' do
   pod 'NMapsMap' # naver map
   pod 'KakaoSDK' # kakao login
+  pod 'react-native-version-check', :path => '../node_modules/react-native-version-check' # version check
 
   config = use_native_modules!
 
