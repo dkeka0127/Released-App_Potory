@@ -46,10 +46,12 @@
 		2776DDACC2A94CC8891020F2 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		3443D536D4324902B2D23E9F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		4175A2F48B134DCB9E83FAD6 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		4DD3BCE72C8FB325823853C1 /* Pods-lifeRecordProject.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject.staging.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject.staging.xcconfig"; sourceTree = "<group>"; };
 		50AD8313D9A9430FBFEE658A /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		57CDCB035E59497489D9ED06 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		59014E7BBBA64014870E7E9D /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		649CBC6446DE97C4D4A0456E /* Pods-lifeRecordProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject.release.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject/Pods-lifeRecordProject.release.xcconfig"; sourceTree = "<group>"; };
+		73E9A3E40C0DF982F73C5B73 /* Pods-lifeRecordProject-lifeRecordProjectTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lifeRecordProject-lifeRecordProjectTests.staging.xcconfig"; path = "Target Support Files/Pods-lifeRecordProject-lifeRecordProjectTests/Pods-lifeRecordProject-lifeRecordProjectTests.staging.xcconfig"; sourceTree = "<group>"; };
 		75492F78C130A3C271237C25 /* libPods-lifeRecordProject-lifeRecordProjectTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lifeRecordProject-lifeRecordProjectTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = lifeRecordProject/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		99D23494B30647DE9E2B83CA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -114,6 +116,8 @@
 				649CBC6446DE97C4D4A0456E /* Pods-lifeRecordProject.release.xcconfig */,
 				252740AFB12A1468417ADD26 /* Pods-lifeRecordProject-lifeRecordProjectTests.debug.xcconfig */,
 				1368A4CC3354F5AA40EE6A98 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */,
+				4DD3BCE72C8FB325823853C1 /* Pods-lifeRecordProject.staging.xcconfig */,
+				73E9A3E40C0DF982F73C5B73 /* Pods-lifeRecordProject-lifeRecordProjectTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -558,7 +562,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = lifeRecordProject/lifeRecordProject.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 2F557A6TGJ;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -659,7 +663,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = lifeRecordProject/lifeRecordProject.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 2F557A6TGJ;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				HEADER_SEARCH_PATHS = (
@@ -942,13 +946,13 @@
 		};
 		FF15C3F428502A8700C85299 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 649CBC6446DE97C4D4A0456E /* Pods-lifeRecordProject.release.xcconfig */;
+			baseConfigurationReference = 4DD3BCE72C8FB325823853C1 /* Pods-lifeRecordProject.staging.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = lifeRecordProject/lifeRecordProject.entitlements;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 2F557A6TGJ;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				HEADER_SEARCH_PATHS = (
@@ -1041,7 +1045,7 @@
 		};
 		FF15C3F528502A8700C85299 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1368A4CC3354F5AA40EE6A98 /* Pods-lifeRecordProject-lifeRecordProjectTests.release.xcconfig */;
+			baseConfigurationReference = 73E9A3E40C0DF982F73C5B73 /* Pods-lifeRecordProject-lifeRecordProjectTests.staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

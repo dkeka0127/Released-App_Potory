@@ -63,3 +63,7 @@
     : useMemo
     : useCallback
   - 네트워크 연결 체크
+
+# codepush
+appcenter codepush release-react -a sori127/potory-ios -d Staging
+appcenter codepush release-react -a sori127/potory-ios -m --description "test"

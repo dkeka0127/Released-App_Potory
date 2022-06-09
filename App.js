@@ -10,22 +10,25 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, TextInput} from 'react-native';
 import LottieView from 'lottie-react-native';
+import codePush from 'react-native-code-push';
+import SplashScreen from 'react-native-splash-screen';
 import mobileAds from 'react-native-google-mobile-ads';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import SplashScreen from 'react-native-splash-screen';
 
 /* custom components */
 import RootScreen from './src/routes/rootScreen';
 import SignInScreen from './src/screens/intro/SignInScreen';
-import codePush from 'react-native-code-push';
 
 /* variable */
 const lottiePath = require('./src/assets/lottie/splash.json');
 
 /* codepush */
 const codePushOptions = {
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  updateDialog: false, // 잠수함 패치 = false
+  installMode: codePush.InstallMode.ON_NEXT_RESUME, // 백그라운드 -> 포그라운드
+  // checkFrequency: codePush.CheckFrequency.ON_APP_START,
   // installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
   // minimumBackgroundDuration: 60,
 };
@@ -47,11 +50,11 @@ function App() {
   // useEffect
   useEffect(() => {
     // codepush
-    codePush.sync({
-      // installMode: codePush.InstallMode.ON_NEXT_RESTART,
-      installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
-      minimumBackgroundDuration: 60,
-    });
+    // codePush.sync({
+    //   // installMode: codePush.InstallMode.ON_NEXT_RESTART,
+    //   installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
+    //   minimumBackgroundDuration: 60,
+    // });
 
     // splashImage
     SplashScreen.hide();
