@@ -53,13 +53,6 @@ function App() {
 
   // useEffect
   useEffect(() => {
-    // codepush
-    // codePush.sync({
-    //   // installMode: codePush.InstallMode.ON_NEXT_RESTART,
-    //   installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
-    //   minimumBackgroundDuration: 60,
-    // });
-
     // splashImage
     SplashScreen.hide();
 

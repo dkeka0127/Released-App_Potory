@@ -22,6 +22,15 @@
   design : postman, zeplin, figma
 
 ▶︎ 주요 기능
+  - 초기 진입 시 공지 팝업 노출 (Main 1 > checkPopup())
+
+  - 강제 업데이트 (Main 1 > checkVersion())
+
+  - CodePush (App.js)
+    : 앱이 백그라운드에서 포그라운드로 진입 시 업데이트 확인
+    : 앱이 백그라운드에 있는 동안 업데이트 설치
+    : 백그라운드 진입 default 초 : 60초
+
   - Async Storage
     : Auto Login
     : Photo tools
