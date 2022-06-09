@@ -66,4 +66,6 @@
 
 # codepush
 appcenter codepush release-react -a sori127/potory-ios -d Staging
+$ appcenter codepush release-react -a sori127/potory-ios -d Production
+
 appcenter codepush release-react -a sori127/potory-ios -m --description "test"

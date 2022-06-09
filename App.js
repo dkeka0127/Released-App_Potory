@@ -25,12 +25,16 @@ const lottiePath = require('./src/assets/lottie/splash.json');
 
 /* codepush */
 const codePushOptions = {
-  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+  // checkFrequency: codePush.CheckFrequency.ON_APP_START, // 앱 프로세스가 시작될 때마다 업데이트를 확인
+  checkFrequency: codePush.CheckFrequency.ON_APP_RESUME, // 앱이 "백그라운드"된 후 전경으로 다시 가져올 때
+  // checkFrequency: codePush.CheckFrequency.MANUAL, // 앱 코드에서 호출되는 경우에만 확인 codePush.sync()
+
+  // installMode: codePush.InstallMode.ON_NEXT_RESTART,
+  // installMode: codePush.InstallMode.ON_NEXT_RESUME, // 백그라운드에서 다시 시작할 때
+  installMode: codePush.InstallMode.ON_NEXT_SUSPEND, // 백그라운드에 있는 동안 업데이트를 설치
+  minimumBackgroundDuration: 60, // 몇 초(기본적으로 0) 후에만 설치할 것임을 나타냄
+
   updateDialog: false, // 잠수함 패치 = false
-  installMode: codePush.InstallMode.ON_NEXT_RESUME, // 백그라운드 -> 포그라운드
-  // checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  // installMode: codePush.InstallMode.ON_NEXT_SUSPEND,
-  // minimumBackgroundDuration: 60,
 };
 
 /* 디바이스 내애서 설정한 글자 크기 영향을 받지 않음 */

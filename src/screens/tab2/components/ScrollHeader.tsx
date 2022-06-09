@@ -96,7 +96,7 @@ function Header({
         style={styles.appName}
         onPress={() => actionForScrollTop()}>
         <Text style={styles.appNameFont}>
-          {isEdit ? 'Potory' : 'Photo in memory !'}
+          {isEdit ? 'Potory' : 'Photo in memory :-)'}
         </Text>
       </TouchableOpacity>
 
