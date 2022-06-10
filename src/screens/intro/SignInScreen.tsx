@@ -72,6 +72,7 @@ function SignInScreen({isLoginF}: Props) {
       .catch(err => {
         // 네트워크 에러 토스트 창
         console.log('api_registDevice Err == !! ', err);
+        Toast.show('로그인에 실패하였습니다.\n잠시 후 다시 시도해주세요.');
       });
   };
 
@@ -116,7 +117,7 @@ function SignInScreen({isLoginF}: Props) {
       console.log('apple login - user ID', appleAuthRequestResponse.user);
     } catch (error) {
       console.error(error);
-      Toast.show('로그인에 실피하였습니다.\n다시 시도해주세요.');
+      Toast.show('로그인에 실피하였습니다.\n잠시 후 다시 시도해주세요.');
       // return;
     }
   };

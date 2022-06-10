@@ -111,7 +111,7 @@ function Main() {
       .catch(err => {
         console.log('get photo list Err == ', err);
         Toast.show(
-          '사진을 불러오는데 실패하였습니다.\n앱 종료 후 재시도해주세요.',
+          '사진을 불러오는데 실패하였습니다.\n잠시 후 다시 시도해주세요.',
         );
       });
 

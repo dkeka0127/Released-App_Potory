@@ -42,7 +42,7 @@ const ToastComponent = forwardRef((props, ref) => {
 
     toastOpacity.value = withSequence(
       withTiming(1, {duration: 300}),
-      withTiming(1, {duration: 1200}),
+      withTiming(1, {duration: 1400}),
       withTiming(0, {duration: 300}, isSuccess => {
         if (isSuccess) {
           runOnJS(turnOnIsShow)();

@@ -96,7 +96,7 @@ function MainHome() {
         setX(latitude);
         setY(longitude);
       },
-      error => console.log(error.code, error.message),
+      error => console.log('geoLocation Error ==', error.code, error.message),
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };
@@ -114,7 +114,7 @@ function MainHome() {
     let popupNum: any;
 
     await AsyncStorage.getItem('popupNum', (err, value) => {
-      console.log('popupNum ?????????/', value);
+      console.log('my current popupNum == ', value);
       popupNum = value === null ? 0 : value;
     });
 

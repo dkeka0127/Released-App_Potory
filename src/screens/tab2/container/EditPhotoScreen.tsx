@@ -86,7 +86,7 @@ function EditPhotoScreen({route}: any) {
         setLoading(false);
         setTouchable(false);
         Toast.show(
-          '사진 편집 중 오류가 발생하였습니다.\n다시 시도해 주시기 바랍니다.',
+          '저장 중 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.',
         );
         console.log('edit photo Err == ', err);
       });

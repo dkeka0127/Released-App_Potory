@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 
 /* custom components */
+import Toast from '../../../components/Toast/Toast';
 import Loading from '../../../components/Loading';
 
 /* api */
@@ -50,6 +51,9 @@ function NoticeContent() {
       })
       .catch(err => {
         console.log('Notice List Err == ', err);
+        Toast.show(
+          '데이터를 불러오는 데에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
+        );
       });
 
     return;

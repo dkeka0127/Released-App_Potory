@@ -77,7 +77,6 @@ function AddPhotoScreen() {
   getAsyncStorage_userIdx().then(res => setUseIdx(res));
 
   const [loading, setLoading] = useState(false);
-  const [adMobOpen, setAdMobOpen] = useState(true);
   const [photoOrQR, setPhotoOrQr] = useState('');
   const [touchable, setTouchable] = useState(false);
   const [qrScreenIsOpen, setQRScreenIsOpen] = useState(false);
@@ -153,10 +152,7 @@ function AddPhotoScreen() {
         } else if (err.message.slice(-3) === 404) {
           Toast.show('사진의 유효기간이 만료되었습니다.');
         } else {
-          Toast.show(
-            // '사진을 불러오는 도중 오류가 발생하였습니다.\n다시 시도해주세요.',
-            '사진의 유효기간이 만료되었거나\n지원 예정인 지점입니다.',
-          );
+          Toast.show('사진의 유효기간이 만료되었거나\n지원 예정인 지점입니다.');
         }
         console.log('api_registPhotoByQR Err == ', err);
       });
@@ -174,8 +170,6 @@ function AddPhotoScreen() {
       AdMob_interstitial.addAdEventListener(AdEventType.CLOSED, () => {
         callRegistPhotoAPI();
       });
-
-      // callRegistPhotoAPI();
     }
   };
 
@@ -185,15 +179,14 @@ function AddPhotoScreen() {
     formdata.append('user_idx', userIdx);
     formdata.append('date', date);
     formdata.append('memo', memo);
+    formdata.append('type', 'file');
     if (photoOrQR === 'photo') {
-      formdata.append('type', 'file');
       formdata.append('image', {
         uri: imageUri.uri,
         type: imageUri.type,
         name: imageUri.fileName,
       });
     } else if (photoOrQR === 'qr') {
-      formdata.append('type', 'url');
       formdata.append('image', {
         uri: imageUri,
         type: 'image/png',
@@ -221,7 +214,7 @@ function AddPhotoScreen() {
         setLoading(false);
         setTouchable(false);
         Toast.show(
-          '사진 저장 중 오류가 발생하였습니다.\n다시 시도해주시기 바랍니다.',
+          '사진 저장 중 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.',
         );
         console.log('regist photo Err == ', err);
       });

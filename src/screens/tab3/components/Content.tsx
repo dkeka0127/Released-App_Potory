@@ -119,6 +119,9 @@ function Content() {
       })
       .catch(err => {
         console.log('connectAPI_getUserInfo Err == ', err);
+        Toast.show(
+          '유저 정보를 불러오는 데에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
+        );
       });
 
     return;
@@ -136,6 +139,7 @@ function Content() {
       })
       .catch(err => {
         console.log('connectAPI_editUserInfo_UserName Err == ', err);
+        Toast.show('저장에 실패하였습니다.\n잠시 후 다시 시도해주세요.');
       })
       .finally(() => setTouchable(false));
 
@@ -162,7 +166,7 @@ function Content() {
       })
       .catch(err => {
         setLoading(false);
-        Toast.show('프로필 변경 중 오류가 발생하였습니다.\n다시 시도해주세요.');
+        Toast.show('저장에 실패하였습니다.\n잠시 후 다시 시도해주세요.');
         console.log('connectAPI_editUserInfo_UserImg Err == ', err);
       })
       .finally(() => setTouchable(false));
