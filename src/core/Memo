@@ -1,0 +1,80 @@
+# how to build
+
+1. 빌드 버전 업데이트 (ex : 11 -> 12)
+    info.plist
+    project.pbxproj
+
+2. cd ios && pod install
+
+3. Xcode > Pods > i386 <-> arm64 로 변경
+
+4. archive
+
+5. Organizer
+
+--
+
+# used
+
+▶︎ 기술스택
+  dev : ReactNaitve, TypeScript, StyleSheet,
+  tool : github, githubDesktop, SourceTree
+  design : postman, zeplin, figma
+
+▶︎ 주요 기능
+  - 초기 진입 시 공지 팝업 노출 (Main 1 > checkPopup())
+
+  - 강제 업데이트 (Main 1 > checkVersion())
+
+  - CodePush (App.js)
+    : 앱이 백그라운드에서 포그라운드로 진입 시 업데이트 확인
+    : 앱이 백그라운드에 있는 동안 업데이트 설치
+    : 백그라운드 진입 default 초 : 60초
+
+  - Async Storage
+    : Auto Login
+    : Photo tools
+
+  - 소셜로그인
+    : Kakao
+    : Apple
+
+  - 지도 API
+    : Naver Map
+    : Kakao Map
+
+  - CRUD 구현
+    : 사진 저장
+    : 사진 수정
+    : 사진 삭제
+    : 사진 게시
+
+  - component 분리
+  - API 모듈화
+  - QR scan
+  - Progress Bar
+  - axois
+  - LoadingScreen with gif
+  - Animation Header
+  - FastImage
+  - DropBox (기능 구현)
+  - Modal
+  - Toast
+  - FlatList
+  - KeyboardAvoidingView
+  - http 접근 허용 -> info.plist
+  - Camera 접근
+  - Gallery 접근
+  - 절대경로 설정
+  - DatePicker
+  - SplashScreen Custom with Lottie
+  - 최적화
+    : useMemo
+    : useCallback
+  - 네트워크 연결 체크
+
+# codepush
+appcenter codepush release-react -a sori127/potory-ios -d Staging
+$ appcenter codepush release-react -a sori127/potory-ios -d Production
+
+appcenter codepush release-react -a sori127/potory-ios -m --description "test"

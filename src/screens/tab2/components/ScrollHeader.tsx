@@ -1,12 +1,16 @@
+/* React & Package */
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-// Icons
+import Toast from 'components/Toast/Toast';
+
+/* icons */
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/Entypo';
 import Awesome5Icons from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const optionColor = '#333';
@@ -15,18 +19,19 @@ interface Props {
   gridPress?: Function;
   sequencePress?: Function;
   bgColorPress?: Function;
-  initToolValue?: Function;
+  initialAsyncValue?: Function;
+  actionForScrollTop: Function;
 }
 
 function Header({
   gridPress,
   sequencePress,
   bgColorPress,
-  initToolValue,
+  initialAsyncValue,
+  actionForScrollTop,
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
 
-  // tools
   const [grid, setGrid] = useState<number>();
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
@@ -51,7 +56,7 @@ function Header({
     AsyncStorage.setItem('bgColor', bgColor);
   };
 
-  // 클릭 시 변경되는 값 저장
+  // Tools 클릭 시 변경값 저장
   const setGridF = () => {
     grid === 1 ? setGrid(2) : grid === 2 ? setGrid(3) : setGrid(1);
     gridPress(grid === 1 ? 2 : grid === 2 ? 3 : 1);
@@ -65,69 +70,79 @@ function Header({
     bgColorPress(bgColor === '#111' ? '#ddd' : '#111');
   };
 
+  // 편집 || 저장 동작 함수
+  const EditOrSaveF = () => {
+    setIsEdit(!isEdit);
+    !isEdit && Toast.show('수정 완료 후 저장 버튼을 눌러주세요.');
+    isEdit && setColorAsync();
+  };
+
+  // 초기 Async 값 받아오는 useEffect
   useEffect(() => {
-    // 초기 Async 값 불러옴
     getAsyncStorage();
   }, []);
 
-  // 초기 Async 값 Main으로 전달
+  // 초기 Async 값 Main으로 전달하는 useEffect
   useEffect(() => {
     if (grid !== undefined && sequence !== undefined && bgColor !== undefined) {
-      initToolValue({grid, sequence, bgColor});
+      initialAsyncValue({grid, sequence, bgColor});
     }
   }, [grid, sequence, bgColor]);
 
   return (
     <View style={styles.container}>
-      {/************************* Logo *************************/}
-      <View style={styles.appName}>
+      {/*========================== Logo ==========================*/}
+      <TouchableOpacity
+        style={styles.appName}
+        onPress={() => actionForScrollTop()}>
         <Text style={styles.appNameFont}>
           {isEdit ? 'Potory' : 'Photo in memory'}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.toolCon}>
-        {/************************* Tools *************************/}
+        {/*======================== Tools ========================*/}
         {isEdit && (
           <View style={styles.optionCon}>
-            {/******** Grid ********/}
-            <TouchableOpacity style={styles.options} onPress={setGridF}>
+            {/*----------- Grid -----------*/}
+            <TouchableOpacity
+              style={[styles.options, {marginTop: 0}]}
+              onPress={setGridF}>
               <CommunityIcons
                 name={'grid-large'}
                 size={21}
                 color={optionColor}
               />
             </TouchableOpacity>
-            {/******** Sequence ********/}
+            {/*--------- Sequence ---------*/}
             <TouchableOpacity
-              style={styles.options}
-              hitSlop={styles.hitslop}
+              style={styles.rowOptions}
+              hitSlop={styles.hitslop10}
               onPress={setSequenceF}>
+              <AntDesign name={'calendar'} size={21} color={optionColor} />
               <Awesome5Icons
                 name={'arrows-alt-v'}
-                size={18}
+                size={19}
                 color={optionColor}
+                style={styles.arrowsAltV}
               />
             </TouchableOpacity>
-            {/******** BG_Color ********/}
+            {/*--------- BG_Color ---------*/}
             <TouchableOpacity style={styles.options} onPress={setBgColorF}>
               <Ionicons
                 name={'color-palette-outline'}
-                size={24}
+                size={25}
                 color={optionColor}
               />
             </TouchableOpacity>
           </View>
         )}
 
-        {/*********************** Edit & Save ***********************/}
+        {/*======================= Edit & Save =======================*/}
         <TouchableOpacity
-          style={styles.tool}
+          style={[styles.tool, {backgroundColor: isEdit ? '#d7ceed' : '#fff'}]}
           hitSlop={styles.hitslop}
-          onPress={() => {
-            setIsEdit(!isEdit);
-            isEdit && setColorAsync();
-          }}>
+          onPress={EditOrSaveF}>
           {isEdit ? (
             <MaterialIcons name={'save-alt'} size={20} color={'black'} />
           ) : (
@@ -141,13 +156,16 @@ function Header({
 
 export default Header;
 
-const containerPadding = 20;
+const containerPadding = 30;
+const toolPadding = 6;
 const toolsmarginTop = 4;
+const toolMarginRight = 13;
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+    paddingTop: 0,
     paddingLeft: containerPadding,
     paddingRight: containerPadding,
     flexDirection: 'row',
@@ -158,11 +176,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   appNameFont: {
-    paddingLeft: 0,
+    paddingLeft: 5,
     paddingRight: 10,
-    fontStyle: 'italic',
     fontSize: 17,
     fontWeight: '300',
+    letterSpacing: 0.45,
   },
   toolCon: {
     height: '100%',
@@ -174,12 +192,12 @@ const styles = StyleSheet.create({
     padding: 9,
     borderRadius: 12,
     justifyContent: 'center',
-    backgroundColor: '#fcfcfc',
+
     // 그림자
     elevation: 2,
-    shadowRadius: 2,
+    shadowRadius: 3,
     shadowOpacity: 0.1,
-    shadowColor: 'rgb(50, 50, 50)',
+    shadowColor: 'rgb(54, 47, 68)',
     shadowOffset: {height: 0, width: 0},
   },
   optionCon: {
@@ -189,12 +207,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   options: {
-    padding: 6,
+    padding: toolPadding,
     paddingRight: 10,
     marginTop: toolsmarginTop,
-    marginRight: 13,
-    borderRadius: 15,
+    marginRight: toolMarginRight,
     justifyContent: 'center',
+  },
+  rowOptions: {
+    padding: toolPadding,
+    paddingTop: 12,
+    marginTop: toolsmarginTop,
+    marginRight: toolMarginRight,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  arrowsAltV: {
+    paddingTop: 2,
+    paddingLeft: 2,
+  },
+  hitslop10: {
+    top: 20,
+    left: 10,
+    right: 10,
+    bottom: 20,
   },
   hitslop: {
     top: 20,

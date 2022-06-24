@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -12,12 +13,16 @@ import AddPhotoScreen from '../screens/tab2/container/AddPhotoScreen';
 import EditPhotoScreen from '../screens/tab2/container/EditPhotoScreen';
 
 // Info
-import SettingScreen from '../screens/tab3/container/SettingScreen';
 import Notice from '../screens/tab3/container/Notice';
-import FrequecyQuestion from '../screens/tab3/container/FrequecyQuestion';
 import ServiceTOS from '../screens/tab3/container/ServiceTOS';
 import LocationTOS from '../screens/tab3/container/LocationTOS';
 import PrivacyPolicy from '../screens/tab3/container/PrivacyPolicy';
+import SettingScreen from '../screens/tab3/container/SettingScreen';
+import FrequecyQuestion from '../screens/tab3/container/FrequecyQuestion';
+
+// Ect
+import Login from '../screens/intro/SignInScreen';
+import QRCodeScanner from '../screens/tab2/container/QRCodeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,21 +34,30 @@ function RootScreen() {
         component={BottomTabNavigation}
         options={{headerShown: false}}
       />
-      {/* Home */}
+      {/*--------------------- Home ---------------------*/}
 
-      {/* Photo */}
+      {/* none */}
+
+      {/*--------------------- Photo ---------------------*/}
+
       <Stack.Screen
         name="AddPhotoScreen"
         component={AddPhotoScreen}
-        options={{headerShown: false}}
+        options={{headerShown: false, gestureEnabled: false}}
       />
       <Stack.Screen
         name="EditPhotoScreen"
         component={EditPhotoScreen}
-        options={{headerShown: false}}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name="QRCodeScreen"
+        component={QRCodeScanner}
+        options={{headerShown: false, gestureEnabled: false}}
       />
 
-      {/* Info */}
+      {/*--------------------- MyPage ---------------------*/}
+
       <Stack.Screen
         name="설정"
         component={SettingScreen}
@@ -72,6 +86,14 @@ function RootScreen() {
       <Stack.Screen
         name="개인정보 처리방침"
         component={PrivacyPolicy}
+        options={{headerShown: false}}
+      />
+
+      {/*--------------------- Ect ---------------------*/}
+
+      <Stack.Screen
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

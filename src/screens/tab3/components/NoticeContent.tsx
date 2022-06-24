@@ -1,55 +1,76 @@
-import React from 'react';
+/* React & Package */
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
-// Icons
+
+/* custom components */
+import Toast from '../../../components/Toast/Toast';
+import Loading from '../../../components/Loading';
+
+/* api */
+import {api_noticeList} from '../../../../src/core/api/Module';
+
+/* icons */
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const data = [
-  {
-    noticeNum: 1,
-    mainText: '대박사꼰 앱 출시 !',
-    subText: '2022.04.27',
-  },
-  {
-    noticeNum: 2,
-    mainText: '오늘은 어떤 새로운 기능이 ?',
-    subText: '2022.05.27',
-  },
-  {
-    noticeNum: 3,
-    mainText: '여러분들의 소듕한 의견을 모아모아',
-    subText: '2022.05.05',
-  },
-  {
-    noticeNum: 4,
-    mainText: '희희 업데이트 했다룽',
-    subText: '2022.06.30',
-  },
-];
+interface Props {
+  noticeNum: number;
+  mainText: string;
+  date: string;
+}
 
-const NoticeList = ({noticeNum, mainText, subText}) => {
+// component
+const NoticeList = ({noticeNum, mainText, date}: Props) => {
   return (
     <View style={styles.noticeContainer}>
       <View style={styles.noticeListSide}>
-        <MaterialIcons name="alarm-light-outline" size={26} color="#f07056" />
+        <MaterialIcons name="alarm-light-outline" size={26} color="#ed745e" />
         <Text style={styles.noticeListSideText}>No.{noticeNum}</Text>
       </View>
       <View style={styles.noticeCotent}>
         <Text style={styles.cotentMainText}>{mainText}</Text>
-        <Text style={styles.cotentSubText}>{subText}</Text>
+        <Text style={styles.cotentSubText}>{date}</Text>
       </View>
     </View>
   );
 };
+
 function NoticeContent() {
+  const [noticeListData, setNoticeListData] = useState([]);
+
+  // useEffect
+  useEffect(() => {
+    connectAPI();
+  }, []);
+
+  /* api */
+  const connectAPI = () => {
+    api_noticeList()
+      .then(res => {
+        setNoticeListData(res.data.data);
+        console.log('Notice List Success == ');
+      })
+      .catch(err => {
+        console.log('Notice List Err == ', err);
+        Toast.show(
+          '데이터를 불러오는 데에 실패하였습니다.\n잠시 후 다시 시도해주세요.',
+        );
+      });
+
+    return;
+  };
+
+  if (noticeListData === []) return <Loading />;
+
   return (
-    <ScrollView style={styles.container}>
-      {data.reverse().map(index => {
+    <ScrollView style={styles.container} showsHorizontalScrollIndicator={false}>
+      {/* noticeListData.reverse().map */}
+      {noticeListData.map((item: any) => {
         return (
           <NoticeList
-            key={index.noticeNum}
-            noticeNum={index.noticeNum}
-            mainText={index.mainText}
-            subText={index.subText}
+            key={item.notice_idx}
+            noticeNum={item.notice_idx}
+            mainText={item.title}
+            date={item.create_date.slice(0, 10)}
           />
         );
       })}
@@ -62,34 +83,40 @@ export default NoticeContent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
     paddingTop: 10,
-    paddingLeft: 3,
     marginBottom: 90,
+    // backgroundColor: 'pink',
   },
   noticeContainer: {
-    height: 77,
+    width: '100%',
+    // height: 80,
     borderBottomWidth: 0.5,
     borderBottomColor: '#ccc',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
   },
   noticeListSide: {
-    width: 80,
-    height: '100%',
-    alignItems: 'center',
+    width: '20%',
+    paddingLeft: 10,
+    paddingRight: 20,
     justifyContent: 'center',
   },
   noticeListSideText: {
+    fontWeight: '500',
     marginTop: 3,
     fontSize: 11,
-    color: '#cd5942',
+    color: '#dd5f49',
   },
   noticeCotent: {
-    padding: 10,
+    width: '80%',
+    paddingTop: 25,
+    paddingBottom: 25,
   },
   cotentMainText: {
     fontSize: 15,
+    fontWeight: '500',
     color: '#111',
     marginBottom: 2,
   },

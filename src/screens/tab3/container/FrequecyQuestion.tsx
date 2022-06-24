@@ -1,24 +1,30 @@
+/* React & Package */
 import React from 'react';
-import {SafeAreaView, Text, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-// Page
-import CustomHeader from '../../common/CustomHeader';
+/* custom components */
+import CustomHeader from '../../../components/header/CustomHeader';
 import FrequecyQuestionContent from '../components/FrequecyQuestionContent';
-import CustomFooterButton from '../../common/CustomFooterButton';
+import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
 function FrequecyQuestion() {
   const navigation = useNavigation();
+
+  const goBackF = () => {
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+      {/*-------- Header --------*/}
       <CustomHeader headerTitle={'자주 묻는 질문'} />
 
-      {/* Content */}
+      {/*-------- Content --------*/}
       <FrequecyQuestionContent />
 
-      {/* Footer */}
-      <CustomFooterButton navigation={navigation} />
+      {/*-------- Footer --------*/}
+      <CustomFooterButton title="확인" action={goBackF} />
     </SafeAreaView>
   );
 }
@@ -28,5 +34,6 @@ export default FrequecyQuestion;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
 });

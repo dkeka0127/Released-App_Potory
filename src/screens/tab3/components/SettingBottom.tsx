@@ -1,26 +1,13 @@
+/* React & Package */
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {ifIphoneX, getBottomSpace} from 'react-native-iphone-x-helper';
-
-const IconSize = 17;
-const IconColor = '#111';
 
 function SettingBottom() {
   return (
-    <View style={styles.bottomContainer}>
-      <Text style={{fontSize: 15, fontWeight: '400'}}>
-        photoinmemory@naver.com
-      </Text>
-      <Text style={{fontSize: 17, marginTop: 10, fontWeight: '600'}}>
-        Photo in memory
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.emailText}>photoinmemory@naver.com</Text>
+      <Text style={styles.logoText}>Photo in memory</Text>
     </View>
   );
 }
@@ -28,15 +15,29 @@ function SettingBottom() {
 export default SettingBottom;
 
 const styles = StyleSheet.create({
-  bottomContainer: {
+  container: {
     width: '100%',
     height: 100,
     position: 'absolute',
     bottom: 0,
-    // paddingBottom: 10 + getBottomSpace(),
     ...ifIphoneX({paddingBottom: 35}, {paddingBottom: 25}),
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor: '#fff',
+    // 그림자
+    elevation: 4,
+    shadowRadius: 15,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(109, 84, 150)',
+    shadowOffset: {height: 0, width: 0},
+  },
+  emailText: {
+    fontSize: 15,
+    fontWeight: '400',
+  },
+  logoText: {
+    fontSize: 17,
+    marginTop: 10,
+    fontWeight: '600',
   },
 });

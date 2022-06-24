@@ -1,65 +1,86 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
 
-// Page
-import {store} from '../../../../dummyData';
+function DropDown({data, getDropDownItem}: any) {
+  const items: any = [];
+  for (let i = 0; i < data.length; i++) {
+    items.push({label: data[i], value: data[i]});
+  }
 
-function MainHome() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('전체');
-  const [dropdownItems, setDropdownItems] = useState(store);
 
-  console.log(value);
+  useEffect(() => {
+    getDropDownItem(value);
+  }, [value]);
 
   return (
-    <>
-      <DropDownPicker
-        disabled={false}
-        onChangeValue={value => console.log(value)}
-        onSelectItem={item => console.log(item)}
-        style={[styles.context, {height: 47}]}
-        textStyle={styles.text}
-        containerStyle={styles.container}
-        dropDownContainerStyle={styles.context}
-        showTickIcon={false}
-        open={open}
-        value={value}
-        setOpen={setOpen}
-        setValue={setValue}
-        // setItems={setItems}
-        placeholder={store[0].label}
-        items={dropdownItems}
-        // dropDownMaxHeight={50}
-      />
-    </>
+    <DropDownPicker
+      placeholder="Select an item"
+      open={open}
+      value={value}
+      items={items}
+      setOpen={setOpen}
+      setValue={setValue}
+      maxHeight={160}
+      // autoScroll={true}
+      // stickyHeader={true}
+      showArrowIcon={false}
+      showTickIcon={false}
+      textStyle={styles.text}
+      // labelStyle={styles.labelText}
+      containerStyle={styles.container}
+      placeholderStyle={styles.placeHoldText}
+      // selectedItemLabelStyle={styles.selectedItem}
+      style={[styles.deleteBorderWidth, open && styles.addBottomLine]}
+      dropDownContainerStyle={styles.deleteBorderWidth}
+      zIndex={1000}
+    />
   );
 }
 
-export default MainHome;
+export default DropDown;
+
+const PositionTop = 70;
+const PositionLeft = 15;
+const borderRadius = 15;
 
 const styles = StyleSheet.create({
   container: {
-    width: 140,
-    height: 45,
+    width: 130,
     position: 'absolute',
-    top: getStatusBarHeight() + 15,
-    left: 15,
-    shadowColor: 'rgb(50, 50, 50)',
+    top: PositionTop,
+    left: PositionLeft,
+
+    // 그림자
+    elevation: 3,
     shadowOpacity: 0.3,
-    shadowRadius: 3,
-    shadowOffset: {height: 0, width: 0},
-    elevation: 5,
-  },
-  context: {
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
+    shadowColor: '#888',
+    shadowOffset: {width: 0, height: 0},
   },
   text: {
-    color: '#111',
-    fontSize: 14,
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  placeHoldText: {
+    color: 'grey',
+    fontWeight: 'bold',
+  },
+  labelText: {
+    // fontWeight: 'bold',
+  },
+  selectedItem: {
+    // fontWeight: 'bold',
+  },
+  deleteBorderWidth: {
+    borderWidth: 1,
+    borderColor: '#eee',
+    borderRadius: borderRadius,
+  },
+  addBottomLine: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    borderRadius: borderRadius,
   },
 });

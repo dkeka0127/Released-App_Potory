@@ -1,49 +1,33 @@
-import {useNavigation} from '@react-navigation/native';
+/* React & Package */
 import React, {useState} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
+  Alert,
   StyleSheet,
   ScrollView,
-  Alert,
+  TouchableOpacity,
+  NativeModules,
 } from 'react-native';
-// import {
-//   KakaoOAuthToken,
-//   KakaoProfile,
-//   getProfile as getKakaoProfile,
-//   login,
-//   logout,
-//   unlink,
-// } from '@react-native-seoul/kakao-login';
-// Icons
-import AntDesign from 'react-native-vector-icons/AntDesign';
-// Variable
+import RNRestart from 'react-native-restart';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+
+/* api */
+import {api_deleteDevice} from '../../../core/api/Module';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
+
+// variable
 const IconSize = 17;
 const IconColor = '#111';
 
-// [컴포넌트] Logout / Withdrawal
-const SettingAccount = ({iconName, title}) => {
-  return (
-    <TouchableOpacity
-      style={styles.accountContent}
-      onPress={() => {
-        // AlertText(title)
-      }}>
-      <AntDesign
-        style={{paddingRight: 8}}
-        name={iconName}
-        size={15}
-        color="gray"
-      />
-      <Text style={{fontSize: 14, color: 'gray'}}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
+/* icons */
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-// [컴포넌트] Menu List
+// List Components
 const SettingContentList = ({iconName, title}) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={styles.listContent}
@@ -65,7 +49,7 @@ const SettingContentList = ({iconName, title}) => {
   );
 };
 
-// [컴포넌트] Category Title
+// Category Title
 const SettingContectTitle = ({title}) => {
   return (
     <View style={styles.headerTitleCon}>
@@ -74,46 +58,101 @@ const SettingContectTitle = ({title}) => {
   );
 };
 
-function SettingContent() {
-  // Kakao Login
-  const [result, setResult] = useState<string>(''); // Kakao Login
-  // 로그아웃
-  const signOutWithKakao = async (): Promise<void> => {
-    // const message = await logout();
-    // setResult(message);
-  };
-  // 회원탈퇴
-  const unlinkKakao = async (): Promise<void> => {
-    // const message = await unlink();
-    // setResult(message);
-  };
+//
+//
+//
 
-  // Alert Message
-  const AlertText = title => {
+function SettingContent() {
+  const [userIdx, setUseIdx] = useState(null);
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
+
+  // function
+  const AlertText = (title: string) => {
     Alert.alert(
       '',
       title === '로그아웃'
         ? '로그아웃 하시겠습니까 ?'
-        : '회원탈퇴 시 회원님의 소중한 추억이 \n 삭제되며 복구가 불가합니다. \n 정말로 탈퇴하시겠습니까 ?',
+        : '회원탈퇴 시 회원님의 소중한 추억이\n삭제되며 복구가 불가합니다.\n정말로 탈퇴하시겠습니까 ?',
       [
         {
           text: '취소',
           onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          style: 'default',
         },
         {
           text: '확인',
-          onPress: () => {
-            title === '로그아웃' ? signOutWithKakao() : unlinkKakao();
-          },
+          onPress: () => (title === '로그아웃' ? logOut() : signOut()),
+          style: 'default',
         },
       ],
     );
   };
 
+  const logOut = () => {
+    saveAsyncSignOut('logout');
+
+    Alert.alert('', '로그아웃 되었습니다.', [
+      {
+        text: '확인',
+        onPress: () => RNRestart.Restart(),
+        style: 'default',
+      },
+    ]);
+  };
+
+  const signOut = () => {
+    connectAPI_deleteUser();
+    saveAsyncSignOut('signOut');
+
+    Alert.alert('', '회원탈퇴 되었습니다.', [
+      {
+        text: '확인',
+        onPress: () => RNRestart.Restart(),
+        style: 'default',
+      },
+    ]);
+  };
+
+  const saveAsyncSignOut = (value: string) => {
+    AsyncStorage.setItem(
+      'userInfo',
+      JSON.stringify({
+        autoLogin: false,
+        userNumber: value === 'logout' ? String(userIdx) : null,
+      }),
+      () => console.log('------ 유저정보 삭제 ------'),
+    );
+  };
+
+  const connectAPI_deleteUser = () => {
+    if (userIdx === null || userIdx === undefined) return;
+
+    api_deleteDevice(userIdx)
+      .then(res => console.log('api_deleteDevice Success == ', res))
+      .catch(err => console.log('api_deleteDevice Err == ', err));
+  };
+
+  // component
+  const SettingAccount = ({iconName, title}: any) => {
+    return (
+      <TouchableOpacity
+        style={styles.accountContent}
+        onPress={() => AlertText(title)}>
+        <AntDesign
+          style={{paddingRight: 8}}
+          name={iconName}
+          size={15}
+          color="gray"
+        />
+        <Text style={{fontSize: 14, color: 'gray'}}>{title}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <ScrollView style={styles.content}>
-      {/* 게시판 */}
+    <ScrollView style={styles.content} showsHorizontalScrollIndicator={false}>
+      {/*------------------------ 게시판 ------------------------*/}
+
       <SettingContectTitle title={'게시판'} />
       <SettingContentList iconName={'notification'} title={'공지사항'} />
       <SettingContentList
@@ -122,7 +161,8 @@ function SettingContent() {
       />
       <View style={styles.devideLine} />
 
-      {/* 약관 및 정책 */}
+      {/*---------------------- 약관 및 정책 ----------------------*/}
+
       <SettingContectTitle title={'약관 및 정책'} />
       {/* <SettingContentList iconName={'infocirlceo'} title={'서비스 이용약관'} /> */}
       <SettingContentList
@@ -132,7 +172,8 @@ function SettingContent() {
       <SettingContentList iconName={'exception1'} title={'개인정보 처리방침'} />
       <View style={styles.devideLine} />
 
-      {/* 로그아웃/회원탈퇴 */}
+      {/*--------------------- 로그아웃/회원탈퇴 ---------------------*/}
+
       <View style={styles.accountContainer}>
         <SettingAccount iconName={'logout'} title={'로그아웃'} />
         <SettingAccount iconName={'warning'} title={'회원탈퇴'} />
@@ -152,7 +193,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     width: '100%',
-    height: 50,
+    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -170,6 +211,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   accountContainer: {
+    padding: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -194,10 +236,9 @@ const styles = StyleSheet.create({
     color: '#111',
   },
   devideLine: {
-    height: 3,
-    margin: 7,
+    height: 2.5,
+    margin: 9,
     opacity: 0.5,
-    backgroundColor: '#eee',
-    // backgroundColor: '#fff',
+    backgroundColor: '#f1eff4',
   },
 });

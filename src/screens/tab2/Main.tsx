@@ -1,50 +1,51 @@
+/* React & Package */
+import React, {useRef, useEffect, useState, useMemo, useCallback} from 'react';
 import {
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  Animated,
   View,
+  Animated,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  LayoutChangeEvent,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import FastImage from 'react-native-fast-image';
+import {useFocusEffect} from '@react-navigation/native';
 
-// Screen
+/* custom components */
+import Toast from 'components/Toast/Toast';
+import Loading from '../../components/Loading';
+import PhotoModal from './components/PhotoModal';
 import ScrollHeader from './components/ScrollHeader';
 import EmptyDataScreen from './container/EmptyDataScreen';
-import FlatListRenderItem from './components/FlatListRenderItem';
-import AsyncStorage from '@react-native-community/async-storage';
+import AddContentButton from './components/AddContentButton';
 
-// Image
-const backgroundImg = '../../assets/images/MainPhoto_bg.png';
-const dataSource = [
-  {id: 1, title: 'Button'},
-  {id: 2, title: 'Card'},
-  {id: 3, title: 'Input'},
-  {id: 4, title: 'Avatar'},
-  {id: 5, title: 'CheckBox'},
-  {id: 6, title: 'Header'},
-  {id: 7, title: 'Icon'},
-  {id: 8, title: 'Lists'},
-  {id: 9, title: 'Rating'},
-  {id: 10, title: 'Pricing'},
-  {id: 11, title: 'Avatar'},
-  {id: 12, title: 'CheckBox'},
-  {id: 13, title: 'Header'},
-  {id: 14, title: 'Icon'},
-  {id: 15, title: 'Lists'},
-  {id: 16, title: 'Rating'},
-  {id: 17, title: 'Pricing'},
-  {id: 18, title: 'Icon'},
-  {id: 19, title: 'Lists'},
-  {id: 26, title: 'Rating'},
-  {id: 27, title: 'Pricing'},
-];
+/* api */
+import {api_getPhotoList} from '../../core/api/Module';
 
-// Variable
-const HEADER_HEIGHT = 60;
+// variable
+const HEADER_HEIGHT = 80;
+const deviceWidth = Dimensions.get('window').width;
+import {getAsyncStorage_userIdx} from '../../core/UserInfo';
+import {polaroid_gray, polaroid_black} from '../../core/Polaroid';
+
+interface AsyncProps {
+  grid: number;
+  sequence: string;
+  bgColor: string;
+}
 
 function Main() {
-  // header - scroll variable
+  const [photoListData, setPhotoListData] = useState<any>([]);
+  let [photoListArr, setPhotoListArr] = useState([]);
+  // const polaroidSortRandomly = photoListData.map(() => {
+  //   return Math.floor(Math.random() * 12); // 폴라로이드 랜덤 배정
+  // });
+
+  const [userIdx, setUseIdx] = useState<any>();
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
+
+  // scroll header variable
+  const flatListRef = useRef<any>(true);
   const [scrollAnim] = useState(new Animated.Value(0));
   const [offsetAnim] = useState(new Animated.Value(0));
   const [clampedScroll, setClampedScroll] = useState(
@@ -67,25 +68,74 @@ function Main() {
     extrapolate: 'clamp',
   });
 
-  // tools
-  const [grid, setGrid] = useState<number>();
+  // async variable
+  const [grid, setGrid] = useState<number>(2);
   const [sequence, setSequence] = useState<string>();
   const [bgColor, setBgColor] = useState<string>();
 
-  // [tool 값] 상/하위 전달 F
-  const gridPress = value => setGrid(value);
-  const sequencePress = value => setSequence(value);
-  const bgColorPress = value => setBgColor(value);
+  const [modalImageInfo, setModalImageInfo] = useState();
+  const [isModalShown, setIsModalShown] = useState(false);
+  const polaroidWidth = (deviceWidth - flatListPadding * 2) / grid;
 
-  // 초기 Async 값 받아옴
-  const initToolValue = value => {
+  // useEffect
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (userIdx) connectAPI();
+    }, [userIdx]),
+  );
+
+  useEffect(() => {
+    let a: any = [];
+    if (photoListData.length !== 0) {
+      photoListData.map(() => {
+        a.push(Math.floor(Math.random() * 12));
+      });
+      setPhotoListArr(a);
+    }
+  }, [photoListData, grid, bgColor]);
+
+  useEffect(() => {
+    if (isModalShown) setIsModalShown(false);
+    else return;
+  }, [isModalShown]);
+
+  // api
+
+  const connectAPI = () => {
+    api_getPhotoList(userIdx)
+      .then(res => {
+        setPhotoListData(res.data.data);
+        console.log('get photo list Success == ');
+      })
+      .catch(err => {
+        console.log('get photo list Err == ', err);
+        Toast.show(
+          '사진을 불러오는데 실패하였습니다.\n잠시 후 다시 시도해주세요.',
+        );
+      });
+
+    return;
+  };
+
+  // function
+
+  const gridPress = (value: number) => setGrid(value);
+
+  const sequencePress = (value: string) => setSequence(value);
+
+  const bgColorPress = (value: string) => setBgColor(value);
+
+  const initialAsyncValue = (value: AsyncProps) => {
     setGrid(value.grid);
     setSequence(value.sequence);
     setBgColor(value.bgColor);
   };
 
-  // [Header] Scroll Event Function
-  const scrollHeaderF = event => {
+  const actionForScrollTop = () =>
+    flatListRef.current.scrollToOffset({animated: true, offset: 0});
+
+  const headerScrollEvent = (event: LayoutChangeEvent) => {
     let {height} = event.nativeEvent.layout;
     setClampedScroll(
       Animated.diffClamp(
@@ -103,43 +153,100 @@ function Main() {
     );
   };
 
-  const _FlatListRenderItem = () => {
-    return (
-      <View>
-        <View></View>
-      </View>
-    );
+  const imageDeletedFromModal = () => {
+    connectAPI(); // api refetch because image deleted
+    console.log('-- imageDeleted --');
   };
 
+  const keyExtractor = useCallback(item => item.photo_idx, []);
+
+  const useCallbackRenderItem = useCallback(
+    ({item, index}) => {
+      console.log(
+        '\n..................photoListArr, photoListData.length',
+        photoListArr,
+        photoListData.length,
+      );
+      return (
+        <>
+          <FastImage
+            resizeMode="contain"
+            source={
+              bgColor === '#111'
+                ? polaroid_black[photoListArr[index]].uri
+                : polaroid_gray[photoListArr[index]].uri
+            }
+            style={[
+              renderItem.container,
+              {
+                width: polaroidWidth,
+                height: polaroidWidth * 1.18,
+              },
+            ]}>
+            <TouchableOpacity
+              style={{
+                marginTop: -(polaroidWidth * 0.14),
+                marginLeft: -3,
+                width: polaroidWidth * 0.55,
+                height: polaroidWidth * 0.5,
+              }}
+              onPress={() => {
+                setIsModalShown(true);
+                setModalImageInfo(item);
+              }}>
+              <FastImage
+                resizeMode="contain"
+                source={{uri: item.photo_url}}
+                style={renderItem.photo}
+              />
+            </TouchableOpacity>
+          </FastImage>
+          {index === photoListData.length - 1 && (
+            <View
+              style={{
+                width: polaroidWidth,
+                height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+                marginBottom: 100,
+              }}
+            />
+          )}
+        </>
+      );
+    },
+    [photoListArr],
+  );
+
   return (
-    <ImageBackground source={require(backgroundImg)} style={styles.container}>
-      <SafeAreaView style={styles.safeAreaViewContainer}>
-        {/********************* header *********************/}
-        <Animated.View
-          style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
-          onLayout={event => scrollHeaderF(event)}>
-          <ScrollHeader
-            initToolValue={initToolValue}
-            gridPress={gridPress}
-            sequencePress={sequencePress}
-            bgColorPress={bgColorPress}
-          />
-        </Animated.View>
+    <View style={styles.container}>
+      {/*======================= header =======================*/}
 
-        <View style={{marginTop: 100}}>
-          <Text>Grid : {grid}</Text>
-          <Text>Sequence : {sequence}</Text>
-          <Text>BG Color : {bgColor}</Text>
-        </View>
+      <Animated.View
+        style={[styles.header, {transform: [{translateY: navbarTranslate}]}]}
+        onLayout={event => headerScrollEvent(event)}>
+        <ScrollHeader
+          initialAsyncValue={initialAsyncValue}
+          gridPress={gridPress}
+          sequencePress={sequencePress}
+          bgColorPress={bgColorPress}
+          actionForScrollTop={actionForScrollTop}
+        />
+      </Animated.View>
 
-        {/********************* content *********************/}
+      {/*======================= content =======================*/}
+
+      {photoListArr.length === photoListData.length && (
         <Animated.FlatList
+          key={grid}
+          ref={flatListRef}
+          renderItem={useCallbackRenderItem}
           style={styles.flatList}
-          windowSize={15}
           bounces={false}
-          data={dataSource}
-          renderItem={FlatListRenderItem}
-          keyExtractor={(item, index) => index.toString()}
+          numColumns={grid} // grid 개수
+          windowSize={12} // 추가 렌더링 개수
+          initialNumToRender={15} // 초기 랜더링 개수
+          // maxToRenderPerBatch={15} // 스크롤 시 렌더링 할 항목 (기본값 10)
+          keyExtractor={keyExtractor}
+          data={sequence === 'new' ? photoListData : photoListData.reverse()}
           ListEmptyComponent={EmptyDataScreen}
           onScroll={Animated.event(
             [
@@ -152,18 +259,34 @@ function Main() {
             {useNativeDriver: true},
           )}
         />
-      </SafeAreaView>
-    </ImageBackground>
+      )}
+
+      {/*======================== modal ========================*/}
+
+      <PhotoModal
+        isModalShown={isModalShown}
+        modalImageInfo={modalImageInfo}
+        imageDeletedFromModal={imageDeletedFromModal}
+      />
+
+      {/*======================= Footer =======================*/}
+
+      <AddContentButton />
+    </View>
   );
 }
 
-// export default React.memo(Main);
-export default Main;
+export default React.memo(Main);
+// export default Main;
+
+const flatListPadding = 15;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 7,
+    width: '100%',
+    height: '100%',
+    paddingTop: 15,
+    backgroundColor: '#f9f7ff',
   },
   safeAreaViewContainer: {
     flex: 1,
@@ -173,12 +296,71 @@ const styles = StyleSheet.create({
     top: 30,
     left: 0,
     right: 0,
+    paddingTop: 10,
     height: HEADER_HEIGHT,
-    zIndex: 999,
+    zIndex: 1,
   },
   flatList: {
-    flexGrow: 1,
-    width: '100%',
     paddingTop: HEADER_HEIGHT,
+    paddingLeft: flatListPadding,
+    paddingRight: flatListPadding,
   },
 });
+
+const renderItem = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photo: {
+    flex: 1,
+  },
+});
+
+// const RenderItem = ({item, index}: any) => {
+//   return (
+//     <>
+//       <FastImage
+//         resizeMode="contain"
+//         source={
+//           bgColor === '#111'
+//             ? polaroid_black[photoListArr[index]].uri
+//             : polaroid_gray[photoListArr[index]].uri
+//         }
+//         style={[
+//           renderItem.container,
+//           {
+//             width: polaroidWidth,
+//             height: polaroidWidth * 1.18,
+//           },
+//         ]}>
+//         <TouchableOpacity
+//           style={{
+//             marginTop: -(polaroidWidth * 0.14),
+//             marginLeft: -3,
+//             width: polaroidWidth * 0.55,
+//             height: polaroidWidth * 0.5,
+//           }}
+//           onPress={() => {
+//             setIsModalShown(true);
+//             setModalImageInfo(item);
+//           }}>
+//           <FastImage
+//             resizeMode="contain"
+//             source={{uri: item.photo_url}}
+//             style={renderItem.photo}
+//           />
+//         </TouchableOpacity>
+//       </FastImage>
+//       {index === photoListData.length - 1 && (
+//         <View
+//           style={{
+//             width: polaroidWidth,
+//             height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+//             marginBottom: 100,
+//           }}
+//         />
+//       )}
+//     </>
+//   );
+// };

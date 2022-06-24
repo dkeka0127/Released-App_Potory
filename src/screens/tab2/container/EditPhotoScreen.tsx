@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* React & Package */
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,198 +7,255 @@ import {
   Keyboard,
   Image,
   StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
-import {ifIphoneX} from 'react-native-iphone-x-helper';
-import DatePicker from 'react-native-date-picker';
+import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-// Icon
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+/* custom components */
+import Loading from '../../../components/Loading';
+import Toast from '../../../components/Toast/Toast';
+import CustomDateHeader from '../../../components/header/CustomDateHeader';
+import CustomFooterButton from '../../../components/footer/CustomFooterButton';
 
-// Page
-import CustomHeader from '../../common/CustomHeader';
+/* api */
+import {api_editPhoto} from '../../../core/api/Module';
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
 
-// Image
-const backgroundImg = '../../../assets/images/photoModify_bg.png';
+// image
+const bgImg = '../../../assets/images/background/tab2_main_bg.jpg';
 
-function EditPhotoScreen() {
+function EditPhotoScreen({route}: any) {
   const navigation = useNavigation();
-  const [userDate, setUserDate] = useState('2020.03.03');
-  const [date, setDate] = useState(new Date());
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [editText, setEditText] = useState(false);
-  const [input, setInput] = useState(
-    '오늘은 3월 3일 \n 다음주면 대통령 선거날이다. 뽀앵 배고팡 ㅇㅅㅇ \n 근데 누굴 뽑아야 할 지 모르겠는데 어떡하지 ? \n 그냥 내가 됐으면 좋곘다 ㅎㅎ \n 오늘 아침 9시에 날씨 좋다고 느끼면서 출근했는데 벌써 오후 8시다 \n 시간은 참 빨라 룰루 \n 오늘 논너가기 조은 날이라던데 .. 다들 내 몫까지 놀아주라 희희 ..',
-  );
+  const [touchable, setTouchable] = useState(false);
+  const [userIdx, setUseIdx] = useState();
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
+  const [loading, setLoading] = useState(false);
+
+  const ImgURL = route.params.modalImageInfo?.photo_url;
+  const photoNum = route.params.modalImageInfo?.photo_idx;
+  const [memo, setMemo] = useState(route.params.modalImageInfo?.memo);
+  const [date, setDate] = useState(route.params.modalImageInfo?.date);
+  const preDate = route.params.modalImageInfo?.date;
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  // useEffect (* keyboard)
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  // function
+  const sendDataToAPI = () => {
+    connectAPI_edit();
+  };
+
+  // api
+  const connectAPI_edit = () => {
+    setLoading(true);
+    setTouchable(true);
+
+    api_editPhoto(photoNum, date, memo, userIdx)
+      .then(res => {
+        setLoading(false);
+        setTouchable(false);
+        Toast.show('편집이 완료되었습니다.');
+        navigation.navigate('Tab2');
+        console.log('edit photo Success == ');
+      })
+      .catch(err => {
+        setLoading(false);
+        setTouchable(false);
+        Toast.show(
+          '저장 중 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.',
+        );
+        console.log('edit photo Err == ', err);
+      });
+  };
+
+  const getChangedDate = (value: string) => setDate(value);
+
+  // if (loading === true) return <Loading />;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.keyboardAvoidingView}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={styles.SafeAreaView}>
-          <CustomHeader
-            headerTitle="Edit"
-            goBackArrow={true}
-            navigation={navigation}
-          />
-          <ImageBackground
-            source={require(backgroundImg)}
-            style={styles.imageBackground}>
-            <View style={styles.imageContainer}>
-              {/********************** Image **********************/}
-              <View style={styles.imageContent}>
-                <Image
-                  source={require('../../../assets/images/image2.png')}
-                  style={styles.image}
-                />
+    <>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}>
+        <FastImage source={require(bgImg)} style={styles.bgImg}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.SafeAreaView}>
+              {/*========================= header =========================*/}
+
+              <CustomDateHeader
+                date={preDate}
+                getChangedDate={getChangedDate}
+              />
+
+              {/*========================= photo =========================*/}
+
+              <View
+                style={[area.container, {flex: isKeyboardVisible ? 1.5 : 6}]}>
+                <Text style={area.title}>Photo</Text>
+                <View style={area.photoSection}>
+                  <Image source={{uri: ImgURL}} style={area.photoStyle} />
+                </View>
               </View>
 
-              {/*********************** Date ***********************/}
-              <TouchableOpacity
-                style={styles.dateContaier}
-                onPress={() => {
-                  setDatePickerOpen(true);
-                }}>
-                <Text style={styles.dateText}>{userDate}</Text>
-                <MaterialIcons name="pencil-outline" size={20} color="#111" />
-              </TouchableOpacity>
-              {datePickerOpen ? (
-                <DatePicker
-                  modal
-                  mode="date"
-                  open={datePickerOpen}
-                  date={date}
-                  onConfirm={date => {
-                    setDatePickerOpen(false);
-                    setDate(date);
-                    setUserDate(
-                      String(date.toISOString())
-                        .slice(0, 10)
-                        .replace(/-/gi, '.'),
-                    );
-                  }}
-                  onCancel={() => {
-                    setDatePickerOpen(false);
-                  }}
-                />
-              ) : null}
-            </View>
+              {/*========================== memo ==========================*/}
 
-            {/************************* Text *************************/}
-            <View style={styles.editTextCon}>
-              <TextInput
-                value={input}
-                multiline={true}
-                editable={editText}
-                maxLength={300}
-                style={styles.textContent}
-                onChangeText={text => {
-                  console.log('hihi'); // fix
-                  setInput(text);
-                }}
-                onEndEditing={() => {
-                  console.log('input is Done ~~~~~');
-                }}
-                onSubmitEditing={() => {}}
-              />
-            </View>
+              <View
+                style={[
+                  area.container,
+                  {
+                    flex: isKeyboardVisible ? 7 : 3.2,
+                  },
+                ]}>
+                <Text style={area.title}>Memo</Text>
+                <View style={area.memoSection}>
+                  <TextInput
+                    value={memo}
+                    multiline={true}
+                    editable={!touchable}
+                    maxLength={300}
+                    style={area.memoText}
+                    onChangeText={text => setMemo(text)}
+                  />
+                </View>
+              </View>
 
-            {/********************** Edit Image **********************/}
-            <View style={styles.textEditCon}>
-              <TouchableOpacity
-                hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-                onPress={() => {
-                  editText ? setEditText(false) : setEditText(true);
-                }}>
-                <MaterialIcons
-                  name={editText ? 'check' : 'pencil-outline'}
-                  size={27}
-                  color="#111"
-                />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+              {/*======================= bottom btn =======================*/}
+
+              {isKeyboardVisible === false && (
+                <>
+                  <View style={area.bottomSection} />
+                  <CustomFooterButton
+                    title="작성 완료"
+                    action={sendDataToAPI}
+                  />
+                </>
+              )}
+            </SafeAreaView>
+          </TouchableWithoutFeedback>
+        </FastImage>
+      </KeyboardAvoidingView>
+
+      {/*======================= loading =======================*/}
+
+      {loading && (
+        // <View style={styles.loadingPotory}>
+        <Loading />
+        // </View>
+      )}
+    </>
   );
 }
 
 export default EditPhotoScreen;
 
+const SectionBGColor = '#fff';
+
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  bgImg: {
+    flex: 1,
+    // marginBottom: ifIphoneX(-40, -10),
   },
   SafeAreaView: {
     flex: 1,
-    marginBottom: ifIphoneX(-40, -20),
   },
-  imageBackground: {
-    flex: 1,
+});
+
+const area = StyleSheet.create({
+  container: {
+    margin: 20,
+    borderRadius: 15,
     backgroundColor: '#fff',
   },
-  imageContainer: {
-    width: '100%',
-    height: '55%',
+  // headerTitleCon: {
+  //   paddingTop: 13,
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  // },
+  // headerCircleShape: {
+  //   width: 31,
+  //   height: 25,
+  //   marginLeft: 17,
+  //   marginRight: -17,
+  //   backgroundColor: '#d7ceed',
+  //   borderRadius: 30,
+  // },
+  title: {
+    fontSize: 16,
+    paddingTop: 13,
+    marginLeft: 17,
     alignItems: 'center',
-    justifyContent: 'center',
+    fontWeight: '500',
   },
-  imageContent: {
-    width: '70%',
-    height: '67%',
-    marginTop: 40,
+  photoSection: {
+    flex: 1,
+    marginTop: 15,
+    marginLeft: 35,
+    marginRight: 35,
     marginBottom: 40,
+    borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
+  photoStyle: {
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
   },
-  dateContaier: {
-    width: '40%',
-    height: 30,
-    marginLeft: '60%',
-    paddingRight: 20,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-  },
-  dateText: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    paddingRight: 8,
-  },
-  editTextCon: {
-    height: '30%',
-    paddingLeft: '3%',
-    paddingRight: '3%',
-    paddingTop: 20,
-    paddingBottom: 15,
-  },
-  textContent: {
+  memoSection: {
     flex: 1,
-    fontSize: 15,
-    fontWeight: '500',
-    // font design
-    lineHeight: 28,
-    letterSpacing: -0.7,
-    paddingLeft: '10%',
-    paddingRight: '10%',
+    marginTop: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 25,
+    borderRadius: 13,
+    backgroundColor: SectionBGColor,
+
+    // 그림자
+    elevation: 2,
+    shadowRadius: 3,
+    shadowOpacity: 0.1,
+    shadowColor: 'rgb(50, 50, 50)',
+    shadowOffset: {height: 0, width: 0},
   },
-  textEditCon: {
-    width: '100%',
-    paddingRight: 25,
-    alignItems: 'flex-end',
+  memoText: {
+    flex: 1,
+    color: 'black',
+    fontSize: 15,
+    lineHeight: 20,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingBottom: 10,
+    borderRadius: 10,
+    // letterSpacing: -0.7,
+  },
+  bottomSection: {
+    flex: 1.8,
   },
 });

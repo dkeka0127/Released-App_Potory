@@ -1,55 +1,116 @@
-import React, {useEffect, useState} from 'react';
+/* React & Package */
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
-  Image,
+  Alert,
   StyleSheet,
   Dimensions,
-  ImageBackground,
   ScrollView,
   TouchableOpacity,
-  Alert,
+  Platform,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import ImageModal from 'react-native-image-modal';
-
-// Icons
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
+import CameraRoll from '@react-native-community/cameraroll';
+import ViewShot, {captureScreen} from 'react-native-view-shot';
 
-// Variable
+/* custom components */
+import Toast from '../../../components/Toast/Toast';
+
+/* hooks */
+import {getAsyncStorage_userIdx} from '../../../core/UserInfo';
+
+/* api */
+import {api_deletePhoto} from '../../../core/api/Module';
+
+/* icons */
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+/* variable */
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
+const ModalWidth = deviceWidth * 0.85;
+const ModalHeight = deviceHeight * 0.51;
 
-// Image
-const bgImg = '../../../assets/images/photoPopup_bg.png';
+interface Props {
+  isModalShown: boolean;
+  modalImageInfo:
+    | undefined
+    | {
+        photo_idx: number;
+        date: string;
+        photo_url: string;
+        memo?: string;
+      };
+  imageDeletedFromModal: Function;
+}
 
-export default function PhotoModal({isModal}) {
+function PhotoModal({
+  isModalShown,
+  modalImageInfo,
+  imageDeletedFromModal,
+}: Props) {
   const navigation = useNavigation();
+  const viewShotRef = useRef<any>();
+  const [userIdx, setUseIdx] = useState();
+  getAsyncStorage_userIdx().then(res => setUseIdx(res));
+
+  const date = modalImageInfo?.date;
+  const memo = modalImageInfo?.memo;
+  const ImgNum = modalImageInfo?.photo_idx;
+  const ImgURL = modalImageInfo?.photo_url;
   const [shownModal, setShownModal] = useState(false);
 
-  // 폴라로이드 터치 시 하위 컴포넌트 렌더링 (= Modal shown)
+  // useEffect
   useEffect(() => {
-    if (isModal) {
+    if (isModalShown) {
       setShownModal(true);
     }
-  }, [isModal]);
+  }, [isModalShown]);
 
-  // Delete Image 클릭 시 Alert 출력
-  const deleteAlert = () => {
+  // function
+  const moveToEditScreen = () => {
+    setShownModal(false);
+    navigation.navigate('EditPhotoScreen', {modalImageInfo: modalImageInfo});
+  };
+
+  function captureScreenShot() {
+    Toast.show('사진이 갤러리에 저장되었습니다.');
+    viewShotRef.current.capture().then(async uri => CameraRoll.save(uri));
+  }
+
+  const alertBeforeDelete = () => {
     Alert.alert('', '삭제 하시겠습니까 ?', [
       {
         text: '취소',
-        onPress: () => console.log('Cancel Pressed'),
+        onPress: () => {},
         style: 'cancel',
       },
       {
         text: '확인',
-        onPress: () => {
-          setShownModal(false);
-        },
+        onPress: connectAPI_Delete,
       },
     ]);
+  };
+
+  // api
+  const connectAPI_Delete = () => {
+    api_deletePhoto(ImgNum, userIdx)
+      .then(res => {
+        Toast.show('사진이 삭제되었습니다.');
+        setShownModal(false);
+        imageDeletedFromModal();
+        console.log('delete photo api Success == ');
+      })
+      .catch(err => {
+        Toast.show(
+          '사진 삭제 중 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.',
+        );
+        console.log('delete photo api Err == ', err);
+      });
   };
 
   return (
@@ -59,130 +120,155 @@ export default function PhotoModal({isModal}) {
       hasBackdrop={true}
       backdropColor="black"
       backdropOpacity={0.7}
-      onBackdropPress={() => {
-        setShownModal(false);
-      }}>
-      <View style={styles.content}>
-        <View style={styles.modalContent}>
-          <ImageBackground source={require(bgImg)} style={styles.bgImage}>
-            {/* Image */}
-            <View style={styles.imageContainer}>
-              <ImageModal
-                resizeMode="contain"
-                hideCloseButton={true}
-                overlayBackgroundColor="#000000"
-                style={styles.image}
-                source={require('../../../assets/images/image3.png')}
-              />
-            </View>
+      onBackdropPress={() => setShownModal(false)}>
+      {/*===================== header =====================*/}
 
-            {/* Text */}
-            <ScrollView>
-              <Text style={styles.textContaier}>
-                오늘은 인스타스토리를 봤다. {'\n'}열받을 뻔 했다.{'\n'}하지만
-                내가 이겼군 후후 기분이 나쁘지만 나쁘지 않다.{'\n'}있었는데요
-                없었습니다 뭐 약간 그런느낌 ?{'\n'}
-                {'\n'}있었는데요 없었습니다 뭐 약간 그런느낌 ?{'\n'}
-              </Text>
-            </ScrollView>
-          </ImageBackground>
+      <View style={styles.header}>
+        <View style={styles.haederTextCon}>
+          {/* <View style={styles.headerCircleShape} /> */}
+          <Text style={styles.headerText}>{date?.replace(/-/gi, '.')}</Text>
         </View>
+        <View style={styles.headerIcon}>
+          <TouchableOpacity style={styles.editIcon} onPress={moveToEditScreen}>
+            <MaterialCIcons name="pencil-outline" size={22} color="#5d5963" />
+          </TouchableOpacity>
 
-        {/* Footer */}
-        <View style={styles.modalFooter}>
-          <Text style={styles.date}>22.03.02</Text>
-          <View style={styles.iconsContaier}>
-            <TouchableOpacity
-              style={styles.editIcon}
-              onPress={() => {
-                setShownModal(false);
-                navigation.navigate('EditPhotoScreen');
-              }}>
-              <MaterialIcons name="pencil-outline" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteIcon}
-              onPress={() => {
-                deleteAlert();
-              }}>
-              <MaterialIcons name="delete-outline" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.editIcon} onPress={captureScreenShot}>
+            <MaterialIcons name="save-alt" size={22} color="#5d5963" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.deleteIcon}
+            onPress={alertBeforeDelete}>
+            <MaterialIcons name="delete-outline" size={24} color="#5d5963" />
+          </TouchableOpacity>
         </View>
+      </View>
+
+      {/*====================== image ======================*/}
+
+      <View style={styles.image}>
+        <ViewShot
+          ref={viewShotRef}
+          style={styles.imageModalMargin}
+          options={{format: 'jpg', quality: 1.0}}>
+          <ImageModal
+            style={styles.imageModal}
+            resizeMode="contain"
+            hideCloseButton={true}
+            overlayBackgroundColor="#000000"
+            source={{uri: ImgURL}}
+          />
+        </ViewShot>
+      </View>
+
+      {/*====================== text ======================*/}
+
+      <View style={styles.text}>
+        <ScrollView
+          style={styles.textScrollView}
+          showsHorizontalScrollIndicator={false}>
+          <Text style={styles.textStyle}>{memo}</Text>
+        </ScrollView>
       </View>
     </Modal>
   );
 }
 
+export default React.memo(PhotoModal);
+
+const BGColor = '#f9f7ff';
+const BorderRadius = 10;
+const ImageHeight = 0.7;
+const ImageHeightMargin = 0.04;
+const TextHeight = 1 - ImageHeight;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    width: deviceWidth * 0.85,
-    height: deviceHeight * 0.63,
-    padding: 18,
-    paddingBottom: 8,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-  },
-  modalContent: {
-    height: '88%',
-    backgroundColor: '#ccc',
-  },
-  bgImage: {
-    flex: 1,
-    margin: 1.5,
-    paddingTop: 20,
-    paddingBottom: 20,
-    alignItems: 'center',
-  },
-  imageContainer: {
-    width: '83%',
-    height: '70%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
   },
-  image: {
-    width: deviceWidth * 0.85 * 0.75,
-    height: deviceHeight * 0.63 * 0.47,
-  },
-  textContaier: {
-    paddingTop: 5,
-    paddingLeft: 30,
-    paddingRight: 30,
-  },
-  modalFooter: {
-    height: '12%',
-    paddingTop: 10,
-    paddingBottom: 3,
+  header: {
+    width: ModalWidth,
+    height: 58,
+    paddingLeft: 20,
+    paddingRight: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: BGColor,
+    borderTopLeftRadius: BorderRadius,
+    borderTopRightRadius: BorderRadius,
   },
-  date: {
-    fontSize: 16,
-    fontWeight: '600',
-    paddingLeft: 10,
-  },
-  iconsContaier: {
-    paddingTop: 5,
+  haederTextCon: {
     flexDirection: 'row',
-    // backgroundColor: 'pink',
+    alignItems: 'center',
+  },
+  headerCircleShape: {
+    width: 31,
+    height: 25,
+    marginRight: -17,
+    backgroundColor: '#cfc7e2',
+    borderRadius: 30,
+  },
+  headerText: {
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  headerIcon: {
+    flexDirection: 'row',
   },
   editIcon: {
     width: 30,
     height: 30,
-    marginRight: 10,
+    marginRight: 6,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   deleteIcon: {
     width: 30,
     height: 30,
-    marginRight: 5,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  image: {
+    width: ModalWidth,
+    height: ModalHeight * ImageHeight + 10, // ModalHeight 7:3
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: '#fff',
+  },
+  imageModalMargin: {
+    marginLeft: ModalWidth * 0.05,
+    marginRight: ModalWidth * 0.05,
+    marginTop: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+    marginBottom: ModalHeight * ImageHeightMargin, // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+  },
+  imageModal: {
+    width: ModalWidth * 0.9,
+    height: ModalHeight * (ImageHeight - ImageHeightMargin * 2), // ModalHeight 0.7 (0.65 + 0.25 = 0.25)
+  },
+  text: {
+    width: ModalWidth,
+    height: ModalHeight * TextHeight, // ModalHeight 7:3
+    backgroundColor: BGColor,
+    borderBottomLeftRadius: BorderRadius,
+    borderBottomRightRadius: BorderRadius,
+  },
+  textScrollView: {
+    flex: 1,
+    marginTop: 15,
+    paddingTop: 8,
+    marginBottom: 20,
+    paddingLeft: 35,
+    paddingRight: 35,
+    borderRadius: BorderRadius,
+  },
+  textStyle: {
+    paddingTop: 0,
+    paddingBottom: 20,
+    letterSpacing: 0.2,
   },
 });
