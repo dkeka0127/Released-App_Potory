@@ -31,7 +31,7 @@ const CustomDateHeader = (props: Props) => {
   };
 
   const closeAlert = () => {
-    Alert.alert('', '페이지를 종료하시겠습니까 ?', [
+    Alert.alert('', '사진 저장을 취소하시겠습니까 ?', [
       {
         text: '취소',
         onPress: () => console.log('Cancel Pressed'),

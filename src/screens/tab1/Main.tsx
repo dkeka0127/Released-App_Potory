@@ -247,7 +247,7 @@ function MainHome() {
   );
 }
 
-export default MainHome;
+export default React.memo(MainHome);
 
 const styles = StyleSheet.create({
   container: {

@@ -160,56 +160,13 @@ function Main() {
 
   const keyExtractor = useCallback(item => item.photo_idx, []);
 
-  const RenderItem = ({item, index}: any) => {
-    return (
-      <>
-        <FastImage
-          resizeMode="contain"
-          source={
-            bgColor === '#111'
-              ? polaroid_black[photoListArr[index]].uri
-              : polaroid_gray[photoListArr[index]].uri
-          }
-          style={[
-            renderItem.container,
-            {
-              width: polaroidWidth,
-              height: polaroidWidth * 1.18,
-            },
-          ]}>
-          <TouchableOpacity
-            style={{
-              marginTop: -(polaroidWidth * 0.14),
-              marginLeft: -3,
-              width: polaroidWidth * 0.55,
-              height: polaroidWidth * 0.5,
-            }}
-            onPress={() => {
-              setIsModalShown(true);
-              setModalImageInfo(item);
-            }}>
-            <FastImage
-              resizeMode="contain"
-              source={{uri: item.photo_url}}
-              style={renderItem.photo}
-            />
-          </TouchableOpacity>
-        </FastImage>
-        {index === photoListData.length - 1 && (
-          <View
-            style={{
-              width: polaroidWidth,
-              height: grid !== 1 ? polaroidWidth * 1.18 : 0,
-              marginBottom: 100,
-            }}
-          />
-        )}
-      </>
-    );
-  };
-
   const useCallbackRenderItem = useCallback(
     ({item, index}) => {
+      console.log(
+        '\n..................photoListArr, photoListData.length',
+        photoListArr,
+        photoListData.length,
+      );
       return (
         <>
           <FastImage
@@ -359,3 +316,51 @@ const renderItem = StyleSheet.create({
     flex: 1,
   },
 });
+
+// const RenderItem = ({item, index}: any) => {
+//   return (
+//     <>
+//       <FastImage
+//         resizeMode="contain"
+//         source={
+//           bgColor === '#111'
+//             ? polaroid_black[photoListArr[index]].uri
+//             : polaroid_gray[photoListArr[index]].uri
+//         }
+//         style={[
+//           renderItem.container,
+//           {
+//             width: polaroidWidth,
+//             height: polaroidWidth * 1.18,
+//           },
+//         ]}>
+//         <TouchableOpacity
+//           style={{
+//             marginTop: -(polaroidWidth * 0.14),
+//             marginLeft: -3,
+//             width: polaroidWidth * 0.55,
+//             height: polaroidWidth * 0.5,
+//           }}
+//           onPress={() => {
+//             setIsModalShown(true);
+//             setModalImageInfo(item);
+//           }}>
+//           <FastImage
+//             resizeMode="contain"
+//             source={{uri: item.photo_url}}
+//             style={renderItem.photo}
+//           />
+//         </TouchableOpacity>
+//       </FastImage>
+//       {index === photoListData.length - 1 && (
+//         <View
+//           style={{
+//             width: polaroidWidth,
+//             height: grid !== 1 ? polaroidWidth * 1.18 : 0,
+//             marginBottom: 100,
+//           }}
+//         />
+//       )}
+//     </>
+//   );
+// };
