@@ -55,8 +55,9 @@
    - Notion
    
 • [Ect] 
-   - Kakao API
-   - Google Map API
+   - Naver Open API
+   - Kakao Open API
+   - Google Map Open API
 ```
 ---
 
