@@ -68,11 +68,15 @@
 
 - Apple Login
 - Kakao Login
-- Google Map & Marker 표시
+- Naver Map 추가
+- 지도 내 Marker 표시
 
-- 한줄 메모 작성
-- 사진 & 동영상 저장 / 삭제
-- 위치 & 갤러리 접근 권한 허용
+- QR코드 인식
+- 메모 저장 및 삭제
+- 사진 저장 및 삭제
+- 위치 & 갤러리 접근 권한 설정
+
+- 날짜별 정렬 (오래된순/최신순)
 ---
 
 ## 💻 User Interface
