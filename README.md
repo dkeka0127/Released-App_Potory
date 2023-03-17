@@ -1,8 +1,5 @@
-# lifeRecordProject
-> " 뒤죽박죽 섞여있는 사진들을 한곳에 ! "
-> 
-> 추억 보관 어플을 소개합니다 :)
-
+# 포토리
+> Download - https://apps.apple.com/app/id1623724754
 
 
 
