@@ -63,6 +63,8 @@
 
 ## 🛠 구현 기술 
 
+- CodePush
+
 - Tab Navigation
 - Stack Navigation
 
