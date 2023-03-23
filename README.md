@@ -105,3 +105,9 @@ cd ios && pod install && cd ..
 yarn ios
 yarn android
 ```
+
+---
+## Action
+
+[포토리.mp4.zip](https://github.com/dkeka0127/Released-App_Potory/files/11045849/mp4.zip)
+
